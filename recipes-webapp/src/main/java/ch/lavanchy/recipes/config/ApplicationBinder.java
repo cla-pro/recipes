@@ -7,7 +7,9 @@ import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 /**
- * Created by cla on 28.11.2015.
+ * Configure the binding used for the dependency injection
+ *
+ * @since 1.0.0
  */
 public class ApplicationBinder extends AbstractBinder {
     @Override
