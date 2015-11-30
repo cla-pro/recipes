@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "recipes-seeker-webapp",
+  "description": "Recipes Seeker",
+  "private": true,
+  "devDependencies": {
+    "bower": "^1.6.8",
+    "http-server": "^0.8.5"
+  },
+  "scripts": {
+    "prestart": "npm install",
+    "start": "http-server -a 0.0.0.0 -p 8000"
+  }
+}
