@@ -5,3 +5,7 @@ var recipeControllers = angular.module('recipeControllers', [])
 
 recipeControllers.controller('MainCtrl', function($scope) {
   });
+
+
+recipeControllers.controller('SearchCtrl', function($scope) {
+  });

@@ -1,0 +1,15 @@
+<div>
+    <!-- Search box -->
+    <div>
+        <input type="submit" />
+        <button>Rechercher</button>
+    </div>
+    <!-- Results -->
+    <div>
+        <ul>
+            <li ng-repeat="recipe in recipes">
+                <a ng-href="#/search/{{recipe.id}}">{{recipe.title}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
