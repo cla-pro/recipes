@@ -44,16 +44,6 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>exec-grunt</id>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <executable>grunt</executable>
-                        </configuration>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
                 </executions>
             </plugin>
         </plugins>
