@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.lavanchy.recipes</groupId>
-    <artifactId>recipes-webapp</artifactId>
+    <artifactId>recipes-backend</artifactId>
     <packaging>war</packaging>
 
     <build>

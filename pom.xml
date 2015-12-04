@@ -33,7 +33,8 @@
     </build>
     <modules>
         <module>recipes-db</module>
-        <module>recipes-webapp</module>
+        <module>recipes-backend</module>
+        <module>recipes-frontend</module>
     </modules>
 
     <dependencyManagement>
