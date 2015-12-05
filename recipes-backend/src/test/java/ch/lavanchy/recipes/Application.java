@@ -18,16 +18,16 @@ import java.net.URI;
  */
 public class Application {
     public static void main(String[] args) throws Exception {
-        final ContextHandler context = new ContextHandler();
+        //final ContextHandler context = new ContextHandler();
         final URI baseUri = UriBuilder.fromUri("http://localhost/").port(9998).build();
         final ResourceConfig config = new ResourceConfig(new ApplicationConfig());
-        final ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setDirectoriesListed(true);
+        //final ResourceHandler resourceHandler = new ResourceHandler();
+        //resourceHandler.setDirectoriesListed(true);
         //resourceHandler.setWelcomeFiles(new String[]{ "index.html" });
-        resourceHandler.setBaseResource(Resource.newResource("."));
-        context.setHandler(resourceHandler);
+        //resourceHandler.setBaseResource(Resource.newResource("."));
+        //context.setHandler(resourceHandler);
         final Server jettyServer = JettyHttpContainerFactory.createServer(baseUri, config);
-        jettyServer.setHandler(context);
+        //jettyServer.setHandler(context);
 
         try {
             jettyServer.start();

@@ -18,12 +18,23 @@ import java.util.List;
  */
 @Path("recipes")
 public class RecipesService {
+    private static final String EMPTY_FILTER = "";
+
     @Inject
     private RecipesBusinessLocal recipesBusiness;
 
     @GET
     public String getRecipeList(@QueryParam("filter") String filter) {
-        List<Recipe> recipes = recipesBusiness.findRecipes(filter);
+        final String validatedFilter = validate(filter);
+        final List<Recipe> recipes = recipesBusiness.findRecipes(validatedFilter);
         return new Gson().toJson(recipes);
+    }
+
+    private String validate(String filter) {
+        if (filter == null) {
+            return EMPTY_FILTER;
+        } else {
+            return filter.trim();
+        }
     }
 }

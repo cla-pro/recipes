@@ -1,5 +1,6 @@
 package ch.lavanchy.recipes.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Table;
 
 /**
@@ -9,4 +10,14 @@ import javax.persistence.Table;
  */
 @Table(name = "RECIPE")
 public class RecipeEntity {
+    @Column(name = "NAME")
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
