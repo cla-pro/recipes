@@ -1,11 +1,8 @@
 package ch.lavanchy.recipes.config;
 
-import ch.lavanchy.recipes.business.RecipesBusinessBean;
-import ch.lavanchy.recipes.business.RecipesBusinessLocal;
-import ch.lavanchy.recipes.dao.RecipesDaoBean;
-import ch.lavanchy.recipes.dao.RecipesDaoLocal;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import javax.ws.rs.ApplicationPath;
 
 /**
  * Configure the binding for the dependency injection

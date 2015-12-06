@@ -20,6 +20,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warName>recipes-seeker</warName>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>

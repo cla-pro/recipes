@@ -8,6 +8,6 @@
 
     <servlet-mapping>
         <servlet-name>ch.lavanchy.recipes.config.ApplicationConfig</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/backend</url-pattern>
     </servlet-mapping>
 </web-app>
