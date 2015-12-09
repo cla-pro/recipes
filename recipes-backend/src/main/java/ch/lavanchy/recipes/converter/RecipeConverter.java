@@ -12,6 +12,12 @@ import java.util.List;
  * @since 1.0.0
  */
 public final class RecipeConverter {
+    /**
+     * Convert a list of {@link RecipeEntity} to a list of {@link Recipe}
+     *
+     * @param recipeEntities The list to convert
+     * @return The converted list
+     */
     public List<Recipe> convertRecipeEntityListToRecipe(final List<RecipeEntity> recipeEntities) {
         final List<Recipe> recipes = new ArrayList<>();
 
@@ -29,7 +35,7 @@ public final class RecipeConverter {
      * @return The converted object
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
-        final Recipe recipe = new Recipe("", recipeEntity.getName());
+        final Recipe recipe = new Recipe(recipeEntity.getId(), "", recipeEntity.getName());
         return recipe;
     }
 }

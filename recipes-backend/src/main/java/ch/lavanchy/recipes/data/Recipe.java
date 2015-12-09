@@ -11,13 +11,19 @@ package ch.lavanchy.recipes.data;
  * @since 1.0.0
  */
 public class Recipe {
-    private final String filename;
+    private final Long id;
     private final String name;
+    private final String filename;
 
-    public Recipe(String filename, String name) {
+    public Recipe(final Long id, final String filename, final String name) {
+        this.id = id;
         this.filename = filename;
         this.name = name;
 
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getFilename() {

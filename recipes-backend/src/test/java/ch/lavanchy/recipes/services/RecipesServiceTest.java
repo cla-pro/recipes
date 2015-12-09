@@ -34,13 +34,12 @@ public class RecipesServiceTest {
 
     @Before
     public void setUp() {
-        recipes = Arrays.asList(createRecipe("Croissant au jambon"), createRecipe("Jambon au madere"));
+        recipes = Arrays.asList(createRecipe(1L, "Croissant au jambon"), createRecipe(2L, "Jambon au madere"));
         when(recipesBusiness.findRecipes(anyString())).thenReturn(recipes);
     }
 
-    private Recipe createRecipe(String name) {
-        final Recipe recipe = new Recipe("", name);
-        return recipe;
+    private Recipe createRecipe(final Long id, final String name) {
+        return new Recipe(id, "", name);
     }
 
     @Test
@@ -57,7 +56,7 @@ public class RecipesServiceTest {
         final String filter = "ham cheese";
         final String recipesAsJson = recipesService.getRecipeList(filter);
 
-        final List<?> parsed = new Gson().fromJson(recipesAsJson, List.class);
+        new Gson().fromJson(recipesAsJson, List.class);
         verify(recipesBusiness).findRecipes(eq(filter));
     }
 }

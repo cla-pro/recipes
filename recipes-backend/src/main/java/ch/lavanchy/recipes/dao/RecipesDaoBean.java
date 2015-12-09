@@ -16,14 +16,15 @@ public class RecipesDaoBean implements RecipesDaoLocal {
     private final Map<String, RecipeEntity> db = new HashMap<>();
 
     {
-        db.put("Endives au jambon", createRecipeEntity("Endives au jambon"));
-        db.put("Lasagnes", createRecipeEntity("Lasagnes"));
-        db.put("Spaghetti bolognaise", createRecipeEntity("Spaghetti bolognaise"));
-        db.put("Fondant au chocolat", createRecipeEntity("Fondant au chocolat"));
+        db.put("Endives au jambon", createRecipeEntity(1L, "Endives au jambon"));
+        db.put("Lasagnes", createRecipeEntity(2L, "Lasagnes"));
+        db.put("Spaghetti bolognaise", createRecipeEntity(3L, "Spaghetti bolognaise"));
+        db.put("Fondant au chocolat", createRecipeEntity(4L, "Fondant au chocolat"));
     }
 
-    private RecipeEntity createRecipeEntity(final String name) {
+    private RecipeEntity createRecipeEntity(long id, final String name) {
         RecipeEntity recipeEntity = new RecipeEntity();
+        recipeEntity.setId(id);
         recipeEntity.setName(name);
         return recipeEntity;
     }

@@ -37,12 +37,14 @@ public class RecipeConverterTest {
         final RecipeEntity recipeEntity = createRecipeEntity("Croissant au jambon");
 
         final Recipe recipe = new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
+        assertEquals(recipeEntity.getId(), recipe.getId());
         assertEquals(recipeEntity.getName(), recipe.getName());
         assertEquals("", recipe.getFilename());
     }
 
     private RecipeEntity createRecipeEntity(String name) {
         final RecipeEntity recipeEntity = new RecipeEntity();
+        recipeEntity.setId(4L);
         recipeEntity.setName(name);
         return recipeEntity;
     }
