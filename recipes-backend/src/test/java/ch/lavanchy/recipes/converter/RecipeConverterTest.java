@@ -39,7 +39,7 @@ public class RecipeConverterTest {
         final Recipe recipe = new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
         assertEquals(recipeEntity.getId(), recipe.getId());
         assertEquals(recipeEntity.getName(), recipe.getName());
-        assertEquals("", recipe.getFilename());
+        assertEquals(recipeEntity.getFilename(), recipe.getFilename());
     }
 
     private RecipeEntity createRecipeEntity(String name) {

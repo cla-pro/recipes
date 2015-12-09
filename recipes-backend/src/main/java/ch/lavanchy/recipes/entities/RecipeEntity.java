@@ -16,6 +16,9 @@ public class RecipeEntity {
     @Column(name = "NAME")
     private String name;
 
+    @Column(name = "FILENAME")
+    private String filename;
+
     public Long getId() {
         return id;
     }
@@ -30,5 +33,13 @@ public class RecipeEntity {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 }

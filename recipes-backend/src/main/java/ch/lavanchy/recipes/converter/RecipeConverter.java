@@ -35,7 +35,6 @@ public final class RecipeConverter {
      * @return The converted object
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
-        final Recipe recipe = new Recipe(recipeEntity.getId(), "", recipeEntity.getName());
-        return recipe;
+        return new Recipe(recipeEntity.getId(), recipeEntity.getFilename(), recipeEntity.getName());
     }
 }
