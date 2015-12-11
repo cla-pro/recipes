@@ -59,12 +59,12 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
     console.log('file is ' );
     console.dir(file);
     var uploadUrl = "/fileUpload";
-    fileUpload.uploadFileToUrl(file, 'http://localhost:9998/services/recipes/file');
+    //fileUpload.uploadFileToUrl(file, 'http://localhost:9998/services/recipes/file');
 
-    /*Restangular.all('recipes').post('recipes', {name: $scope.name}).then(
+    Restangular.all('recipes').post('recipes', {name: $scope.name}).then(
       function (postedRecipe) {
         console.log('posted with id: ' + postedRecipe.id);
       }
-    );*/
+    );
   };
 });

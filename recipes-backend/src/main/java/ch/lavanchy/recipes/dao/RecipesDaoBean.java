@@ -13,22 +13,22 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class RecipesDaoBean implements RecipesDaoLocal {
-    private final Map<String, RecipeEntity> db = new HashMap<>();
+    private static final Map<String, RecipeEntity> db = new HashMap<>();
 
-    private long nextId = 0L;
+    private static long nextId = 0L;
 
-    {
+    static {
         db.put("Endives au jambon", createRecipeEntity(getAndIncNextId(), "Endives au jambon"));
         db.put("Lasagnes", createRecipeEntity(getAndIncNextId(), "Lasagnes"));
         db.put("Spaghetti bolognaise", createRecipeEntity(getAndIncNextId(), "Spaghetti bolognaise"));
         db.put("Fondant au chocolat", createRecipeEntity(getAndIncNextId(), "Fondant au chocolat"));
     }
 
-    private long getAndIncNextId() {
+    private static long getAndIncNextId() {
         return nextId++;
     }
 
-    private RecipeEntity createRecipeEntity(long id, final String name) {
+    private static RecipeEntity createRecipeEntity(long id, final String name) {
         RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setId(id);
         recipeEntity.setName(name);

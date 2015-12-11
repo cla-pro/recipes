@@ -1,5 +1,6 @@
 package ch.lavanchy.recipes.services;
 
+import ch.lavanchy.recipes.business.FileBusinessLocal;
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import com.google.gson.Gson;
@@ -23,6 +24,9 @@ public class RecipesService {
     private static final String EMPTY_FILTER = "";
 
     @Inject
+    private FileBusinessLocal fileBusiness;
+
+    @Inject
     private RecipesBusinessLocal recipesBusiness;
 
     @GET
@@ -35,6 +39,7 @@ public class RecipesService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String createRecipe(final String payload) {
+        System.out.println("payload=" + payload);
         final Recipe recipe = new Gson().fromJson(payload, Recipe.class);
         final Recipe persisted = recipesBusiness.createRecipe(recipe);
         return new Gson().toJson(persisted);
@@ -46,7 +51,8 @@ public class RecipesService {
     public String uploadFile(@FormDataParam("file") InputStream fileInputStream,
                              @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
         System.out.println("File uploaded: " + contentDispositionHeader);
-        return "";
+        fileBusiness.saveFile(fileInputStream, contentDispositionHeader.getFileName());
+        return "File saved";
     }
 
     private String validate(String filter) {
