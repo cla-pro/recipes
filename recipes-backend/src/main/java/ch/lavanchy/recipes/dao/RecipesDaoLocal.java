@@ -23,4 +23,12 @@ public interface RecipesDaoLocal {
      * @return All the recipes whose name matches the filter
      */
     List<RecipeEntity> findRecipesFilteredByName(final String filter);
+
+    /**
+     * Persist the given recipe entity
+     *
+     * @param recipeEntity The recipe to persist
+     * @return The persisted entity
+     */
+    RecipeEntity persistRecipe(final RecipeEntity recipeEntity);
 }

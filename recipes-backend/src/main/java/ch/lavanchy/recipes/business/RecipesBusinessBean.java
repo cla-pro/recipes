@@ -27,6 +27,15 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         return new RecipeConverter().convertRecipeEntityListToRecipe(filteredRecipeEntities);
     }
 
+    @Override
+    public Recipe createRecipe(Recipe recipe) {
+        final RecipeConverter recipeConverter = new RecipeConverter();
+
+        final RecipeEntity recipeEntity = recipeConverter.convertRecipeToRecipeEntity(recipe);
+        final RecipeEntity persistedEntity = recipesDao.persistRecipe(recipeEntity);
+        return recipeConverter.convertRecipeEntityToRecipe(persistedEntity);
+    }
+
     private List<RecipeEntity> filterRecipeEntities(List<RecipeEntity> recipeEntities, final String filter) {
         final List<RecipeEntity> filteredRecipeEntities = new ArrayList<>();
 

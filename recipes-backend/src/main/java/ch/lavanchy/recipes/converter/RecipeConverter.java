@@ -13,7 +13,7 @@ import java.util.List;
  */
 public final class RecipeConverter {
     /**
-     * Convert a list of {@link RecipeEntity} to a list of {@link Recipe}
+     * Convert a list of {@link RecipeEntity} into a list of {@link Recipe}
      *
      * @param recipeEntities The list to convert
      * @return The converted list
@@ -29,12 +29,26 @@ public final class RecipeConverter {
     }
 
     /**
-     * Convert a single {@link RecipeEntity} to a {@link Recipe}.
+     * Convert a single {@link RecipeEntity} into a {@link Recipe}.
      *
      * @param recipeEntity The entity to convert
      * @return The converted object
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
         return new Recipe(recipeEntity.getId(), recipeEntity.getFilename(), recipeEntity.getName());
+    }
+
+    /**
+     * Convert a single {@link Recipe} into a {@link RecipeEntity}
+     *
+     * @param recipe The recipe to convert
+     * @return The converted entity
+     */
+    public RecipeEntity convertRecipeToRecipeEntity(final Recipe recipe) {
+        final RecipeEntity recipeEntity = new RecipeEntity();
+        recipeEntity.setId(recipe.getId());
+        recipeEntity.setName(recipe.getName());
+        recipeEntity.setFilename(recipe.getFilename());
+        return recipeEntity;
     }
 }

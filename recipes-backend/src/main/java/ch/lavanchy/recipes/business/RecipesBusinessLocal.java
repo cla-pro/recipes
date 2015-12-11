@@ -10,5 +10,20 @@ import java.util.List;
  * @since 1.0.0
  */
 public interface RecipesBusinessLocal {
-    List<Recipe> findRecipes(String filter);
+    /**
+     * Find all the recipes matching the given filter
+     *
+     * @param filter Filter given as a string. Will be parsed to extract each word
+     * @return The matching recipes
+     */
+    List<Recipe> findRecipes(final String filter);
+
+    /**
+     * Create a new recipe into the system.
+     *
+     * @param recipe The information about the recipe to save
+     * @return The persisted recipe
+     */
+    Recipe createRecipe(final Recipe recipe);
+
 }

@@ -15,11 +15,17 @@ import java.util.Map;
 public class RecipesDaoBean implements RecipesDaoLocal {
     private final Map<String, RecipeEntity> db = new HashMap<>();
 
+    private long nextId = 0L;
+
     {
-        db.put("Endives au jambon", createRecipeEntity(1L, "Endives au jambon"));
-        db.put("Lasagnes", createRecipeEntity(2L, "Lasagnes"));
-        db.put("Spaghetti bolognaise", createRecipeEntity(3L, "Spaghetti bolognaise"));
-        db.put("Fondant au chocolat", createRecipeEntity(4L, "Fondant au chocolat"));
+        db.put("Endives au jambon", createRecipeEntity(getAndIncNextId(), "Endives au jambon"));
+        db.put("Lasagnes", createRecipeEntity(getAndIncNextId(), "Lasagnes"));
+        db.put("Spaghetti bolognaise", createRecipeEntity(getAndIncNextId(), "Spaghetti bolognaise"));
+        db.put("Fondant au chocolat", createRecipeEntity(getAndIncNextId(), "Fondant au chocolat"));
+    }
+
+    private long getAndIncNextId() {
+        return nextId++;
     }
 
     private RecipeEntity createRecipeEntity(long id, final String name) {
@@ -44,5 +50,13 @@ public class RecipesDaoBean implements RecipesDaoLocal {
         }
 
         return matches;
+    }
+
+    @Override
+    public RecipeEntity persistRecipe(RecipeEntity recipeEntity) {
+        long id = getAndIncNextId();
+        recipeEntity.setId(id);
+        db.put(recipeEntity.getName(), recipeEntity);
+        return recipeEntity;
     }
 }
