@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -32,6 +30,7 @@ public class RecipesBusinessBeanTest {
     private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
 
     private List<RecipeEntity> recipeEntities;
+    private final long knownId = 123L;
 
     @Before
     public void setUp() {
@@ -46,6 +45,7 @@ public class RecipesBusinessBeanTest {
                 return param;
             }
         });
+        when(recipesDao.findRecipeById(eq(knownId))).thenReturn(createRecipeEntity("My Recipe"));
     }
 
     private RecipeEntity createRecipeEntity(String name) {
@@ -57,31 +57,31 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testFindRecipesNoFilter() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("");
-        assertEquals(recipeEntities.size(), recipes.size());
+        assertThat(recipeEntities).hasSameSizeAs(recipes);
     }
 
     @Test
     public void testFindRecipesSpaceFilter() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("   ");
-        assertEquals(recipeEntities.size(), recipes.size());
+        assertThat(recipeEntities).hasSameSizeAs(recipes);
     }
 
     @Test
     public void testFindRecipesNoMatch() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("cheese");
-        assertTrue(recipes.isEmpty());
+        assertThat(recipes).isEmpty();
     }
 
     @Test
     public void testFindRecipesPartialMatch() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("croissant");
-        assertEquals(1, recipes.size());
+        assertThat(recipes).hasSize(1);
     }
 
     @Test
     public void testFindRecipesFullMatch() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("jambon");
-        assertEquals(recipeEntities.size(), recipes.size());
+        assertThat(recipeEntities).hasSameSizeAs(recipes);
     }
 
     @Test
@@ -92,5 +92,19 @@ public class RecipesBusinessBeanTest {
         verify(recipesDao).persistRecipe(any(RecipeEntity.class));
         assertThat(created.getId()).isNotNull();
         assertThat(created.getName()).isEqualTo(name);
+    }
+
+    @Test
+    public void testSetRecipeFilename() {
+        final String filename = "recipe.xml";
+
+        final Recipe recipe = recipesBusiness.setRecipeFilename(knownId, filename);
+        assertThat(recipe.getFilename()).isEqualTo(filename);
+    }
+
+    @Test
+    public void testSetRecipeFilenameNotFound() {
+        Recipe persistedRecipe = recipesBusiness.setRecipeFilename(456L, "recipe.xml");
+        assertThat(persistedRecipe).isNull();
     }
 }

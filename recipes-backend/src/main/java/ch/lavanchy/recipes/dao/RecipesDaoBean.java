@@ -53,6 +53,16 @@ public class RecipesDaoBean implements RecipesDaoLocal {
     }
 
     @Override
+    public RecipeEntity findRecipeById(long id) {
+        for (RecipeEntity recipeEntity : db.values()) {
+            if (recipeEntity.getId() != null && recipeEntity.getId().equals(id)) {
+                return recipeEntity;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public RecipeEntity persistRecipe(RecipeEntity recipeEntity) {
         long id = getAndIncNextId();
         recipeEntity.setId(id);

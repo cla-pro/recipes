@@ -38,21 +38,24 @@ public class RecipesService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createRecipe(final String payload) {
-        System.out.println("payload=" + payload);
-        final Recipe recipe = new Gson().fromJson(payload, Recipe.class);
+    public String createRecipe(final Recipe recipe) {
         final Recipe persisted = recipesBusiness.createRecipe(recipe);
         return new Gson().toJson(persisted);
     }
 
     @POST
-    @Path("/file")
+    @Path("/file/{id}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public String uploadFile(@FormDataParam("file") InputStream fileInputStream,
-                             @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+    public String uploadFile(
+            @PathParam("id") long id,
+            @FormDataParam("file") InputStream fileInputStream,
+            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
         System.out.println("File uploaded: " + contentDispositionHeader);
-        fileBusiness.saveFile(fileInputStream, contentDispositionHeader.getFileName());
-        return "File saved";
+
+        final String filename = contentDispositionHeader.getFileName();
+        recipesBusiness.setRecipeFilename(id, filename);
+        fileBusiness.saveFile(fileInputStream, filename);
+        return "{}";
     }
 
     private String validate(String filter) {

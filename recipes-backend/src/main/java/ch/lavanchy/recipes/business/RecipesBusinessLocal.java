@@ -26,4 +26,12 @@ public interface RecipesBusinessLocal {
      */
     Recipe createRecipe(final Recipe recipe);
 
+    /**
+     * Update the recipe with the filename
+     *
+     * @param id The recipe's id
+     * @param filename The filename to save
+     * @return The updated recipe
+     */
+    Recipe setRecipeFilename(final long id, final String filename);
 }

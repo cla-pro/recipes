@@ -3,6 +3,7 @@ package ch.lavanchy.recipes.dao;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Data access to the DB for the recipes
@@ -23,6 +24,14 @@ public interface RecipesDaoLocal {
      * @return All the recipes whose name matches the filter
      */
     List<RecipeEntity> findRecipesFilteredByName(final String filter);
+
+    /**
+     * Find a recipe by id
+     *
+     * @param id The recipe's id
+     * @return The recipe.
+     */
+    RecipeEntity findRecipeById(final long id);
 
     /**
      * Persist the given recipe entity

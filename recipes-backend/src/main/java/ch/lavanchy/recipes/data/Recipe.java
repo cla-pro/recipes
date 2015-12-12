@@ -15,6 +15,10 @@ public class Recipe {
     private final String name;
     private final String filename;
 
+    public Recipe() {
+        this(null, null, null);
+    }
+
     public Recipe(final Long id, final String filename, final String name) {
         this.id = id;
         this.filename = filename;
