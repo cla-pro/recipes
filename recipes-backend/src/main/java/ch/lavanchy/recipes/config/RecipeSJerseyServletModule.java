@@ -9,7 +9,6 @@ import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.services.RecipesService;
 import ch.lavanchy.recipes.utils.PropertyProviderBean;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
-import com.google.inject.persist.PersistFilter;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
@@ -21,7 +20,7 @@ import java.util.Map;
  *
  * @since 1.0.0
  */
-public class RecipesJerseyServletModule extends JerseyServletModule {
+class RecipesJerseyServletModule extends JerseyServletModule {
     @Override
     protected void configureServlets() {
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);

@@ -16,21 +16,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Testclass for {@link RecipesBusinessBean}
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RecipesBusinessBeanTest {
+    private final long knownId = 123L;
     @Mock
     private RecipesDaoLocal recipesDao;
-
     @InjectMocks
     private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
-
     private List<RecipeEntity> recipeEntities;
-    private final long knownId = 123L;
 
     @Before
     public void setUp() {

@@ -7,6 +7,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <title>Recipe Seeker</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="icon" type="image/png" href="images/favicon-94x94.png" />
+    <link rel="apple-touch-icon" href="images/favicon-94x94.png" />
 
     <script src="../bower_components/jquery/dist/jquery.js"></script>
     <!--<script src="../bower_components/moment/min/moment.min.js"></script>-->
@@ -25,6 +30,11 @@
     <script src="js/app.js"></script>
 </head>
 <body ng-controller="MainCtrl">
+    <div class="header">
+      <input type="image" src="images/menu-icon.png" ng-click="openAside()" alt="Menu" class="btn-menu"></button>
+      <div class="header-title" >{{title}}</div>
+    </div>
+  
     <div ui-view>
         <p>Opening...</p>
     </div>

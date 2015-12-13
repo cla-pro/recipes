@@ -3,7 +3,6 @@ package ch.lavanchy.recipes.dao;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Data access to the DB for the recipes

@@ -1,4 +1,4 @@
-var recipesControllers = angular.module('recipesControllers', ['restangular'])
+var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside'])
   .config(function() {
 
   });
@@ -34,10 +34,48 @@ recipesControllers.service('fileUpload', ['$http', function ($http) {
   }
 }]);
 
-
-recipesControllers.controller('MainCtrl', function($scope, Restangular) {
-  Restangular.setBaseUrl('http://localhost:9998/services');
-});
+recipesControllers.controller('MainCtrl', function($scope, $state, $aside, Restangular) {
+    Restangular.setBaseUrl('http://localhost:9998/services');
+    //Restangular.setBaseUrl('../../backend/public/api');
+    
+    /*$scope.title = $header.title;
+    $scope.$watch(
+      function() { return $header.title; },
+      function(oldValue, newValue) { $scope.title = $header.title; });*/
+    
+    $scope.asideState = {
+      open: false
+    };
+    
+    $scope.openAside = function() {
+      $scope.asideState = {
+        open: true,
+      };
+      
+      function postClose() {
+        $scope.asideState.open = false;
+      }
+      
+      $aside.open({
+        templateUrl: 'partials/menu.html',
+        placement: 'left',
+        size: 'sm',
+        animation: true,
+        controller: function($scope, $modalInstance, $filter) {
+          $scope.menuElementList = [
+            {'route': 'search', 'html': 'Rechercher'},
+            {'route': 'insert', 'html': 'Inserer'}
+          ];
+          
+          $scope.go = function(e, element) {
+            $modalInstance.dismiss();
+            e.stopPropagation();
+            $state.go(element.route);
+          }
+        }
+      }).result.then(postClose, postClose);
+    }
+  });
 
 recipesControllers.controller('SearchCtrl', function($scope, Restangular) {
   $scope.filter = "";
@@ -58,12 +96,11 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
     var file = $scope.file;
     console.log('file is ' );
     console.dir(file);
-    var uploadUrl = "/fileUpload";
-    //fileUpload.uploadFileToUrl(file, 'http://localhost:9998/services/recipes/file');
 
-    Restangular.all('recipes').post('recipes', {name: $scope.name}).then(
+    Restangular.all('recipes').customPOST({name: $scope.name}).then(
       function (postedRecipe) {
         console.log('posted with id: ' + postedRecipe.id);
+        fileUpload.uploadFileToUrl(file, 'http://localhost:9998/services/recipes/file/' + postedRecipe.id);
       }
     );
   };

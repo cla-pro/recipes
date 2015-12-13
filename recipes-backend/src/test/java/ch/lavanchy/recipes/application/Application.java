@@ -1,21 +1,12 @@
 package ch.lavanchy.recipes.application;
 
-import ch.lavanchy.recipes.config.ApplicationConfig;
 import ch.lavanchy.recipes.config.GuiceContext;
-import ch.lavanchy.recipes.config.RecipesJerseyServletModule;
 import com.google.inject.servlet.GuiceFilter;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.servlet.*;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-
-import javax.servlet.DispatcherType;
-import javax.ws.rs.core.UriBuilder;
-import java.net.URI;
-import java.util.EnumSet;
 
 /**
  * Test application that starts a Jetty server
