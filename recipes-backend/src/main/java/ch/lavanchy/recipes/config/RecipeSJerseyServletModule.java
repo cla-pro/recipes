@@ -7,6 +7,7 @@ import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.dao.RecipesDaoBean;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.services.RecipesService;
+import ch.lavanchy.recipes.services.RootService;
 import ch.lavanchy.recipes.utils.PropertyProviderBean;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
 import com.sun.jersey.guice.JerseyServletModule;
@@ -31,6 +32,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         bind(RecipesBusinessLocal.class).to(RecipesBusinessBean.class);
 
         bind(RecipesService.class);
+        bind(RootService.class);
 
         // Route all requests through GuiceContainer
         final Map<String, String> params = new HashMap<>();
