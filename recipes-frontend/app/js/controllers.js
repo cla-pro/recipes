@@ -35,7 +35,7 @@ recipesControllers.service('fileUpload', ['$http', function ($http) {
 }]);
 
 recipesControllers.controller('MainCtrl', function($scope, $state, $aside, Restangular) {
-    Restangular.setBaseUrl('http://localhost:9998/services');
+    Restangular.setBaseUrl('../services');
     
     $scope.asideState = {
       open: false
