@@ -7,7 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <title>Recipe Seeker</title>
-    
+
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../bower_components/angular-aside/dist/css/angular-aside.css">
     <link rel="stylesheet" href="css/style.css">
     
     <link rel="icon" type="image/png" href="images/favicon-94x94.png" />
@@ -31,7 +33,7 @@
 <body ng-controller="MainCtrl">
     <div class="header">
       <input type="image" src="images/menu-icon.png" ng-click="openAside()" alt="Menu" class="btn-menu"></button>
-      <div class="header-title" >{{title}}</div>
+      <div class="header-title" >MyRecettes</div>
     </div>
   
     <div ui-view>

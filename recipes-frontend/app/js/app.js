@@ -1,8 +1,8 @@
 var recipesApp = angular.module('recipesApp', ['ui.router', 'recipesControllers'])
 .config(function($stateProvider, $urlRouterProvider) {
   //For any unmatched urls, redirect to the infos page
-  $urlRouterProvider.otherwise('/insert');
-  $urlRouterProvider.when('', '/insert');
+  $urlRouterProvider.otherwise('/search');
+  $urlRouterProvider.when('', '/search');
 
   $stateProvider
     .state('search', {
@@ -20,10 +20,5 @@ var recipesApp = angular.module('recipesApp', ['ui.router', 'recipesControllers'
       templateUrl: 'partials/insert.html',
       controller: 'InsertCtrl'
     })
-    /*.state('update', {
-      url: '/update',
-      templateUrl: 'partials/update.html',
-      controller: 'UpdateCtrl'
-    })*/
 });
 

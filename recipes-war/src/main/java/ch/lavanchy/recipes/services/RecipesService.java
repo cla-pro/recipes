@@ -57,7 +57,6 @@ public class RecipesService {
         System.out.println("File uploaded: " + contentDispositionHeader);
 
         final String filename = contentDispositionHeader.getFileName();
-        recipesBusiness.setRecipeFilename(id, filename);
         fileBusiness.saveFile(fileInputStream, filename);
         return "{}";
     }

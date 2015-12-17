@@ -54,4 +54,8 @@
                         sequenceName="seq_tag_id"/>
     </changeSet>
 
+    <changeSet id="1.0.0-4-auto-increment" author="cla">
+        <addAutoIncrement tableName="recipe" columnName="id" columnDataType="int" incrementBy="1" />
+        <addAutoIncrement tableName="tag" columnName="id" columnDataType="int" incrementBy="1" />
+    </changeSet>
 </databaseChangeLog>

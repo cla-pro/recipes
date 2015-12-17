@@ -8,8 +8,11 @@ import ch.lavanchy.recipes.dao.RecipesDaoBean;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.services.RecipesService;
 import ch.lavanchy.recipes.services.RootService;
+import ch.lavanchy.recipes.services.TransactionFilter;
 import ch.lavanchy.recipes.utils.PropertyProviderBean;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
+import com.google.inject.Singleton;
+import com.google.inject.persist.PersistFilter;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
@@ -24,6 +27,8 @@ import java.util.Map;
 class RecipesJerseyServletModule extends JerseyServletModule {
     @Override
     protected void configureServlets() {
+        bind(TransactionFilter.class).in(Singleton.class);
+
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);
 
         bind(RecipesDaoLocal.class).to(RecipesDaoBean.class);
@@ -37,7 +42,8 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         // Route all requests through GuiceContainer
         final Map<String, String> params = new HashMap<>();
         params.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
-        //filter("/services/*").through(PersistFilter.class);
+        filter("/services/*").through(PersistFilter.class);
+        filter("/services/*").through(TransactionFilter.class);
         serve("/services/*").with(GuiceContainer.class, params);
     }
 }

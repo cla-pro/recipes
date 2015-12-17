@@ -2,6 +2,7 @@ package ch.lavanchy.recipes.config;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
 
 /**
@@ -16,9 +17,6 @@ public class GuiceContext extends GuiceServletContextListener {
 
     @Override
     protected Injector getInjector() {
-        // new JpaPersistModule(RECIPES_PERSISTENCE_UNIT),
-        System.out.println("getInjector");
-
-        return Guice.createInjector(new RecipesJerseyServletModule());
+        return Guice.createInjector(new JpaPersistModule(RECIPES_PERSISTENCE_UNIT), new RecipesJerseyServletModule());
     }
 }

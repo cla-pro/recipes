@@ -1,6 +1,10 @@
 package ch.lavanchy.recipes.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -8,15 +12,17 @@ import javax.persistence.Table;
  *
  * @since 1.0.0
  */
-@Table(name = "RECIPE")
+@Entity(name = "recipe")
 public class RecipeEntity {
-    @Column(name = "ID")
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "FILENAME")
+    @Column(name = "filename")
     private String filename;
 
     public Long getId() {

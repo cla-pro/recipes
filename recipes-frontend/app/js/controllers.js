@@ -91,7 +91,7 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
     console.log('file is ' );
     console.dir(file);
 
-    Restangular.all('recipes').customPOST({name: $scope.name}).then(
+    Restangular.all('recipes').customPOST({name: $scope.name, filename: file.filename}).then(
       function (postedRecipe) {
         console.log('posted with id: ' + postedRecipe.id);
         fileUpload.uploadFileToUrl(file, 'http://localhost:9998/services/recipes/file/' + postedRecipe.id);

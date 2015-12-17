@@ -2,6 +2,10 @@ package ch.lavanchy.recipes.dao;
 
 import ch.lavanchy.recipes.entities.RecipeEntity;
 
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +17,10 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class RecipesDaoBean implements RecipesDaoLocal {
-    private static final Map<String, RecipeEntity> db = new HashMap<>();
+    @Inject
+    private EntityManager entityManager;
+
+    /*private static final Map<String, RecipeEntity> db = new HashMap<>();
 
     private static long nextId = 0L;
 
@@ -33,40 +40,31 @@ public class RecipesDaoBean implements RecipesDaoLocal {
         recipeEntity.setId(id);
         recipeEntity.setName(name);
         return recipeEntity;
-    }
+    }*/
 
     @Override
     public List<RecipeEntity> findAllRecipes() {
-        return new ArrayList<>(db.values());
+        final CriteriaQuery<RecipeEntity> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(RecipeEntity.class);
+        criteriaQuery.select(criteriaQuery.from(RecipeEntity.class));
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<RecipeEntity> findRecipesFilteredByName(String filter) {
-        final List<RecipeEntity> matches = new ArrayList<>();
-        for (String name : db.keySet()) {
-            if (name.contains(filter)) {
-                matches.add(db.get(name));
-            }
-        }
-
-        return matches;
+        final Query query = entityManager.createQuery("SELECT recipe FROM RecipeEntity recipe WHERE recipe.name LIKE :filter");
+        query.setParameter("filter", filter);
+        return query.getResultList();
     }
 
     @Override
     public RecipeEntity findRecipeById(long id) {
-        for (RecipeEntity recipeEntity : db.values()) {
-            if (recipeEntity.getId() != null && recipeEntity.getId().equals(id)) {
-                return recipeEntity;
-            }
-        }
-        return null;
+        return entityManager.find(RecipeEntity.class, id);
     }
 
     @Override
     public RecipeEntity persistRecipe(RecipeEntity recipeEntity) {
-        long id = getAndIncNextId();
-        recipeEntity.setId(id);
-        db.put(recipeEntity.getName(), recipeEntity);
+        entityManager.persist(recipeEntity);
         return recipeEntity;
     }
 }
