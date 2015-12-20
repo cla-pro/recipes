@@ -1,6 +1,7 @@
 package ch.lavanchy.recipes.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -12,10 +13,17 @@ public class PropertyProviderBean implements PropertyProviderLocal {
     private final Properties properties = new Properties();
 
     {
+        final InputStream propertyFile = this.getClass().getClassLoader().getResourceAsStream("config.properties");
         try {
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("config.properties"));
+            properties.load(propertyFile);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                propertyFile.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

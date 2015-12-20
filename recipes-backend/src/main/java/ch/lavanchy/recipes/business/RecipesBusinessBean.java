@@ -28,6 +28,12 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     }
 
     @Override
+    public Recipe findRecipeById(long id) {
+        final RecipeEntity recipeEntity = recipesDao.findRecipeById(id);
+        return new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
+    }
+
+    @Override
     public Recipe createRecipe(Recipe recipe) {
         final RecipeConverter recipeConverter = new RecipeConverter();
 

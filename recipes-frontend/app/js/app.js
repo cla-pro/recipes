@@ -10,11 +10,11 @@ var recipesApp = angular.module('recipesApp', ['ui.router', 'recipesControllers'
       templateUrl: 'partials/search.html',
       controller: 'SearchCtrl'
     })
-    /*.state('infos_detail', {
-      url: '/infos/:id',
-      templateUrl: 'partials/infos.detail.html',
-      controller: 'InfosDetailCtrl'
-    })*/
+    .state('search_result', {
+      url: '/search/:id',
+      templateUrl: 'partials/search.result.html',
+      controller: 'SearchResultCtrl'
+    })
     .state('insert', {
       url: '/insert',
       templateUrl: 'partials/insert.html',

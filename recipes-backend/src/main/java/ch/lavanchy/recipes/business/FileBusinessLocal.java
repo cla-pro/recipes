@@ -15,4 +15,12 @@ public interface FileBusinessLocal {
      * @param filename The filename for the new file
      */
     void saveFile(final InputStream inputStream, final String filename);
+
+    /**
+     * Return the file identified by the filename
+     *
+     * @param filename The name of the file to read
+     * @return The file as an input stream
+     */
+    InputStream readFile(final String filename);
 }

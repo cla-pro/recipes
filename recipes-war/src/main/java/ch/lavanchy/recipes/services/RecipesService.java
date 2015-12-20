@@ -13,9 +13,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.List;
 
 /**
@@ -40,11 +46,34 @@ public class RecipesService {
         return new Gson().toJson(recipes);
     }
 
+    @GET
+    @Path("/{id}")
+    public String getRecipe(@PathParam("id") long id) {
+        final Recipe recipe = recipesBusiness.findRecipeById(id);
+        return new Gson().toJson(recipe);
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String createRecipe(final Recipe recipe) {
         final Recipe persisted = recipesBusiness.createRecipe(recipe);
         return new Gson().toJson(persisted);
+    }
+
+    @GET
+    @Path("/pdf/{id}")
+    public Response getFile(@PathParam("id") long id) throws IOException {
+        Recipe recipe = recipesBusiness.findRecipeById(id);
+        final InputStream inputStream = fileBusiness.readFile(recipe.getFilename());
+
+        if (inputStream == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            return Response
+                    .ok(new FileStreamingOutput(inputStream))
+                    .header("content-disposition", "attachment; filename = " + recipe.getFilename())
+                    .build();
+        }
     }
 
     @POST

@@ -19,6 +19,14 @@ public interface RecipesBusinessLocal {
     List<Recipe> findRecipes(final String filter);
 
     /**
+     * Find a single {@link Recipe} by id
+     *
+     * @param id The id to search
+     * @return The recipe or null if not found
+     */
+    Recipe findRecipeById(final long id);
+
+    /**
      * Create a new recipe into the system.
      *
      * @param recipe The information about the recipe to save

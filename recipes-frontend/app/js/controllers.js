@@ -1,4 +1,4 @@
-var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside'])
+var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside', 'pdf'])
   .config(function() {
 
   });
@@ -80,6 +80,15 @@ recipesControllers.controller('SearchCtrl', function($scope, Restangular) {
       $scope.recipes = recipes;
     });
   };
+});
+
+recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams, Restangular) {
+  $scope.recipe = {};
+
+  Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
+    $scope.recipe = recipe;
+    $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
+  });
 });
 
 recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUpload) {
