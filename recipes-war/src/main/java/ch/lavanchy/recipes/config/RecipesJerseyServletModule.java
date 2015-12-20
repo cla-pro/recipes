@@ -6,6 +6,7 @@ import ch.lavanchy.recipes.business.RecipesBusinessBean;
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.dao.RecipesDaoBean;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
+import ch.lavanchy.recipes.services.CheckService;
 import ch.lavanchy.recipes.services.RecipesService;
 import ch.lavanchy.recipes.services.RootService;
 import ch.lavanchy.recipes.services.TransactionFilter;
@@ -37,6 +38,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         bind(RecipesBusinessLocal.class).to(RecipesBusinessBean.class);
 
         bind(RecipesService.class);
+        bind(CheckService.class);
         bind(RootService.class);
 
         // Route all requests through GuiceContainer
