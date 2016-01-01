@@ -95,6 +95,10 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
   $scope.name = "";
   $scope.file = null;
 
+  $scope.setFile = function (newFile) {
+    $scope.file = newFile;
+    $scope.name = $scope.file.name;
+  };
   $scope.insert = function() {
     var file = $scope.file;
     console.log('file is ' );

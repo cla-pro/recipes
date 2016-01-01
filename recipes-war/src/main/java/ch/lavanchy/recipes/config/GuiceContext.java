@@ -13,10 +13,18 @@ import com.google.inject.servlet.GuiceServletContextListener;
 public class GuiceContext extends GuiceServletContextListener {
     private static final String RECIPES_PERSISTENCE_UNIT = "recipes-pu";
 
-    public GuiceContext() {}
+    private final String persistenceUnit;
+
+    public GuiceContext() {
+        this(RECIPES_PERSISTENCE_UNIT);
+    }
+
+    public GuiceContext(final String persistenceUnit) {
+        this.persistenceUnit = persistenceUnit;
+    }
 
     @Override
     protected Injector getInjector() {
-        return Guice.createInjector(new JpaPersistModule(RECIPES_PERSISTENCE_UNIT), new RecipesJerseyServletModule());
+        return Guice.createInjector(new JpaPersistModule(persistenceUnit), new RecipesJerseyServletModule());
     }
 }

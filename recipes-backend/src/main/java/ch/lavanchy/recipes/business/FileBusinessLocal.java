@@ -1,5 +1,6 @@
 package ch.lavanchy.recipes.business;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -21,6 +22,7 @@ public interface FileBusinessLocal {
      *
      * @param filename The name of the file to read
      * @return The file as an input stream
+     * @throws FileNotFoundException if the file cannot be found
      */
-    InputStream readFile(final String filename);
+    InputStream readFile(final String filename) throws FileNotFoundException;
 }
