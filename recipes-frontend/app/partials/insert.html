@@ -1,5 +1,5 @@
 <div>
-    <input style="width: 80%" type="text" ng-model="name" placeholder="Nom" /><br />
+    <input style="width: 80%" type="text" ng-model="name" ng-change="textChanged()" placeholder="Nom" /><br />
     <br />
     Choisir le fichier <input type="file" file-model="file" accept=".pdf,.odt,.docx"/><br />
     <button ng-click="insert()">Enregistrer</button>

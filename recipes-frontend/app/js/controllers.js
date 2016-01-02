@@ -94,21 +94,25 @@ recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams,
 recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUpload) {
   $scope.name = "";
   $scope.file = null;
+  $scope.nameOverriden = false;
 
-  $scope.setFile = function (newFile) {
-    $scope.file = newFile;
-    $scope.name = $scope.file.name;
+  $scope.$watch('file', function(newValue, oldValue) {
+    if (!$scope.nameOverriden && newValue != null) {
+      var fullFilename = newValue.name;
+      var filename = fullFilename.substr(0, fullFilename.lastIndexOf('.')) || fullFilename;
+      $scope.name = filename.replace(/_/g, ' ');
+    }
+  });
+  $scope.textChanged = function() {
+    $scope.nameOverriden = true;
   };
   $scope.insert = function() {
     var file = $scope.file;
-    console.log('file is ' );
-    console.dir(file);
 
     Restangular.all('recipes').customPOST({name: $scope.name, filename: file.name}).then(
       function (postedRecipe) {
-        console.log('posted with id: ' + postedRecipe.id);
         fileUpload.uploadFileToUrl(file, '../services/recipes/file/' + postedRecipe.id);
       }
     );
   };
-});
+})
