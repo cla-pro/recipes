@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +40,7 @@ public class RecipesServiceTest {
     }
 
     private Recipe createRecipe(final Long id, final String name) {
-        return new Recipe(id, "", name);
+        return new Recipe(id, "", name, Collections.<String>emptyList());
     }
 
     @Test

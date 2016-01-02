@@ -6,10 +6,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Implementation of {@see RecipesDaoLocal}
@@ -19,28 +16,6 @@ import java.util.Map;
 public class RecipesDaoBean implements RecipesDaoLocal {
     @Inject
     private EntityManager entityManager;
-
-    /*private static final Map<String, RecipeEntity> db = new HashMap<>();
-
-    private static long nextId = 0L;
-
-    static {
-        db.put("Endives au jambon", createRecipeEntity(getAndIncNextId(), "Endives au jambon"));
-        db.put("Lasagnes", createRecipeEntity(getAndIncNextId(), "Lasagnes"));
-        db.put("Spaghetti bolognaise", createRecipeEntity(getAndIncNextId(), "Spaghetti bolognaise"));
-        db.put("Fondant au chocolat", createRecipeEntity(getAndIncNextId(), "Fondant au chocolat"));
-    }
-
-    private static long getAndIncNextId() {
-        return nextId++;
-    }
-
-    private static RecipeEntity createRecipeEntity(long id, final String name) {
-        RecipeEntity recipeEntity = new RecipeEntity();
-        recipeEntity.setId(id);
-        recipeEntity.setName(name);
-        return recipeEntity;
-    }*/
 
     @Override
     public List<RecipeEntity> findAllRecipes() {

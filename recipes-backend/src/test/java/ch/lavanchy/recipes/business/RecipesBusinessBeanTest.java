@@ -1,8 +1,10 @@
 package ch.lavanchy.recipes.business;
 
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
+import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
+import ch.lavanchy.recipes.entities.TagEntity;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,11 +29,18 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RecipesBusinessBeanTest {
-    private final long knownId = 123L;
+    private final long knownRecipeId = 123L;
+    private final String knownTagName = "dessert";
+
     @Mock
     private RecipesDaoLocal recipesDao;
+
+    @Mock
+    private TagsDaoLocal tagsDao;
+
     @InjectMocks
     private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
+
     private List<RecipeEntity> recipeEntities;
 
     @Before
@@ -46,10 +56,26 @@ public class RecipesBusinessBeanTest {
                 return param;
             }
         });
-        when(recipesDao.findRecipeById(eq(knownId))).thenReturn(createRecipeEntity("My Recipe"));
+        when(recipesDao.findRecipeById(eq(knownRecipeId))).thenReturn(createRecipeEntity("My Recipe"));
+
+        when(tagsDao.findAllTags()).thenReturn(Collections.singletonList(createTagEntity(knownTagName)));
+        when(tagsDao.persistTag(any(TagEntity.class))).thenAnswer(new Answer<TagEntity>() {
+            @Override
+            public TagEntity answer(InvocationOnMock invocation) throws Throwable {
+                final TagEntity param = (TagEntity) invocation.getArguments()[0];
+                param.setId(0L);
+                return param;
+            }
+        });
     }
 
-    private RecipeEntity createRecipeEntity(String name) {
+    private TagEntity createTagEntity(final String knownTagName) {
+        final TagEntity tagEntity = new TagEntity();
+        tagEntity.setName(knownTagName);
+        return tagEntity;
+    }
+
+    private RecipeEntity createRecipeEntity(final String name) {
         final RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setName(name);
         return recipeEntity;
@@ -88,18 +114,21 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testCreateRecipe() {
         final String name = "recipeName";
-        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name));
+        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList("DESSERT", "strawberry")));
 
         verify(recipesDao).persistRecipe(any(RecipeEntity.class));
+        verify(tagsDao).findAllTags();
+        verify(tagsDao).persistTag(any(TagEntity.class));
         assertThat(created.getId()).isNotNull();
         assertThat(created.getName()).isEqualTo(name);
+        assertThat(created.getTags()).isEqualTo(Arrays.asList("dessert", "strawberry"));
     }
 
     @Test
     public void testSetRecipeFilename() {
         final String filename = "recipe.xml";
 
-        final Recipe recipe = recipesBusiness.setRecipeFilename(knownId, filename);
+        final Recipe recipe = recipesBusiness.setRecipeFilename(knownRecipeId, filename);
         assertThat(recipe.getFilename()).isEqualTo(filename);
     }
 

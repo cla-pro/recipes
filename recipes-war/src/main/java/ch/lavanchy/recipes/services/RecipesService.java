@@ -13,15 +13,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.List;
 
 /**
@@ -41,7 +37,7 @@ public class RecipesService {
 
     @GET
     public String getRecipeList(@QueryParam("filter") String filter) {
-        final String validatedFilter = validate(filter);
+        final String validatedFilter = validateFilter(filter);
         final List<Recipe> recipes = recipesBusiness.findRecipes(validatedFilter);
         return new Gson().toJson(recipes);
     }
@@ -90,7 +86,7 @@ public class RecipesService {
         return "{}";
     }
 
-    private String validate(String filter) {
+    private String validateFilter(String filter) {
         if (filter == null) {
             return EMPTY_FILTER;
         } else {

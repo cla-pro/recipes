@@ -1,11 +1,16 @@
 package ch.lavanchy.recipes.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data object which represents the table RECIPE from the db
@@ -24,6 +29,12 @@ public class RecipeEntity {
 
     @Column(name = "filename")
     private String filename;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name="recipe_tag",
+            joinColumns={@JoinColumn(name="recipe_id")},
+            inverseJoinColumns={@JoinColumn(name="tag_id")})
+    private List<TagEntity> tags = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -47,5 +58,9 @@ public class RecipeEntity {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public List<TagEntity> getTags() {
+        return tags;
     }
 }

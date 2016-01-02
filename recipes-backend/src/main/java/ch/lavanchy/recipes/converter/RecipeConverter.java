@@ -2,6 +2,7 @@ package ch.lavanchy.recipes.converter;
 
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
+import ch.lavanchy.recipes.entities.TagEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,16 @@ public final class RecipeConverter {
      * @return The converted object
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
-        return new Recipe(recipeEntity.getId(), recipeEntity.getFilename(), recipeEntity.getName());
+        return new Recipe(recipeEntity.getId(), recipeEntity.getFilename(), recipeEntity.getName(), extractTags(recipeEntity));
+    }
+
+    private List<String> extractTags(RecipeEntity recipeEntity) {
+        final List<String> tags = new ArrayList<>();
+        for (TagEntity tagEntity : recipeEntity.getTags()) {
+            tags.add(tagEntity.getName());
+        }
+
+        return tags;
     }
 
     /**

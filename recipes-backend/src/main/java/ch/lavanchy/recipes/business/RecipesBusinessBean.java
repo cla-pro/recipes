@@ -3,8 +3,10 @@ package ch.lavanchy.recipes.business;
 
 import ch.lavanchy.recipes.converter.RecipeConverter;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
+import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
+import ch.lavanchy.recipes.entities.TagEntity;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -20,30 +22,36 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     @Inject
     private RecipesDaoLocal recipesDao;
 
+    @Inject
+    private TagsDaoLocal tagsDao;
+
     @Override
-    public List<Recipe> findRecipes(String filter) {
+    public List<Recipe> findRecipes(final String filter) {
         final List<RecipeEntity> recipeEntities = recipesDao.findAllRecipes();
         final List<RecipeEntity> filteredRecipeEntities = filterRecipeEntities(recipeEntities, filter);
         return new RecipeConverter().convertRecipeEntityListToRecipe(filteredRecipeEntities);
     }
 
     @Override
-    public Recipe findRecipeById(long id) {
+    public Recipe findRecipeById(final long id) {
         final RecipeEntity recipeEntity = recipesDao.findRecipeById(id);
         return new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
     }
 
     @Override
-    public Recipe createRecipe(Recipe recipe) {
+    public Recipe createRecipe(final Recipe recipe) {
         final RecipeConverter recipeConverter = new RecipeConverter();
 
         final RecipeEntity recipeEntity = recipeConverter.convertRecipeToRecipeEntity(recipe);
         final RecipeEntity persistedEntity = recipesDao.persistRecipe(recipeEntity);
+
+        extractAndPersistTags(recipe.getTags(), persistedEntity);
+
         return recipeConverter.convertRecipeEntityToRecipe(persistedEntity);
     }
 
     @Override
-    public Recipe setRecipeFilename(long id, String filename) {
+    public Recipe setRecipeFilename(final long id, final String filename) {
         final RecipeEntity recipeEntity = recipesDao.findRecipeById(id);
         if (recipeEntity == null) {
             return null;
@@ -53,12 +61,56 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         }
     }
 
-    private List<RecipeEntity> filterRecipeEntities(List<RecipeEntity> recipeEntities, final String filter) {
+    private void extractAndPersistTags(final List<String> tags, final RecipeEntity persistedEntity) {
+        final List<TagEntity> tagEntities = getAndPersistTags(tags);
+        mapTagsToRecipe(persistedEntity, tagEntities);
+    }
+
+    private void mapTagsToRecipe(RecipeEntity persistedEntity, List<TagEntity> tagEntities) {
+        for (TagEntity tagEntity : tagEntities) {
+            persistedEntity.getTags().add(tagEntity);
+        }
+    }
+
+    private List<TagEntity> getAndPersistTags(List<String> tags) {
+        final List<TagEntity> tagEntities = new ArrayList<>(tags.size());
+        final List<TagEntity> allTags = tagsDao.findAllTags();
+
+        for (final String tag : tags) {
+            final String tagName = tag.toLowerCase();
+            final TagEntity tagEntity = findTagEntity(tagName, allTags);
+
+            if (tagEntity == null) {
+                final TagEntity createTag = createAndPersistTag(tagName);
+                tagEntities.add(createTag);
+            } else {
+                tagEntities.add(tagEntity);
+            }
+        }
+        return tagEntities;
+    }
+
+    private TagEntity findTagEntity(String tag, List<TagEntity> allTags) {
+        for (TagEntity tagEntity : allTags) {
+            if (tagEntity.getName().equals(tag)) {
+                return tagEntity;
+            }
+        }
+        return null;
+    }
+
+    private TagEntity createAndPersistTag(final String tagName) {
+        final TagEntity tagEntity = new TagEntity();
+        tagEntity.setName(tagName);
+        return tagsDao.persistTag(tagEntity);
+    }
+
+    private List<RecipeEntity> filterRecipeEntities(final List<RecipeEntity> recipeEntities, final String filter) {
         final List<RecipeEntity> filteredRecipeEntities = new ArrayList<>();
 
-        final List<String> splitedFilter = splitFilter(filter);
+        final List<String> filters = splitFilter(filter);
         for (RecipeEntity recipeEntity : recipeEntities) {
-            if (matches(recipeEntity, splitedFilter)) {
+            if (matches(recipeEntity, filters)) {
                 filteredRecipeEntities.add(recipeEntity);
             }
         }
@@ -66,10 +118,12 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         return filteredRecipeEntities;
     }
 
-    private boolean matches(RecipeEntity recipeEntity, List<String> splitedFilter) {
+    private boolean matches(final RecipeEntity recipeEntity, final List<String> filters) {
         final String name = recipeEntity.getName().toLowerCase();
-        for (String filter : splitedFilter) {
-            if (!name.contains(filter.toLowerCase())) {
+        final List<TagEntity> tags = recipeEntity.getTags();
+
+        for (String filter : filters) {
+            if (notMatchName(name, filter) && notMatchTag(tags, filter)) {
                 return false;
             }
         }
@@ -77,8 +131,29 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         return true;
     }
 
-    private List<String> splitFilter(String filter) {
-        String[] splitedFilter = filter.split(" ");
-        return Arrays.asList(splitedFilter);
+    private boolean notMatchTag(List<TagEntity> tags, String filter) {
+        for (TagEntity tag : tags) {
+            if (tag.getName().contains(filter)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean notMatchName(String name, String filter) {
+        return !name.contains(filter);
+    }
+
+    private List<String> splitFilter(final String filter) {
+        final String[] splitedFilter = filter.split(" ");
+        return normalizeFilters(Arrays.asList(splitedFilter));
+    }
+
+    private List<String> normalizeFilters(List<String> filters) {
+        final List<String> normalized = new ArrayList<>(filters.size());
+        for (String filter : filters) {
+            normalized.add(filter.toLowerCase());
+        }
+        return normalized;
     }
 }

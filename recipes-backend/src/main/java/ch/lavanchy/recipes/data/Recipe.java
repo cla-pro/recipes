@@ -1,5 +1,8 @@
 package ch.lavanchy.recipes.data;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Contains the elements of a recipe
  * <p/>
@@ -14,16 +17,17 @@ public class Recipe {
     private final Long id;
     private final String name;
     private final String filename;
+    private final List<String> tags;
 
     public Recipe() {
-        this(null, null, null);
+        this(null, null, null, Collections.<String>emptyList());
     }
 
-    public Recipe(final Long id, final String filename, final String name) {
+    public Recipe(final Long id, final String filename, final String name, List<String> tags) {
         this.id = id;
         this.filename = filename;
         this.name = name;
-
+        this.tags = tags;
     }
 
     public Long getId() {
@@ -36,5 +40,9 @@ public class Recipe {
 
     public String getName() {
         return name;
+    }
+
+    public List<String> getTags() {
+        return tags;
     }
 }

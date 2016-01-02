@@ -47,6 +47,7 @@ public class Application {
 
         final ServletContextHandler handler = new ServletContextHandler(server, "/");
         handler.addEventListener(new GuiceContext(RECIPES_PERSISTENCE_UNIT_TEST));
+        //handler.addEventListener(new GuiceContext());
         handler.addFilter(holder, "/*", null);
         handler.addFilter(new FilterHolder(GuiceFilter.class), "/*", null);
         handler.addServlet(DefaultServlet.class, "/");

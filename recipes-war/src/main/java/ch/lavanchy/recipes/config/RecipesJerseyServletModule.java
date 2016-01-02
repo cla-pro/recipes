@@ -8,6 +8,8 @@ import ch.lavanchy.recipes.business.RecipesBusinessBean;
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.dao.RecipesDaoBean;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
+import ch.lavanchy.recipes.dao.TagsDaoBean;
+import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.services.CheckService;
 import ch.lavanchy.recipes.services.RecipesService;
 import ch.lavanchy.recipes.services.RootService;
@@ -35,6 +37,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);
 
         bind(RecipesDaoLocal.class).to(RecipesDaoBean.class);
+        bind(TagsDaoLocal.class).to(TagsDaoBean.class);
         bind(FileConverterLocal.class).to(FileConverterBean.class);
 
         bind(FileBusinessLocal.class).to(FileBusinessBean.class);
