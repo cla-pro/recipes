@@ -20,16 +20,22 @@ recipesControllers.directive('fileModel', ['$parse', function ($parse) {
 }]);
   
 recipesControllers.service('fileUpload', ['$http', function ($http) {
-  this.uploadFileToUrl = function(file, uploadUrl){
+  this.uploadFileToUrl = function(file, uploadUrl, success, failure, context){
     var fd = new FormData();
     fd.append('file', file);
     $http.post(uploadUrl, fd, {
         transformRequest: angular.identity,
         headers: {'Content-Type': undefined}
     })
-    .success(function(){
+    .success(function(args) {
+      if (success != undefined) {
+        success.apply(context, []);
+      }
     })
-    .error(function(){
+    .error(function() {
+      if (failure != undefined) {
+        failure.apply(context, []);
+      }
     });
   }
 }]);
@@ -94,8 +100,10 @@ recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams,
 recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUpload) {
   $scope.name = "";
   $scope.nameOverriden = false;
-  $scope.tages = "";
+  $scope.tags = "";
   $scope.file = null;
+  $scope.message = "";
+  $scope.errorMessage = "";
 
   $scope.$watch('file', function(newValue, oldValue) {
     if (!$scope.nameOverriden && newValue != null) {
@@ -110,14 +118,43 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
   $scope.insert = function() {
     var file = $scope.file;
 
+    if ($scope.isEmpty($scope.name) || $scope.isEmpty($scope.file)) {
+        $scope.setMessage('', 'Le nom de la recette et le fichier sont obligatoires');
+        return;
+    } else {
+        $scope.setMessage('', '');
+    }
+
     var content = { name: $scope.name, filename: file.name };
     if ($scope.tags != undefined && $scope.tags != null) {
         content.tags = $scope.tags.split(' ');
     }
     Restangular.all('recipes').customPOST(content).then(
       function (postedRecipe) {
-        fileUpload.uploadFileToUrl(file, '../services/recipes/file/' + postedRecipe.id);
+        fileUpload.uploadFileToUrl(file, '../services/recipes/file/' + postedRecipe.id,
+          function() {
+            $scope.name = '';
+            $scope.nameOverriden = false;
+            $scope.file = null;
+            $scope.tags = '';
+            document.getElementById('iptRecipeFile').value = '';
+            $scope.setMessage('Recette enregistrée', '');
+          },
+          function() {
+            $scope.setMessage('', 'Une erreur est survenue pendant l\'enregistrement du fichier');
+          });
+      },
+      function (args) {
+        $scope.setMessage('', 'Une erreur est survenue pendant l\'enregistrement de la recette');
       }
     );
   };
+
+  $scope.setMessage = function(msg, errorMsg) {
+    $scope.message = msg;
+    $scope.errorMessage = errorMsg;
+  };
+  $scope.isEmpty = function(obj) {
+    return obj == undefined || obj == null || obj == '';
+  }
 })
