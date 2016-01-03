@@ -7,6 +7,7 @@ import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -44,10 +45,23 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
 
         final RecipeEntity recipeEntity = recipeConverter.convertRecipeToRecipeEntity(recipe);
         final RecipeEntity persistedEntity = recipesDao.persistRecipe(recipeEntity);
-
-        extractAndPersistTags(recipe.getTags(), persistedEntity);
+        final List<String> tags = checkAndCleanTags(recipe.getTags());
+        extractAndPersistTags(tags, persistedEntity);
 
         return recipeConverter.convertRecipeEntityToRecipe(persistedEntity);
+    }
+
+    private List<String> checkAndCleanTags(final List<String> tags) {
+        final List<String> cleaned = new ArrayList<>();
+        for (String tag : tags) {
+            if (StringUtils.isNotEmpty(tag)) {
+                final String lowerCase = tag.toLowerCase();
+                if (!cleaned.contains(lowerCase)) {
+                    cleaned.add(lowerCase);
+                }
+            }
+        }
+        return cleaned;
     }
 
     @Override
@@ -77,11 +91,10 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final List<TagEntity> allTags = tagsDao.findAllTags();
 
         for (final String tag : tags) {
-            final String tagName = tag.toLowerCase();
-            final TagEntity tagEntity = findTagEntity(tagName, allTags);
+            final TagEntity tagEntity = findTagEntity(tag, allTags);
 
             if (tagEntity == null) {
-                final TagEntity createTag = createAndPersistTag(tagName);
+                final TagEntity createTag = createAndPersistTag(tag);
                 tagEntities.add(createTag);
             } else {
                 tagEntities.add(tagEntity);

@@ -35,12 +35,15 @@ public class FileConverterBean implements FileConverterLocal {
         final String folder = sourceFile.getParent();
         final String filenamePDF = FilenameUtils.removeExtension(filename) + PDF_FILENAME_EXTENSION;
         final File targetFile = new File(folder + File.separatorChar +  filenamePDF);
-        // TODO check for updates (modification/creation date)
-        if (targetFile.exists()) {
+        if (targetFile.exists() && sourceOlderThanPDF(sourceFile, targetFile)) {
             return targetFile;
         }
 
         return convertToPDF(sourceFile, targetFile, extension);
+    }
+
+    private boolean sourceOlderThanPDF(File sourceFile, File targetFile) {
+        return sourceFile.lastModified() < targetFile.lastModified();
     }
 
     private File convertToPDF(final File sourceFile, final File targetFile, final String extension) throws FileNotFoundException {

@@ -125,6 +125,13 @@ public class RecipesBusinessBeanTest {
     }
 
     @Test
+    public void testCleanupTags() {
+        final String name = "recipeName";
+        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList(null, "", "DESSERT", "STRAWBERRY", "strawberry")));
+        assertThat(created.getTags()).isEqualTo(Arrays.asList("dessert", "strawberry"));
+    }
+
+    @Test
     public void testSetRecipeFilename() {
         final String filename = "recipe.xml";
 
