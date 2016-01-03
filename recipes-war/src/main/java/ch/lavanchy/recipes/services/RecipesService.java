@@ -6,6 +6,7 @@ import ch.lavanchy.recipes.data.Recipe;
 import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -52,6 +53,8 @@ public class RecipesService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public String createRecipe(final Recipe recipe) {
+        validateRecipe(recipe);
+
         final Recipe persisted = recipesBusiness.createRecipe(recipe);
         return new Gson().toJson(persisted);
     }
@@ -79,8 +82,6 @@ public class RecipesService {
             @PathParam("id") long id,
             @FormDataParam("file") InputStream fileInputStream,
             @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
-        System.out.println("File uploaded: " + contentDispositionHeader);
-
         final String filename = contentDispositionHeader.getFileName();
         fileBusiness.saveFile(fileInputStream, filename);
         return "{}";
@@ -91,6 +92,12 @@ public class RecipesService {
             return EMPTY_FILTER;
         } else {
             return filter.trim();
+        }
+    }
+
+    private void validateRecipe(final Recipe recipe) {
+        if (StringUtils.isEmpty(recipe.getName())) {
+            throw new RuntimeException("Recipe's name is empty");
         }
     }
 }
