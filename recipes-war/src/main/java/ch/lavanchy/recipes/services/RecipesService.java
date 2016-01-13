@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * REST Webservice to retrieve the recipes
+ * REST Webservice to manage the recipes
  *
  * @since 1.0.0
  */

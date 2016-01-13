@@ -7,6 +7,8 @@ import java.util.List;
  * Contains the elements of a recipe
  * <p/>
  * <ul>
+ * <li>The id</li>
+ * <li>The recipe's name</li>
  * <li>The filename</li>
  * <li>The list of tags</li>
  * </ul>

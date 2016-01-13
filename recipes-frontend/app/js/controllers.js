@@ -1,4 +1,4 @@
-var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside', 'pdf'])
+var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside', 'pdf', 'ngTagsInput'])
   .config(function() {
 
   });
@@ -100,10 +100,18 @@ recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams,
 recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUpload) {
   $scope.name = "";
   $scope.nameOverriden = false;
-  $scope.tags = "";
+  $scope.tags = [];
   $scope.file = null;
   $scope.message = "";
   $scope.errorMessage = "";
+  $scope.allTags = [];
+
+  $scope.loadAllTags = function() {
+      Restangular.all('tags').getList().then(function(allTags) {
+        $scope.allTags = allTags;
+      });
+  };
+  $scope.loadAllTags();
 
   $scope.$watch('file', function(newValue, oldValue) {
     if (!$scope.nameOverriden && newValue != null) {
@@ -114,6 +122,12 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
   });
   $scope.textChanged = function() {
     $scope.nameOverriden = true;
+  };
+  $scope.loadTags = function(query) {
+    var matchingTags = $scope.allTags.filter(function(element) {
+        return element.name.search(query.toLowerCase()) != -1;
+    });
+    return matchingTags.map(function(e) {return e.name;});
   };
   $scope.insert = function() {
     var file = $scope.file;
@@ -127,7 +141,7 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
 
     var content = { name: $scope.name, filename: file.name };
     if ($scope.tags != undefined && $scope.tags != null) {
-        content.tags = $scope.tags.split(' ');
+        content.tags = $scope.tags.map(function(e) {return e.text;});
     }
     Restangular.all('recipes').customPOST(content).then(
       function (postedRecipe) {
@@ -139,6 +153,7 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
             $scope.tags = '';
             document.getElementById('iptRecipeFile').value = '';
             $scope.setMessage('Recette enregistrée', '');
+            $scope.loadAllTags();
           },
           function() {
             $scope.setMessage('', 'Une erreur est survenue pendant l\'enregistrement du fichier');

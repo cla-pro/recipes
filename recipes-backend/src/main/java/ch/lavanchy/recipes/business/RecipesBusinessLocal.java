@@ -5,7 +5,7 @@ import ch.lavanchy.recipes.data.Recipe;
 import java.util.List;
 
 /**
- * Provide the logic to retrieve the recipes' references
+ * Provide the logic to handle the recipes' references
  *
  * @since 1.0.0
  */

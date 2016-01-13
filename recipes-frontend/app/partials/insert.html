@@ -1,7 +1,9 @@
 <div>
-    <input style="width: 80%" type="text" ng-model="name" ng-change="textChanged()" placeholder="Nom" />
+    <input style="width: 99%" type="text" ng-model="name" ng-change="textChanged()" placeholder="Nom" />
     <br /><br />
-    <input style="width: 80%" type="text" ng-model="tags" placeholder="Tags" />
+    <tags-input style="width: 99%" ng-model="tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
+        <auto-complete source="loadTags($query)" loadOnDownArrow="true"></auto-complete>
+    </tags-input>
     <br /><br />
     <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx"/>
     <br />

@@ -67,10 +67,6 @@ body {
   background-color: #eeeeee;
 }
 
-.login-text {
-  margin: 10px;
-}
-
 .no-bullet-list {
   list-style-type: none;
 }
@@ -95,4 +91,9 @@ body {
 
 .tableListCell {
   padding: 10px;
+}
+
+tags-input {
+  display: block;
+  height: 34px;
 }

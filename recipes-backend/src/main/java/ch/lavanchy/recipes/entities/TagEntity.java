@@ -21,6 +21,9 @@ public class TagEntity {
     @Column(name = "tag")
     private String name;
 
+    @Column(name = "modification_date")
+    private long modificationDate;
+
     public Long getId() {
         return id;
     }
@@ -35,5 +38,13 @@ public class TagEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(long modificationDate) {
+        this.modificationDate = modificationDate;
     }
 }

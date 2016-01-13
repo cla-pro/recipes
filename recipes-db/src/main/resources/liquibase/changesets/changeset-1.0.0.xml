@@ -58,4 +58,11 @@
         <addAutoIncrement tableName="recipe" columnName="id" columnDataType="int" incrementBy="1" />
         <addAutoIncrement tableName="tag" columnName="id" columnDataType="int" incrementBy="1" />
     </changeSet>
+
+    <changeSet id="1.0.0-5-add-tag-modification" author="cla">
+        <addColumn tableName="tag">
+            <column name="modification_date" type="bigint" defaultValue="0" />
+        </addColumn>
+        <addNotNullConstraint tableName="tag" columnName="modification_date" defaultNullValue="0" columnDataType="bigint" />
+    </changeSet>
 </databaseChangeLog>
