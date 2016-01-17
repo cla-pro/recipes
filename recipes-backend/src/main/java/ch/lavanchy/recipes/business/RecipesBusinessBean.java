@@ -26,23 +26,24 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     @Inject
     private TagsDaoLocal tagsDao;
 
+    @Inject
+    private RecipeConverter recipeConverter;
+
     @Override
     public List<Recipe> findRecipes(final String filter) {
         final List<RecipeEntity> recipeEntities = recipesDao.findAllRecipes();
         final List<RecipeEntity> filteredRecipeEntities = filterRecipeEntities(recipeEntities, filter);
-        return new RecipeConverter().convertRecipeEntityListToRecipe(filteredRecipeEntities);
+        return recipeConverter.convertRecipeEntityListToRecipe(filteredRecipeEntities);
     }
 
     @Override
     public Recipe findRecipeById(final long id) {
         final RecipeEntity recipeEntity = recipesDao.findRecipeById(id);
-        return new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
+        return recipeConverter.convertRecipeEntityToRecipe(recipeEntity);
     }
 
     @Override
     public Recipe createRecipe(final Recipe recipe) {
-        final RecipeConverter recipeConverter = new RecipeConverter();
-
         final RecipeEntity recipeEntity = recipeConverter.convertRecipeToRecipeEntity(recipe);
         final RecipeEntity persistedEntity = recipesDao.persistRecipe(recipeEntity);
         final List<String> tags = checkAndCleanTags(recipe.getTags());
@@ -71,7 +72,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
             return null;
         } else {
             recipeEntity.setFilename(filename);
-            return new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
+            return recipeConverter.convertRecipeEntityToRecipe(recipeEntity);
         }
     }
 

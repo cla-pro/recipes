@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @since 1.0.0
  */
-public final class RecipeConverter {
+public class RecipeConverter {
     /**
      * Convert a list of {@link RecipeEntity} into a list of {@link Recipe}
      *

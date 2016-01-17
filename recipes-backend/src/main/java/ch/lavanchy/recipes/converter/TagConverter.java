@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @since 1.0.0
  */
-public final class TagConverter {
+public class TagConverter {
     /**
      * Convert a list of {@link TagEntity} into a list of {@link Tag}
      *

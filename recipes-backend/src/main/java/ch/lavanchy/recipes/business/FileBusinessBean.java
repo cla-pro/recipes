@@ -1,5 +1,6 @@
 package ch.lavanchy.recipes.business;
 
+import ch.lavanchy.recipes.converter.FileConverter;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
 
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ public class FileBusinessBean implements FileBusinessLocal {
     private PropertyProviderLocal propertyProvider;
 
     @Inject
-    private FileConverterLocal fileConverter;
+    private FileConverter fileConverter;
 
     @Override
     public void saveFile(InputStream inputStream, String filename) {
@@ -33,6 +34,10 @@ public class FileBusinessBean implements FileBusinessLocal {
             }
             final File file = new File(folder, filename);
             Files.copy(inputStream, file.toPath());
+
+            if (fileConverter.isConversionRequired(file)) {
+                fileConverter.getFileAsPDF(file);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

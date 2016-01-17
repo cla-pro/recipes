@@ -1,5 +1,8 @@
 package ch.lavanchy.recipes.data;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * Contains the elements of a tag
  * <p/>
@@ -36,5 +39,25 @@ public class Tag {
 
     public long getModificationDate() {
         return modificationDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Tag tag = (Tag) o;
+        return new EqualsBuilder()
+                .append(id, tag.id)
+                .append(name, tag.name)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(name)
+                .toHashCode();
     }
 }

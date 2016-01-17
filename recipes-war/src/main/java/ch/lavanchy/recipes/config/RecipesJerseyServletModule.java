@@ -2,8 +2,7 @@ package ch.lavanchy.recipes.config;
 
 import ch.lavanchy.recipes.business.FileBusinessBean;
 import ch.lavanchy.recipes.business.FileBusinessLocal;
-import ch.lavanchy.recipes.business.FileConverterBean;
-import ch.lavanchy.recipes.business.FileConverterLocal;
+import ch.lavanchy.recipes.converter.FileConverter;
 import ch.lavanchy.recipes.business.RecipesBusinessBean;
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.business.TagsBusinessBean;
@@ -41,12 +40,12 @@ class RecipesJerseyServletModule extends JerseyServletModule {
 
         bind(RecipeConverter.class).in(Singleton.class);
         bind(TagConverter.class).in(Singleton.class);
+        bind(FileConverter.class).in(Singleton.class);
 
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);
 
         bind(RecipesDaoLocal.class).to(RecipesDaoBean.class);
         bind(TagsDaoLocal.class).to(TagsDaoBean.class);
-        bind(FileConverterLocal.class).to(FileConverterBean.class);
 
         bind(FileBusinessLocal.class).to(FileBusinessBean.class);
         bind(RecipesBusinessLocal.class).to(RecipesBusinessBean.class);

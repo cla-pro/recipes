@@ -1,5 +1,6 @@
 package ch.lavanchy.recipes.business;
 
+import ch.lavanchy.recipes.converter.RecipeConverter;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
@@ -37,6 +39,9 @@ public class RecipesBusinessBeanTest {
 
     @Mock
     private TagsDaoLocal tagsDao;
+
+    @Spy
+    private RecipeConverter recipeConverter = new RecipeConverter();
 
     @InjectMocks
     private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
