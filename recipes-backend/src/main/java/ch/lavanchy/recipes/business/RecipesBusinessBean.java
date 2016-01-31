@@ -8,6 +8,7 @@ import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
 import ch.lavanchy.recipes.utils.AccentHandler;
+import ch.lavanchy.recipes.utils.KeywordFilter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -32,6 +33,9 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
 
     @Inject
     private AccentHandler accentHandler;
+
+    @Inject
+    private KeywordFilter keywordFilter;
 
     @Override
     public List<Recipe> findRecipes(final String filter) {
@@ -60,13 +64,13 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final List<String> cleaned = new ArrayList<>();
         for (String tag : tags) {
             if (StringUtils.isNotEmpty(tag)) {
-                final String lowerCase = tag.toLowerCase();
+                final String lowerCase = tag.trim().toLowerCase();
                 if (!cleaned.contains(lowerCase)) {
                     cleaned.add(lowerCase);
                 }
             }
         }
-        return cleaned;
+        return keywordFilter.filterKeywords(cleaned);
     }
 
     @Override
@@ -127,8 +131,9 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final List<RecipeEntity> filteredRecipeEntities = new ArrayList<>();
 
         final List<String> filters = splitFilter(filter);
+        final List<String> noKeywordFilters = keywordFilter.filterKeywords(filters);
         for (RecipeEntity recipeEntity : recipeEntities) {
-            if (matches(recipeEntity, filters)) {
+            if (matches(recipeEntity, noKeywordFilters)) {
                 filteredRecipeEntities.add(recipeEntity);
             }
         }
@@ -171,7 +176,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     private List<String> normalizeFilters(List<String> filters) {
         final List<String> normalized = new ArrayList<>(filters.size());
         for (String filter : filters) {
-            normalized.add(filter.toLowerCase());
+            normalized.add(filter.trim().toLowerCase());
         }
         return normalized;
     }

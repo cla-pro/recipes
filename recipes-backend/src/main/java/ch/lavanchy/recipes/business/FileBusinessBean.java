@@ -55,12 +55,12 @@ public class FileBusinessBean implements FileBusinessLocal {
     private File getFileToRead(String filename, String location) throws FileNotFoundException {
         final File folder = new File(location);
         if (!folder.exists()) {
-            throw new FileNotFoundException();
+            throw new FileNotFoundException(String.format("Folder with name \"%s\" does not exists", location));
         }
 
         final File file = new File(folder, filename);
         if (!file.exists()) {
-            throw new FileNotFoundException();
+            throw new FileNotFoundException(String.format("File with name \"%s\" does not exists", filename));
         }
         return file;
     }

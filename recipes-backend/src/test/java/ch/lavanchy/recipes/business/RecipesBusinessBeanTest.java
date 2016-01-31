@@ -7,6 +7,7 @@ import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
 import ch.lavanchy.recipes.utils.AccentHandler;
+import ch.lavanchy.recipes.utils.KeywordFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,8 @@ import static org.mockito.Mockito.when;
 
 /**
  * Testclass for {@link RecipesBusinessBean}
+ *
+ * @since 1.0.0
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RecipesBusinessBeanTest {
@@ -43,6 +46,9 @@ public class RecipesBusinessBeanTest {
 
     @Spy
     private AccentHandler accentHandler = new AccentHandler();
+
+    @Spy
+    private KeywordFilter keywordFilter = new KeywordFilter();
 
     @Spy
     private RecipeConverter recipeConverter = new RecipeConverter();
@@ -127,6 +133,19 @@ public class RecipesBusinessBeanTest {
     }
 
     @Test
+    public void testFindRecipesKeywordMatch() {
+        final List<Recipe> recipes = recipesBusiness.findRecipes("au beurre");
+        assertThat(recipes).isEmpty();
+    }
+
+    @Test
+    public void testFindRecipesOnlyKeywords() {
+        final List<Recipe> recipes = recipesBusiness.findRecipes("au");
+        // if all the filters are ignored, behave as if no filter
+        assertThat(recipes).hasSameSizeAs(recipeEntities);
+    }
+
+    @Test
     public void testCreateRecipe() {
         final String name = "recipeName";
         final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList("DESSERT", "strawberry")));
@@ -142,7 +161,7 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testCleanupTags() {
         final String name = "recipeName";
-        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList(null, "", "DESSERT", "STRAWBERRY", "strawberry")));
+        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList(null, "", "DESSERT", "à", "LA", "STRAWBERRY", "strawberry")));
         assertThat(created.getTags()).isEqualTo(Arrays.asList("dessert", "strawberry"));
     }
 

@@ -1,7 +1,7 @@
 package ch.lavanchy.recipes.utils;
 
 /**
- * Help class to handle with the accents
+ * Help class to deal with the accents
  *
  * @since 1.0.0
  */

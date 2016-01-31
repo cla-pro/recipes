@@ -75,9 +75,11 @@ recipesControllers.controller('SearchCtrl', function($scope, Restangular) {
 
 recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams, Restangular) {
   $scope.recipe = {};
+  $scope.tags = '';
 
   Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
     $scope.recipe = recipe;
+    $scope.tags = recipe.tags.join(', ');
     $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
   });
 });
