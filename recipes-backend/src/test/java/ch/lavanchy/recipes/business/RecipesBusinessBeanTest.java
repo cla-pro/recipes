@@ -6,6 +6,7 @@ import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.utils.AccentHandler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +40,9 @@ public class RecipesBusinessBeanTest {
 
     @Mock
     private TagsDaoLocal tagsDao;
+
+    @Spy
+    private AccentHandler accentHandler = new AccentHandler();
 
     @Spy
     private RecipeConverter recipeConverter = new RecipeConverter();
@@ -89,13 +93,13 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testFindRecipesNoFilter() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("");
-        assertThat(recipeEntities).hasSameSizeAs(recipes);
+        assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 
     @Test
     public void testFindRecipesSpaceFilter() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("   ");
-        assertThat(recipeEntities).hasSameSizeAs(recipes);
+        assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 
     @Test
@@ -113,7 +117,13 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testFindRecipesFullMatch() {
         final List<Recipe> recipes = recipesBusiness.findRecipes("jambon");
-        assertThat(recipeEntities).hasSameSizeAs(recipes);
+        assertThat(recipes).hasSameSizeAs(recipeEntities);
+    }
+
+    @Test
+    public void testFindRecipesAccentMatch() {
+        final List<Recipe> recipes = recipesBusiness.findRecipes("jâmbón");
+        assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 
     @Test

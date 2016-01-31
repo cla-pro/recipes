@@ -18,6 +18,7 @@ import ch.lavanchy.recipes.services.RecipesService;
 import ch.lavanchy.recipes.services.RootService;
 import ch.lavanchy.recipes.services.TagsService;
 import ch.lavanchy.recipes.services.TransactionFilter;
+import ch.lavanchy.recipes.utils.AccentHandler;
 import ch.lavanchy.recipes.utils.PropertyProviderBean;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
 import com.google.inject.Singleton;
@@ -41,6 +42,8 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         bind(RecipeConverter.class).in(Singleton.class);
         bind(TagConverter.class).in(Singleton.class);
         bind(FileConverter.class).in(Singleton.class);
+
+        //bind(AccentHandler.class).in(Singleton.class);
 
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);
 

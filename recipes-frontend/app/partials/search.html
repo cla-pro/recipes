@@ -1,13 +1,15 @@
 <div class="content">
     <!-- Search box -->
     <div>
-        <input id="txtSearch" style="width: 90%" type="text" ng-model="filter"
+        <input id="txtSearch" style="width: 99%" type="text" ng-model="filter"
                ng-keyup="$event.keyCode == 13 && search()" placeholder="Filtre" />
         <br /><br />
         <button ng-click="search()">Rechercher</button>
     </div>
+    <br />
     <!-- Results -->
     <div>
+        {{message}}
         <ul>
             <li ng-repeat="recipe in recipes">
                 <a ng-href="#/search/{{recipe.id}}">{{recipe.name}}</a>

@@ -7,6 +7,7 @@ import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.utils.AccentHandler;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -28,6 +29,9 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
 
     @Inject
     private RecipeConverter recipeConverter;
+
+    @Inject
+    private AccentHandler accentHandler;
 
     @Override
     public List<Recipe> findRecipes(final String filter) {
@@ -136,7 +140,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final String name = recipeEntity.getName().toLowerCase();
         final List<TagEntity> tags = recipeEntity.getTags();
 
-        for (String filter : filters) {
+        for (final String filter : filters) {
             if (notMatchName(name, filter) && notMatchTag(tags, filter)) {
                 return false;
             }
@@ -145,9 +149,10 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         return true;
     }
 
-    private boolean notMatchTag(List<TagEntity> tags, String filter) {
+    private boolean notMatchTag(final List<TagEntity> tags, final String filter) {
         for (TagEntity tag : tags) {
-            if (tag.getName().contains(filter)) {
+            final String tagName = tag.getName();
+            if (tagName.contains(filter) || accentHandler.removeAccents(tagName).contains(accentHandler.removeAccents(filter))) {
                 return false;
             }
         }
@@ -155,7 +160,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     }
 
     private boolean notMatchName(String name, String filter) {
-        return !name.contains(filter);
+        return !(name.contains(filter) || accentHandler.removeAccents(name).contains(accentHandler.removeAccents(filter)));
     }
 
     private List<String> splitFilter(final String filter) {

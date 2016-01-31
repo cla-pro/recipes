@@ -43,7 +43,7 @@ recipesControllers.controller('MainCtrl', function($scope, $state, $aside, Resta
         controller: function($scope, $modalInstance, $filter) {
           $scope.menuElementList = [
             {'route': 'search', 'html': 'Rechercher'},
-            {'route': 'insert', 'html': 'Inserer'}
+            {'route': 'insert', 'html': 'Insérer'}
           ];
           
           $scope.go = function(e, element) {
@@ -57,12 +57,18 @@ recipesControllers.controller('MainCtrl', function($scope, $state, $aside, Resta
   });
 
 recipesControllers.controller('SearchCtrl', function($scope, Restangular) {
-  $scope.filter = "";
+  $scope.filter = '';
   $scope.recipes = [];
+  $scope.message = '';
   
   $scope.search = function() {
-    Restangular.all('recipes').getList({"filter": $scope.filter}).then(function(recipes) {
+    Restangular.all('recipes').getList({'filter': $scope.filter}).then(function(recipes) {
       $scope.recipes = recipes;
+      if ($scope.recipes.length == 0) {
+        $scope.message = 'Pas de recette trouvée';
+      } else {
+        $scope.message = '';
+      }
     });
   };
 });
@@ -77,12 +83,12 @@ recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams,
 });
 
 recipesControllers.controller('InsertCtrl', function($scope, $http, Restangular, $accents) {
-  $scope.name = "";
+  $scope.name = '';
   $scope.nameOverriden = false;
   $scope.tags = [];
   $scope.file = null;
-  $scope.message = "";
-  $scope.errorMessage = "";
+  $scope.message = '';
+  $scope.errorMessage = '';
   $scope.allTags = [];
 
   $scope.loadAllTags = function() {
