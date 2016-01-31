@@ -1,14 +1,14 @@
-<div>
+<div class="content">
+    <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx"/>
+    <br /><br />
     <input style="width: 99%" type="text" ng-model="name" ng-change="textChanged()" placeholder="Nom" />
     <br /><br />
     <tags-input style="width: 99%" ng-model="tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
         <auto-complete source="loadTags($query)" loadOnDownArrow="true"></auto-complete>
     </tags-input>
     <br /><br />
-    <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx"/>
-    <br />
     <button ng-click="insert()">Enregistrer</button>
-    <br />
+    <br /><br />
     <div style="color:red">{{errorMessage}}</div>
     <div style="color:green">{{message}}</div>
 </div>

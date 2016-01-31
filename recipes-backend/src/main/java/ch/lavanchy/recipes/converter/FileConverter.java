@@ -22,7 +22,7 @@ import java.io.OutputStream;
  * @since 1.0.0
  */
 public class FileConverter {
-    private final static String PDF_EXTENSION = ".pdf";
+    private final static String PDF_EXTENSION = "pdf";
     private final static String PDF_FILENAME_EXTENSION = "." + PDF_EXTENSION;
 
     /**

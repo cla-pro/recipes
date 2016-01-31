@@ -5,6 +5,7 @@ import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.FormDataParam;
 import org.apache.commons.lang3.StringUtils;
 
@@ -76,15 +77,17 @@ public class RecipesService {
     }
 
     @POST
-    @Path("/file/{id}")
+    @Path("/file")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public String uploadFile(
-            @PathParam("id") long id,
+            final FormDataMultiPart multiPart,
             @FormDataParam("file") InputStream fileInputStream,
             @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
-        final String filename = contentDispositionHeader.getFileName();
-        fileBusiness.saveFile(fileInputStream, filename);
-        return "{}";
+        final Recipe recipe = new Gson().fromJson(multiPart.getField("recipe").getValue(), Recipe.class);
+        validateRecipe(recipe);
+        final Recipe persisted = recipesBusiness.createRecipe(recipe);
+        fileBusiness.saveFile(fileInputStream, recipe.getFilename());
+        return new Gson().toJson(persisted);
     }
 
     private String validateFilter(String filter) {

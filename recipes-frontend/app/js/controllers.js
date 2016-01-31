@@ -1,4 +1,4 @@
-var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside', 'pdf', 'ngTagsInput'])
+var recipesControllers = angular.module('recipesControllers', ['restangular', 'ui.bootstrap', 'ngAside', 'pdf', 'ngTagsInput', 'accents'])
   .config(function() {
 
   });
@@ -17,27 +17,6 @@ recipesControllers.directive('fileModel', ['$parse', function ($parse) {
       });
     }
   };
-}]);
-  
-recipesControllers.service('fileUpload', ['$http', function ($http) {
-  this.uploadFileToUrl = function(file, uploadUrl, success, failure, context){
-    var fd = new FormData();
-    fd.append('file', file);
-    $http.post(uploadUrl, fd, {
-        transformRequest: angular.identity,
-        headers: {'Content-Type': undefined}
-    })
-    .success(function(args) {
-      if (success != undefined) {
-        success.apply(context, []);
-      }
-    })
-    .error(function() {
-      if (failure != undefined) {
-        failure.apply(context, []);
-      }
-    });
-  }
 }]);
 
 recipesControllers.controller('MainCtrl', function($scope, $state, $aside, Restangular) {
@@ -97,7 +76,7 @@ recipesControllers.controller('SearchResultCtrl', function($scope, $stateParams,
   });
 });
 
-recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUpload) {
+recipesControllers.controller('InsertCtrl', function($scope, $http, Restangular, $accents) {
   $scope.name = "";
   $scope.nameOverriden = false;
   $scope.tags = [];
@@ -124,8 +103,11 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
     $scope.nameOverriden = true;
   };
   $scope.loadTags = function(query) {
+    var lowerQuery = query.toLowerCase();
     var matchingTags = $scope.allTags.filter(function(element) {
-        return element.name.search(query.toLowerCase()) != -1;
+        var lowerElement = element.name.toLowerCase();
+        return lowerElement.search(lowerQuery) != -1 ||
+                $accents.removeAccents(lowerElement).search($accents.removeAccents(lowerQuery)) != -1;
     });
     return matchingTags.map(function(e) {return e.name;});
   };
@@ -141,28 +123,29 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
 
     var content = { name: $scope.name, filename: file.name };
     if ($scope.tags != undefined && $scope.tags != null) {
-        content.tags = $scope.tags.map(function(e) {return e.text;});
+        content.tags = $scope.tags.map(function(e) { return e.text; });
     }
-    Restangular.all('recipes').customPOST(content).then(
-      function (postedRecipe) {
-        fileUpload.uploadFileToUrl(file, '../services/recipes/file/' + postedRecipe.id,
-          function() {
-            $scope.name = '';
-            $scope.nameOverriden = false;
-            $scope.file = null;
-            $scope.tags = '';
-            document.getElementById('iptRecipeFile').value = '';
-            $scope.setMessage('Recette enregistrée', '');
-            $scope.loadAllTags();
-          },
-          function() {
-            $scope.setMessage('', 'Une erreur est survenue pendant l\'enregistrement du fichier');
-          });
-      },
-      function (args) {
+
+    var fd = new FormData();
+    fd.append('recipe', angular.toJson(content));
+    fd.append('file', file);
+
+    $http.post('../services/recipes/file', fd, {
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}
+    })
+    .success(function(args) {
+        $scope.name = '';
+        $scope.nameOverriden = false;
+        $scope.file = null;
+        $scope.tags = '';
+        document.getElementById('iptRecipeFile').value = '';
+        $scope.setMessage('Recette enregistrée', '');
+        $scope.loadAllTags();
+    })
+    .error(function() {
         $scope.setMessage('', 'Une erreur est survenue pendant l\'enregistrement de la recette');
-      }
-    );
+    });
   };
 
   $scope.setMessage = function(msg, errorMsg) {
@@ -172,4 +155,4 @@ recipesControllers.controller('InsertCtrl', function($scope, Restangular, fileUp
   $scope.isEmpty = function(obj) {
     return obj == undefined || obj == null || obj == '';
   }
-})
+});

@@ -97,3 +97,8 @@ tags-input {
   display: block;
   height: 34px;
 }
+
+div.content {
+    width: 90%;
+    margin: 25px 5% 0px 5%;
+}

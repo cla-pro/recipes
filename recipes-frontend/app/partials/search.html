@@ -1,7 +1,9 @@
-<div>
+<div class="content">
     <!-- Search box -->
     <div>
-        <input id="txtSearch" style="width: 90%" type="text" ng-model="filter" ng-keyup="$event.keyCode == 13 && search()" /><br />
+        <input id="txtSearch" style="width: 90%" type="text" ng-model="filter"
+               ng-keyup="$event.keyCode == 13 && search()" placeholder="Filtre" />
+        <br /><br />
         <button ng-click="search()">Rechercher</button>
     </div>
     <!-- Results -->
