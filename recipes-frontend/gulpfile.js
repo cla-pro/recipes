@@ -29,6 +29,26 @@ gulp.task('analyze', function () {
         .pipe($$.jshint.reporter('fail'));
 });
 
+gulp.task('build-dev', function() {
+    gulp.src(['app/images/*.png', 'app/images/*.jpg'])
+            .pipe(gulp.dest('dist/images'));
+
+    gulp.src(['app/partials/*.html'])
+        .pipe($$.htmlhint({'doctype-first': false}))
+        .pipe($$.htmlhint.reporter())
+        .pipe(gulp.dest('dist/partials'));
+
+    gulp.src(['app/bower_components/**/*'])
+        .pipe(gulp.dest('dist/bower_components'));
+
+    gulp.src(['app/js/**/*.js'])
+        .pipe(gulp.dest('dist/js'));
+
+    return gulp.src('app/index.html')
+        .pipe($$.debug({title: 'Processed output File: '}))
+        .pipe(gulp.dest('dist'));
+});
+
 gulp.task('release', ['clean'], function() {
     gulp.src(['app/images/*.png', 'app/images/*.jpg'])
         .pipe(gulp.dest('dist/images'));

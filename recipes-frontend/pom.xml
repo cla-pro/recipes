@@ -12,15 +12,95 @@
     <groupId>ch.lavanchy.recipes</groupId>
     <artifactId>recipes-frontend</artifactId>
 
+    <properties>
+        <assembly-zip>missing-file</assembly-zip>
+        <gulp-task>clean</gulp-task>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>devenv</id>
+            <properties>
+                <assembly-zip>dev-zip.xml</assembly-zip>
+                <gulp-task>build-dev</gulp-task>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <assembly-zip>release-zip.xml</assembly-zip>
+                <gulp-task>release</gulp-task>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>exec-npm-install</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-bower-install</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>bower</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>exec-gulp</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>gulp</executable>
+                            <arguments>
+                                <argument>${gulp-task}</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>clean-gulp</id>
+                        <phase>clean</phase>
+                        <configuration>
+                            <executable>gulp</executable>
+                            <arguments>
+                                <argument>clean</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
-                        <descriptor>src/main/assembly/zip.xml</descriptor>
+                        <descriptor>src/main/assembly/${assembly-zip}</descriptor>
                     </descriptors>
                 </configuration>
                 <executions>
@@ -35,42 +115,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.codehaus.mojo</groupId>-->
-                <!--<artifactId>exec-maven-plugin</artifactId>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>exec-npm-install</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<configuration>-->
-                            <!--<executable>npm</executable>-->
-                            <!--<arguments>-->
-                                <!--<argument>install</argument>-->
-                            <!--</arguments>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                        <!--<id>exec-bower-install</id>-->
-                        <!--<phase>generate-sources</phase>-->
-                        <!--<configuration>-->
-                            <!--<executable>bower</executable>-->
-                            <!--<arguments>-->
-                                <!--<argument>install</argument>-->
-                            <!--</arguments>-->
-                        <!--</configuration>-->
-                        <!--<goals>-->
-                            <!--<goal>exec</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
-
 </project>
