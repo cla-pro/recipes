@@ -1,8 +1,8 @@
 <div class="content">
     <div>
         <a ng-href="#/search">Retour</a>
-        <h1>{{recipe.name}}</h1>
-        Tags: {{tags}}
+        <h1>{{vm.recipe.name}}</h1>
+        Tags: {{vm.tags}}
     </div>
     <div>
         <ng-pdf template-url="partials/pdf_viewer.html" scale="page-fit"></ng-pdf>

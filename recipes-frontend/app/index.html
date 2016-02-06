@@ -8,41 +8,61 @@
 
     <title>Recipe Seeker</title>
 
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../bower_components/angular-aside/dist/css/angular-aside.min.css">
-    <link rel="stylesheet" href="../bower_components/ng-tags-input/ng-tags-input.css">
+    <!-- build:css vendor.css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-aside/dist/css/angular-aside.min.css">
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">
+    <!-- endbuild -->
+
+    <!-- build:css app.css -->
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/message.css">
+    <!-- endbuild -->
 
     <link rel="icon" type="image/png" href="images/favicon-94x94.png" />
     <link rel="apple-touch-icon" href="images/favicon-94x94.png" />
-
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../bower_components/angular/angular.min.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="../bower_components/angular-route/angular-route.min.js"></script>
-    <script src="../bower_components/angular-resource/angular-resource.min.js"></script>
-    <script src="../bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="../bower_components/angular-aside/dist/js/angular-aside.min.js"></script>
-    <script src="../bower_components/lodash/lodash.min.js"></script>
-    <script src="../bower_components/restangular/dist/restangular.min.js"></script>
-    <script src="../bower_components/pdfjs-dist/build/pdf.js"></script>
-    <script src="../bower_components/angular-pdf/dist/angular-pdf.min.js"></script>
-    <script src="../bower_components/ng-tags-input/ng-tags-input.min.js"></script>
-
-    <script src="js/accents.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/app.js"></script>
 </head>
 <body ng-controller="MainCtrl">
     <div class="header">
       <input type="image" src="images/menu-icon.png" ng-click="openAside()" alt="Menu" class="btn-menu"></button>
-      <div class="header-title" >MyRecettes</div>
+      <div class="header-title">MyRecettes</div>
     </div>
 
-    <div ui-view>
+    <div ui-view ng-cloak>
         <p>Opening...</p>
     </div>
+
+    <!-- build:js vendor.js -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/lodash/lodash.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-aside/dist/js/angular-aside.min.js"></script>
+    <script src="bower_components/restangular/dist/restangular.min.js"></script>
+    <script src="bower_components/pdfjs-dist/build/pdf.js"></script>
+    <script src="bower_components/angular-pdf/dist/angular-pdf.min.js"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js app.js -->
+    <script src="js/accents.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/file_model.js"></script>
+    <script src="js/insert.js"></script>
+    <script src="js/message.js"></script>
+    <script src="js/result_list.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/search_result.js"></script>
+    <script src="js/app.js"></script>
+    <!-- endbuild -->
+
+    <!-- inject:template-js -->
+    <!-- endinject -->
 </body>
 </html>

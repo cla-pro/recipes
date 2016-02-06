@@ -1,24 +1,12 @@
 <div class="content">
     <!-- Search box -->
     <div>
-        <input id="txtSearch" style="width: 99%" type="text" ng-model="filter"
-               ng-keyup="$event.keyCode == 13 && search()" placeholder="Filtre" />
+        <input style="width: 99%" type="text" ng-model="vm.filter" autofocus
+               ng-keyup="$event.keyCode == 13 && vm.search()" placeholder="Filtre" />
         <br /><br />
-        <button ng-click="search()">Rechercher</button>
+        <button ng-click="vm.search()">Rechercher</button>
     </div>
     <br />
     <!-- Results -->
-    <div>
-        {{message}}
-        <ul>
-            <li ng-repeat="recipe in recipes">
-                <a ng-href="#/search/{{recipe.id}}">{{recipe.name}}</a>
-            </li>
-        </ul>
-    </div>
+    <app-result-list results="vm.recipes" message="vm.message"></app-result-list>
 </div>
-<script type="text/javascript">
-$(function() {
-  $("#txtSearch").focus();
-});
-</script>

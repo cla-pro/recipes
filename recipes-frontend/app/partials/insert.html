@@ -1,14 +1,13 @@
 <div class="content">
     <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx"/>
     <br /><br />
-    <input style="width: 99%" type="text" ng-model="name" ng-change="textChanged()" placeholder="Nom" />
+    <input style="width: 99%" type="text" ng-model="vm.name" ng-change="vm.textChanged()" placeholder="Nom" autofocus />
     <br /><br />
-    <tags-input style="width: 99%" ng-model="tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
-        <auto-complete source="loadTags($query)" loadOnDownArrow="true" highlightMatchedText="false"></auto-complete>
+    <tags-input style="width: 99%" ng-model="vm.tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
+        <auto-complete source="vm.loadTags($query)" load-on-down-arrow="true" highlight-matched-text="false"></auto-complete>
     </tags-input>
     <br /><br />
-    <button ng-click="insert()">Enregistrer</button>
+    <button ng-click="vm.insert()">Enregistrer</button>
     <br /><br />
-    <div style="color:red">{{errorMessage}}</div>
-    <div style="color:green">{{message}}</div>
+    <app-message message="vm.message" is-error="vm.isError" />
 </div>

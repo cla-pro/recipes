@@ -1,5 +1,7 @@
-angular.module('accents', [])
-    .factory('$accents', function() {
+(function() {
+    'use strict';
+    
+    angular.module('accents', []).factory('$accents', function() {
         var service = {
         };
 
@@ -15,3 +17,4 @@ angular.module('accents', [])
 
         return service;
     });
+})();
