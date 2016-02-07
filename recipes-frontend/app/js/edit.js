@@ -2,19 +2,26 @@
     'use strict';
 
     var recipesControllers = angular.module('recipesControllers');
-    recipesControllers.component('appInsert', {
-        templateUrl: 'partials/insert.html',
+    recipesControllers.component('appEdit', {
+        templateUrl: 'partials/edit.html',
         controllerAs: 'vm',
-        controller: ['$scope', '$http', 'Restangular', '$accents', function($scope, $http, Restangular, $accents) {
+        controller: ['$scope', '$stateParams', '$http', 'Restangular', '$accents',
+                function($scope, $stateParams, $http, Restangular, $accents) {
             var vm = this;
 
-            vm.name = '';
-            vm.nameOverriden = false;
+            vm.id = undefined;
+            vm.name = undefined
             vm.tags = [];
             $scope.file = undefined;
             vm.message = '';
             vm.isError = false;
             vm.allTags = [];
+
+            Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
+                vm.id = recipe.id;
+                vm.name = recipe.name;
+                vm.tags = recipe.tags.map(function(t) { return { text: t };});
+            });
 
             vm.loadAllTags = function() {
                 Restangular.all('tags').getList().then(function(allTags) {
@@ -22,18 +29,6 @@
                 });
             };
             vm.loadAllTags();
-
-            $scope.$watch('file', function(newValue, oldValue) {
-                if (!$scope.nameOverriden && newValue !== undefined) {
-                    var fullFilename = newValue.name;
-                    var filename = fullFilename.substr(0, fullFilename.lastIndexOf('.')) || fullFilename;
-                    vm.name = filename.replace(/_/g, ' ');
-                }
-            });
-
-            vm.textChanged = function() {
-                vm.nameOverriden = true;
-            };
 
             vm.loadTags = function(query) {
                 var lowerQuery = query.toLowerCase();
@@ -47,29 +42,30 @@
 
             vm.save = function() {
                 var file = $scope.file;
+                vm.setMessage(undefined, false);
 
-                if (vm.isEmpty(vm.name) || vm.isEmpty(file)) {
-                    vm.setMessage('Le nom de la recette et le fichier sont obligatoires', true);
+                var fd = new FormData();
+                var content = { id: vm.id, name: vm.name };
+                if (vm.isEmpty(vm.name)) {
+                    vm.setMessage('Le nom de la recette est obligatoires', true);
                     return;
-                } else {
-                    vm.setMessage(undefined, false);
                 }
 
-                var content = { name: vm.name, filename: file.name };
+                if (file !== undefined) {
+                    content.filename = file.name;
+                    fd.append('file', file);
+                }
+
                 if (vm.tags !== undefined && vm.tags !== null) {
                     content.tags = vm.tags.map(function(e) { return e.text; });
                 }
-
-                var fd = new FormData();
                 fd.append('recipe', angular.toJson(content));
-                fd.append('file', file);
 
-                $http.post('../services/recipes/file', fd, {
+                $http.put('../services/recipes', fd, {
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 }).then(function(args) {
                     vm.name = '';
-                    vm.nameOverriden = false;
                     vm.tags = '';
                     $scope.file = undefined;
                     document.getElementById('iptRecipeFile').value = '';

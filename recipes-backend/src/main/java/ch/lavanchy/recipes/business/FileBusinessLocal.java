@@ -15,7 +15,7 @@ public interface FileBusinessLocal {
      * @param inputStream The content to save
      * @param filename The filename for the new file
      */
-    void saveFile(final InputStream inputStream, final String filename);
+    void saveFile(final InputStream inputStream, final String filename, final boolean overwrite);
 
     /**
      * Return the file identified by the filename

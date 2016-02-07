@@ -44,6 +44,9 @@ gulp.task('build-dev', function() {
     gulp.src(['app/js/**/*.js'])
         .pipe(gulp.dest('dist/js'));
 
+    gulp.src(['app/css/**/*.css'])
+        .pipe(gulp.dest('dist/css'));
+
     return gulp.src('app/index.html')
         .pipe($$.debug({title: 'Processed output File: '}))
         .pipe(gulp.dest('dist'));
@@ -58,7 +61,7 @@ gulp.task('release', ['clean'], function() {
         .pipe($$.htmlhint.reporter())
         .pipe($$.htmlmin({ removeComments: true }))
         .pipe(ngHtml2Js({
-            moduleName: 'tcbernApp'
+            moduleName: 'recipesApp'
         }))
         .pipe($$.concat({path: 'template.js', cwd: ''}))
         .pipe($$.rev())
@@ -66,7 +69,7 @@ gulp.task('release', ['clean'], function() {
     
     var main = gulp.src('app/*.html')
         .pipe($$.useref())
-        .pipe(gulpif('*.js', $$.uglify()))
+        //.pipe(gulpif('*.js', $$.uglify()))
         .pipe(gulpif('*.js', $$.rev()))
         .pipe(gulpif('*.css', $$.cssnano()))
         .pipe(gulpif('*.css', $$.rev()))

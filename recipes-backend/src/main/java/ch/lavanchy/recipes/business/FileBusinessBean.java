@@ -24,7 +24,7 @@ public class FileBusinessBean implements FileBusinessLocal {
     private FileConverter fileConverter;
 
     @Override
-    public void saveFile(InputStream inputStream, String filename) {
+    public void saveFile(final InputStream inputStream, final String filename, final boolean overwrite) {
         final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
 
         final File folder = new File(location);
@@ -33,6 +33,13 @@ public class FileBusinessBean implements FileBusinessLocal {
                 folder.mkdirs();
             }
             final File file = new File(folder, filename);
+            if (file.exists()) {
+                if (overwrite) {
+                    file.delete();
+                } else {
+                    throw new RuntimeException(String.format("File %s already exists", filename));
+                }
+            }
             Files.copy(inputStream, file.toPath());
 
             if (fileConverter.isConversionRequired(file)) {

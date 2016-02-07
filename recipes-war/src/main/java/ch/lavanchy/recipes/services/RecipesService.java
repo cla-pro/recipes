@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
@@ -60,6 +61,22 @@ public class RecipesService {
         return new Gson().toJson(persisted);
     }
 
+    @PUT
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public String updateRecipe(
+            final FormDataMultiPart multiPart,
+            @FormDataParam("file") InputStream fileInputStream,
+            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+        final Recipe recipe = new Gson().fromJson(multiPart.getField("recipe").getValue(), Recipe.class);
+        final Recipe persisted = recipesBusiness.updateRecipe(recipe);
+
+        if (fileInputStream != null) {
+            fileBusiness.saveFile(fileInputStream, recipe.getFilename(), true);
+        }
+
+        return new Gson().toJson(persisted);
+    }
+
     @GET
     @Path("/pdf/{id}")
     public Response getFile(@PathParam("id") long id) throws IOException {
@@ -86,7 +103,7 @@ public class RecipesService {
         final Recipe recipe = new Gson().fromJson(multiPart.getField("recipe").getValue(), Recipe.class);
         validateRecipe(recipe);
         final Recipe persisted = recipesBusiness.createRecipe(recipe);
-        fileBusiness.saveFile(fileInputStream, recipe.getFilename());
+        fileBusiness.saveFile(fileInputStream, recipe.getFilename(), false);
         return new Gson().toJson(persisted);
     }
 

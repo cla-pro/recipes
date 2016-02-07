@@ -35,6 +35,14 @@ public interface RecipesBusinessLocal {
     Recipe createRecipe(final Recipe recipe);
 
     /**
+     * Update a recipe into the system.
+     *
+     * @param recipe The information about the recipe to update
+     * @return The persisted recipe
+     */
+    Recipe updateRecipe(final Recipe recipe);
+
+    /**
      * Update the recipe with the filename
      *
      * @param id The recipe's id

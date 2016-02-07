@@ -19,6 +19,10 @@
         .state('insert', {
             url: '/insert',
             template: '<app-insert></app-insert>',
+        })
+        .state('edit', {
+            url: '/edit/:id',
+            template: '<app-edit></app-edit>',
         });
     }]);
 })();

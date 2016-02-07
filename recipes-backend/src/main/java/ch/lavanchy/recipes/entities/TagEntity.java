@@ -1,5 +1,7 @@
 package ch.lavanchy.recipes.entities;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,5 +48,15 @@ public class TagEntity {
 
     public void setModificationDate(long modificationDate) {
         this.modificationDate = modificationDate;
+    }
+
+    @Override
+    public boolean equals(final Object that) {
+        if (that == null || !(that instanceof  TagEntity)) {
+            return false;
+        }
+
+        final TagEntity thatTag = (TagEntity) that;
+        return new EqualsBuilder().append(id, thatTag.id).isEquals();
     }
 }
