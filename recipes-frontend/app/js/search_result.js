@@ -5,7 +5,7 @@
     recipesControllers.component('appSearchResult', {
         templateUrl: 'partials/search.result.html',
         controllerAs: 'vm',
-        controller: ['$scope', '$stateParams', 'Restangular', function($scope, $stateParams, Restangular) {
+        controller: ['$scope', '$state', '$stateParams', 'Restangular', function($scope, $state, $stateParams, Restangular) {
             var vm = this;
             vm.recipe = {};
             vm.tags = '';
@@ -15,6 +15,10 @@
                 vm.tags = recipe.tags.join(', ');
                 $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
             });
+
+            vm.editRecipe = function() {
+                $state.go('edit', { 'id': vm.recipe.id });
+            }
         }]
     });
 })();
