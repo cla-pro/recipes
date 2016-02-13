@@ -35,7 +35,11 @@ public class FileBusinessBean implements FileBusinessLocal {
             final File file = new File(folder, filename);
             if (file.exists()) {
                 if (overwrite) {
-                    file.delete();
+                    if (file.delete()) {
+                        System.out.println("Previous file deleted");
+                    } else {
+                        throw new RuntimeException(String.format("Unable to delete file %s", filename));
+                    }
                 } else {
                     throw new RuntimeException(String.format("File %s already exists", filename));
                 }

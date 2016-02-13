@@ -65,8 +65,6 @@
                     transformRequest: angular.identity,
                     headers: {'Content-Type': undefined}
                 }).then(function(args) {
-                    vm.name = '';
-                    vm.tags = '';
                     $scope.file = undefined;
                     document.getElementById('iptRecipeFile').value = '';
                     vm.setMessage('Recette enregistrée', false);

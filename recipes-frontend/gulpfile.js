@@ -52,7 +52,7 @@ gulp.task('build-dev', function() {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('release', ['clean'], function() {
+gulp.task('release', function() {
     gulp.src(['app/images/*.png', 'app/images/*.jpg'])
         .pipe(gulp.dest('dist/images'));
     
@@ -69,7 +69,7 @@ gulp.task('release', ['clean'], function() {
     
     var main = gulp.src('app/*.html')
         .pipe($$.useref())
-        //.pipe(gulpif('*.js', $$.uglify()))
+        .pipe(gulpif('*.js', $$.uglify()))
         .pipe(gulpif('*.js', $$.rev()))
         .pipe(gulpif('*.css', $$.cssnano()))
         .pipe(gulpif('*.css', $$.rev()))

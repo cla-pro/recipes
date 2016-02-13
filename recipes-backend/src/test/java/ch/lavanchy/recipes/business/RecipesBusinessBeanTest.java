@@ -164,7 +164,8 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testUpdateRecipe() {
         final RecipeEntity recipeMock = new RecipeEntity();
-        recipeMock.getTags().add(createTagEntity(knownTagName));
+        recipeMock.getTags().add(createTagEntity("dessert"));
+        recipeMock.getTags().add(createTagEntity("blackberry"));
         recipeMock.setName("newName");
         when(recipesDao.findRecipeById(anyInt())).thenReturn(recipeMock);
 
