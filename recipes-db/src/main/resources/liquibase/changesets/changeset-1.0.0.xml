@@ -65,4 +65,9 @@
         </addColumn>
         <addNotNullConstraint tableName="tag" columnName="modification_date" defaultNullValue="0" columnDataType="bigint" />
     </changeSet>
+
+    <changeSet id="1.0.0-6-increase-recipe-name-length" author="cla">
+        <modifyDataType tableName="recipe" columnName="name" newDataType="java.sql.Types.VARCHAR(200)" />
+        <modifyDataType tableName="recipe" columnName="filename" newDataType="java.sql.Types.VARCHAR(200)" />
+    </changeSet>
 </databaseChangeLog>
