@@ -1,7 +1,7 @@
 <div>
-    <app-message message="vm.message" is-error="false"></app-message>
+    <app-message message="message" is-error="false"></app-message>
     <ul>
-        <li ng-repeat="result in vm.results">
+        <li ng-repeat="result in results">
             <a ng-href="#/search/{{result.id}}">{{result.name}}</a>
         </li>
     </ul>

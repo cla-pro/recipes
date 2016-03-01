@@ -30,7 +30,7 @@ gulp.task('analyze', function () {
 });
 
 gulp.task('build-dev', function() {
-    gulp.src(['app/images/*.png', 'app/images/*.jpg'])
+    gulp.src(['app/images/*.png', 'app/images/*.jpg', 'app/images/*.gif'])
             .pipe(gulp.dest('dist/images'));
 
     gulp.src(['app/partials/*.html'])
@@ -53,8 +53,10 @@ gulp.task('build-dev', function() {
 });
 
 gulp.task('release', function() {
-    gulp.src(['app/images/*.png', 'app/images/*.jpg'])
+    gulp.src(['app/images/*.png', 'app/images/*.jpg', 'app/images/*.gif'])
         .pipe(gulp.dest('dist/images'));
+
+    gulp.src('app/recipes.appcache').pipe(gulp.dest('dist'));
     
     var partials = gulp.src(['app/**/*.html', '!app/index.html', '!app/bower_components/**/*.html'])
         .pipe($$.htmlhint({'doctype-first': false}))

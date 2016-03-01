@@ -12,7 +12,9 @@
                 <include>**/*.js</include>
                 <include>**/*.html</include>
                 <include>**/*.css</include>
+                <include>**/*.jpg</include>
                 <include>**/*.png</include>
+                <include>**/*.gif</include>
             </includes>
         </fileSet>
     </fileSets>

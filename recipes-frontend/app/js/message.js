@@ -2,13 +2,15 @@
     'use strict';
 
     var recipesControllers = angular.module('recipesControllers');
-    recipesControllers.component('appMessage', {
-        templateUrl: 'partials/message.html',
-        controllerAs: 'vm',
-        bindings: {
-            message: '=',
-            isError: '='
-        }
+    recipesControllers.directive('appMessage', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'partials/message.html',
+            scope: {
+                message: '=',
+                isError: '='
+            }
+        };
     });
 })();
 

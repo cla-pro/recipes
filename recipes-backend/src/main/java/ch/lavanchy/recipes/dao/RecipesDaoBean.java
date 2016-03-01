@@ -5,7 +5,9 @@ import ch.lavanchy.recipes.entities.RecipeEntity;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -19,8 +21,11 @@ public class RecipesDaoBean implements RecipesDaoLocal {
 
     @Override
     public List<RecipeEntity> findAllRecipes() {
+        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         final CriteriaQuery<RecipeEntity> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(RecipeEntity.class);
-        criteriaQuery.select(criteriaQuery.from(RecipeEntity.class));
+        Root<RecipeEntity> recipeFrom = criteriaQuery.from(RecipeEntity.class);
+        criteriaQuery.select(recipeFrom);
+        criteriaQuery.orderBy(criteriaBuilder.asc(recipeFrom.get("name")));
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 

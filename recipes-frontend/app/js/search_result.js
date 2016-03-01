@@ -2,23 +2,26 @@
     'use strict';
 
     var recipesControllers = angular.module('recipesControllers');
-    recipesControllers.component('appSearchResult', {
-        templateUrl: 'partials/search.result.html',
-        controllerAs: 'vm',
-        controller: ['$scope', '$state', '$stateParams', 'Restangular', function($scope, $state, $stateParams, Restangular) {
-            var vm = this;
-            vm.recipe = {};
-            vm.tags = '';
+    recipesControllers.directive('appSearchResult', function() {
+        return {
+            restrict: 'E',
+            templateUrl: 'partials/search.result.html',
+            controllerAs: 'vm',
+            controller: ['$scope', '$state', '$stateParams', 'Restangular', function($scope, $state, $stateParams, Restangular) {
+                var vm = this;
+                vm.recipe = {};
+                vm.tags = '';
 
-            Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
-                vm.recipe = recipe;
-                vm.tags = recipe.tags.join(', ');
-                $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
-            });
+                Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
+                    vm.recipe = recipe;
+                    vm.tags = recipe.tags.join(', ');
+                    $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
+                });
 
-            vm.editRecipe = function() {
-                $state.go('edit', { 'id': vm.recipe.id });
-            }
-        }]
+                vm.editRecipe = function() {
+                    $state.go('edit', { 'id': vm.recipe.id });
+                }
+            }]
+        };
     });
 })();

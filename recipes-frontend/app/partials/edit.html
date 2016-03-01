@@ -3,11 +3,14 @@
     <br /><br />
     <input style="width: 99%" type="text" ng-model="vm.name" placeholder="Nom" autofocus />
     <br /><br />
-    <tags-input style="width: 99%" ng-model="vm.tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
-        <auto-complete source="vm.loadTags($query)" load-on-down-arrow="true" highlight-matched-text="false"></auto-complete>
+    <tags-input style="width: 99%" ng-model="vm.tags" add-on-paste="true">
+        <auto-complete source="vm.loadTags($query)" ></auto-complete>
     </tags-input>
     <br /><br />
-    <button ng-click="vm.save()">Enregistrer</button>
+
+    <button ng-hide="loading" ng-click="vm.save()">Enregistrer</button>
+    <img style="width: 30px" src="images/loading.gif" ng-show="loading" />
+
     <br /><br />
     <app-message message="vm.message" is-error="vm.isError" />
 </div>
