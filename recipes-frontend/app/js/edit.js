@@ -7,8 +7,8 @@
             restrict: 'E',
             templateUrl: 'partials/edit.html',
             controllerAs: 'vm',
-            controller: ['$scope', '$stateParams', '$http', 'Restangular', '$accents', '$timeout',
-                    function($scope, $stateParams, $http, Restangular, $accents, $timeout) {
+            controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout',
+                    function($scope, $state, $stateParams, $http, Restangular, $accents, $timeout) {
                 var vm = this;
 
                 vm.loading = false;
@@ -91,6 +91,10 @@
 
                 vm.isEmpty = function(obj) {
                     return obj === undefined || obj === null || obj === '';
+                };
+
+                $scope.back = function() {
+                    $state.go('search_result', { 'id': $stateParams.id });
                 };
             }]
         };

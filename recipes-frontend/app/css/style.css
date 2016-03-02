@@ -31,18 +31,6 @@ body {
   margin-right: 10px;
 }
 
-.btn-edit {
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  width: 32px;
-  height: 32px;
-  margin-top: 6px;
-  margin-bottom: 3px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
 .div-state {
   padding:10px;
 }

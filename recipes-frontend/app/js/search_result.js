@@ -18,8 +18,11 @@
                     $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
                 });
 
-                vm.editRecipe = function() {
+                $scope.editRecipe = function() {
                     $state.go('edit', { 'id': vm.recipe.id });
+                }
+                $scope.back = function() {
+                    $state.go('search');
                 }
             }]
         };

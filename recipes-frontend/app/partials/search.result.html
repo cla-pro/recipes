@@ -1,11 +1,8 @@
 <div class="content">
+    <app-action display-back="true" on-click-back="back()" display-edit="true" on-click-edit="editRecipe()"></app-action>
     <div>
-        <a ng-href="#/search">Retour</a>
         <h1>{{vm.recipe.name}}</h1>
         Tags: {{vm.tags}}
-
-        <input type="image" src="images/edit-icon.png" ng-click="vm.editRecipe()" alt="Edit" class="btn-edit"></button>
-        <!--<a ng-href="#/edit/{{vm.recipe.id}}">Editer</a>-->
     </div>
     <div>
         <ng-pdf template-url="partials/pdf_viewer.html" scale="page-fit"></ng-pdf>

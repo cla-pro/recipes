@@ -71,7 +71,7 @@ gulp.task('release', function() {
     
     var main = gulp.src('app/*.html')
         .pipe($$.useref())
-        .pipe(gulpif('*.js', $$.uglify()))
+        //.pipe(gulpif('*.js', $$.uglify()))
         .pipe(gulpif('*.js', $$.rev()))
         .pipe(gulpif('*.css', $$.cssnano()))
         .pipe(gulpif('*.css', $$.rev()))

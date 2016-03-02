@@ -1,4 +1,6 @@
 <div class="content">
+    <app-action display-back="true" on-click-back="back()"></app-action>
+
     <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx"/>
     <br /><br />
     <input style="width: 99%" type="text" ng-model="vm.name" placeholder="Nom" autofocus />
