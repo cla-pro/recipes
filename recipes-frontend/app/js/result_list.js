@@ -8,7 +8,8 @@
             templateUrl: 'partials/result_list.html',
             scope: {
                 results: '=',
-                message: '='
+                message: '=',
+                query: '='
             }
         };
     });

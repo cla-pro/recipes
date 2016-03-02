@@ -2,7 +2,7 @@
     <app-message message="message" is-error="false"></app-message>
     <ul>
         <li ng-repeat="result in results">
-            <a ng-href="#/search/{{result.id}}">{{result.name}}</a>
+            <a ng-href="#/search/{{result.id}}?query={{query}}">{{result.name}}</a>
         </li>
     </ul>
 </div>

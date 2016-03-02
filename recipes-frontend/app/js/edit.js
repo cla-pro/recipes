@@ -19,6 +19,7 @@
                 vm.message = '';
                 vm.isError = false;
                 vm.allTags = [];
+                vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
 
                 Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
                     vm.id = recipe.id;
@@ -50,7 +51,7 @@
 
                     var fd = new FormData();
                     var content = { id: vm.id, name: vm.name };
-                    if (vm.isEmpty(vm.name)) {
+                    if (isObjectEmpty(vm.name)) {
                         vm.setMessage('Le nom de la recette est obligatoires', true);
                         return;
                     }
@@ -60,7 +61,7 @@
                         fd.append('file', file);
                     }
 
-                    if (vm.tags !== undefined && vm.tags !== null) {
+                    if (isObjectNotEmpty(vm.tags)) { //vm.tags !== undefined && vm.tags !== null) {
                         content.tags = vm.tags.map(function(e) { return e.text; });
                     }
                     fd.append('recipe', angular.toJson(content));
@@ -89,12 +90,8 @@
                     vm.isError = isError;
                 };
 
-                vm.isEmpty = function(obj) {
-                    return obj === undefined || obj === null || obj === '';
-                };
-
                 $scope.back = function() {
-                    $state.go('search_result', { 'id': $stateParams.id });
+                    $state.go('search_result', { 'id': $stateParams.id, 'query': vm.query });
                 };
             }]
         };

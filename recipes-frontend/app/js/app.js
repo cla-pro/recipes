@@ -9,11 +9,11 @@
 
         $stateProvider
         .state('search', {
-            url: '/search',
+            url: '/search?query',
             template: '<app-search></app-search>',
         })
         .state('search_result', {
-            url: '/search/:id',
+            url: '/search/:id?query',
             template: '<app-search-result></app-search-result>',
         })
         .state('insert', {
@@ -21,7 +21,7 @@
             template: '<app-insert></app-insert>',
         })
         .state('edit', {
-            url: '/edit/:id',
+            url: '/search/:id/edit?query',
             template: '<app-edit></app-edit>',
         });
     }]);

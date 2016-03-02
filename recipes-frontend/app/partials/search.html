@@ -1,12 +1,12 @@
 <div class="content">
     <!-- Search box -->
     <div>
-        <input style="width: 99%" type="text" ng-model="vm.filter" autofocus
+        <input style="width: 99%" type="text" ng-model="vm.query" autofocus
                ng-keyup="$event.keyCode == 13 && vm.search()" placeholder="Filtre" />
         <br /><br />
         <button ng-click="vm.search()">Rechercher</button>
     </div>
     <br />
     <!-- Results -->
-    <app-result-list results="vm.recipes" message="vm.message"></app-result-list>
+    <app-result-list results="vm.recipes" message="vm.message" query="vm.query"></app-result-list>
 </div>

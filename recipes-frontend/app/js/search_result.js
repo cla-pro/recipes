@@ -11,6 +11,7 @@
                 var vm = this;
                 vm.recipe = {};
                 vm.tags = '';
+                vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
 
                 Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
                     vm.recipe = recipe;
@@ -19,10 +20,10 @@
                 });
 
                 $scope.editRecipe = function() {
-                    $state.go('edit', { 'id': vm.recipe.id });
+                    $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });
                 }
                 $scope.back = function() {
-                    $state.go('search');
+                    $state.go('search', { 'query': vm.query });
                 }
             }]
         };
