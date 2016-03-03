@@ -12,10 +12,13 @@
                 vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
                 vm.recipes = [];
                 vm.message = '';
+                vm.loading = false;
 
                 vm.search = function() {
+                    vm.loading = true;
                     Restangular.all('recipes').getList({'filter': vm.query}).then(function(recipes) {
                         vm.recipes = recipes;
+                        vm.loading = false;
                         if (vm.recipes.length === 0) {
                             vm.message = 'Pas de recette trouvée';
                         } else {
@@ -24,7 +27,9 @@
                     });
                 };
 
-                $timeout(function() { vm.search(); }, 100);
+                if (isObjectNotEmpty(vm.query)) {
+                    $timeout(function() { vm.search(); }, 100);
+                }
             }]
         };
     });

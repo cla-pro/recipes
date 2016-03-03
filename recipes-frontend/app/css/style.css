@@ -46,16 +46,10 @@ body {
 }
 
 .menuHeader{
-  /* filter: alpha(opacity=100);
-  opacity: 1; */
 }
 
 .menu-element-list {
   width: 100%;
-  /*height: 100vh;
-  background-color: #ffffff;
-  filter: alpha(opacity=65);
-  opacity: 0.65;*/
   padding: 20px;
 }
 
@@ -103,6 +97,10 @@ tags-input {
 }
 
 div.content {
-    width: 90%;
-    margin: 25px 5% 0px 5%;
+  width: 90%;
+  margin: 25px 5% 0px 5%;
+}
+
+img.loading {
+  width: 30px;
 }
