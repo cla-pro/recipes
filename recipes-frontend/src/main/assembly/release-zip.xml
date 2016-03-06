@@ -15,6 +15,7 @@
                 <include>**/*.jpg</include>
                 <include>**/*.png</include>
                 <include>**/*.gif</include>
+                <include>**/*.appcache</include>
             </includes>
         </fileSet>
     </fileSets>

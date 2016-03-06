@@ -47,6 +47,9 @@ gulp.task('build-dev', function() {
     gulp.src(['app/css/**/*.css'])
         .pipe(gulp.dest('dist/css'));
 
+    gulp.src(['app/*.appcache'])
+        .pipe(gulp.dest('dist'));
+
     return gulp.src('app/index.html')
         .pipe($$.debug({title: 'Processed output File: '}))
         .pipe(gulp.dest('dist'));
@@ -66,15 +69,18 @@ gulp.task('release', function() {
             moduleName: 'recipesApp'
         }))
         .pipe($$.concat({path: 'template.js', cwd: ''}))
-        .pipe($$.rev())
+        //.pipe($$.rev())
         .pipe(gulp.dest('dist'));
-    
+
+    gulp.src(['app/*.appcache'])
+        .pipe(gulp.dest('dist'));
+
     var main = gulp.src('app/*.html')
         .pipe($$.useref())
         //.pipe(gulpif('*.js', $$.uglify()))
-        .pipe(gulpif('*.js', $$.rev()))
+        //.pipe(gulpif('*.js', $$.rev()))
         .pipe(gulpif('*.css', $$.cssnano()))
-        .pipe(gulpif('*.css', $$.rev()))
+        //.pipe(gulpif('*.css', $$.rev()))
         .pipe($$.revReplace())
         .pipe(inject(partials, { ignorePath: ['dist/'], addRootSlash: false, starttag: '<!-- inject:template-js -->' }))
         .pipe(gulpif('*.html', $$.htmlmin({ removeComments: true })));
