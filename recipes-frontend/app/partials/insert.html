@@ -4,7 +4,7 @@
     <input style="width: 99%" type="text" ng-model="vm.name" ng-change="vm.textChanged()" placeholder="Nom" autofocus />
     <br /><br />
     <tags-input style="width: 99%" ng-model="vm.tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
-        <auto-complete source="vm.loadTags($query)" load-on-down-arrow="true"
+        <auto-complete source="vm.findTags($query)" load-on-down-arrow="true"
                        highlight-matched-text="false" select-first-match="true">
         </auto-complete>
     </tags-input>

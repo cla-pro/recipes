@@ -7,8 +7,8 @@
             restrict: 'E',
             templateUrl: 'partials/insert.html',
             controllerAs: 'vm',
-            controller: ['$scope', '$http', 'Restangular', '$accents', '$timeout',
-                    function($scope, $http, Restangular, $accents, $timeout) {
+            controller: ['$scope', '$http', 'Restangular', '$accents', '$timeout', '$tags'
+                    function($scope, $http, Restangular, $accents, $timeout, $tags) {
                 var vm = this;
 
                 vm.loading = false;
@@ -19,13 +19,6 @@
                 vm.message = '';
                 vm.isError = false;
                 vm.allTags = [];
-
-                vm.loadAllTags = function() {
-                    Restangular.all('tags').getList().then(function(allTags) {
-                        vm.allTags = allTags;
-                    });
-                };
-                vm.loadAllTags();
 
                 $scope.$watch('file', function(newValue, oldValue) {
                     if (!$scope.nameOverriden && newValue !== undefined) {
@@ -39,15 +32,7 @@
                     vm.nameOverriden = true;
                 };
 
-                vm.loadTags = function(query) {
-                    var lowerQuery = query.toLowerCase();
-                    var matchingTags = vm.allTags.filter(function(element) {
-                        var lowerElement = element.name.toLowerCase();
-                        return lowerElement.search(lowerQuery) !== -1 ||
-                                $accents.removeAccents(lowerElement).search($accents.removeAccents(lowerQuery)) !== -1;
-                    });
-                    return matchingTags.map(function(e) {return e.name;});
-                };
+                vm.findTags = function(query) { return $tags.findTags(query); };
 
                 vm.save = function() {
                     vm.loading = true;

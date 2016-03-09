@@ -6,7 +6,7 @@
     <input style="width: 99%" type="text" ng-model="vm.name" placeholder="Nom" autofocus />
     <br /><br />
     <tags-input style="width: 99%" ng-model="vm.tags" add-on-paste="true">
-        <auto-complete source="vm.loadTags($query)" ></auto-complete>
+        <auto-complete source="vm.findTags($query)" ></auto-complete>
     </tags-input>
     <br /><br />
 

@@ -7,8 +7,8 @@
             restrict: 'E',
             templateUrl: 'partials/edit.html',
             controllerAs: 'vm',
-            controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout',
-                    function($scope, $state, $stateParams, $http, Restangular, $accents, $timeout) {
+            controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout', '$tags',
+                    function($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags) {
                 var vm = this;
 
                 vm.loading = false;
@@ -18,7 +18,7 @@
                 $scope.file = undefined;
                 vm.message = '';
                 vm.isError = false;
-                vm.allTags = [];
+                //vm.allTags = [];
                 vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
 
                 Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
@@ -27,22 +27,7 @@
                     vm.tags = recipe.tags.map(function(t) { return { text: t };});
                 });
 
-                vm.loadAllTags = function() {
-                    Restangular.all('tags').getList().then(function(allTags) {
-                        vm.allTags = allTags;
-                    });
-                };
-                vm.loadAllTags();
-
-                vm.loadTags = function(query) {
-                    var lowerQuery = query.toLowerCase();
-                    var matchingTags = vm.allTags.filter(function(element) {
-                        var lowerElement = element.name.toLowerCase();
-                        return lowerElement.search(lowerQuery) !== -1 ||
-                                $accents.removeAccents(lowerElement).search($accents.removeAccents(lowerQuery)) !== -1;
-                    });
-                    return matchingTags.map(function(e) {return e.name;});
-                };
+                vm.findTags = function(query) { return $tags.findTags(query); };
 
                 vm.save = function() {
                     vm.loading = true;
