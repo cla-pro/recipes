@@ -7,12 +7,17 @@
             restrict: 'E',
             templateUrl: 'partials/search.html',
             controllerAs: 'vm',
-            controller: ['$stateParams', 'Restangular', '$timeout', function($stateParams, Restangular, $timeout) {
+            controller: ['$scope', '$stateParams', 'Restangular', '$timeout', function($scope, $stateParams, Restangular, $timeout) {
                 var vm = this;
-                vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
+                vm.query = (isObjectEmpty($stateParams.query) ? '' : decodeURIComponent($stateParams.query));
+                vm.encodedQuery = encodeURIComponent(vm.query);
                 vm.recipes = [];
                 vm.message = '';
                 vm.loading = false;
+
+                $scope.$watch('vm.query', function(newValue, oldValue) {
+                    vm.encodedQuery = encodeURIComponent(newValue);
+                });
 
                 vm.search = function() {
                     vm.loading = true;

@@ -7,7 +7,7 @@
             restrict: 'E',
             templateUrl: 'partials/insert.html',
             controllerAs: 'vm',
-            controller: ['$scope', '$http', 'Restangular', '$accents', '$timeout', '$tags'
+            controller: ['$scope', '$http', 'Restangular', '$accents', '$timeout', '$tags',
                     function($scope, $http, Restangular, $accents, $timeout, $tags) {
                 var vm = this;
 
