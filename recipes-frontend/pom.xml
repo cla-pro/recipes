@@ -5,7 +5,7 @@
     <parent>
         <artifactId>recipes</artifactId>
         <groupId>ch.lavanchy</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,6 +15,7 @@
     <properties>
         <assembly-zip>missing-file</assembly-zip>
         <gulp-task>clean</gulp-task>
+        <recipes.version>${project.version}</recipes.version>
     </properties>
 
     <profiles>
@@ -35,6 +36,12 @@
     </profiles>
 
     <build>
+        <resources>
+            <resource>
+                <directory>app</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -55,7 +62,7 @@
                     </execution>
                     <execution>
                         <id>exec-bower-install</id>
-                        <phase>generate-resources</phase>
+                        <phase>compile</phase>
                         <configuration>
                             <executable>bower</executable>
                             <arguments>
@@ -68,7 +75,7 @@
                     </execution>
                     <execution>
                         <id>exec-gulp</id>
-                        <phase>generate-resources</phase>
+                        <phase>compile</phase>
                         <configuration>
                             <executable>gulp</executable>
                             <arguments>

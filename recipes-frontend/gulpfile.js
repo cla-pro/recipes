@@ -20,7 +20,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('analyze', function () {
-    var basePath = path.resolve('./app/js/');
+    var basePath = path.resolve('./target/classes/js/');
     $$.util.log('Analyzing sources in ' + basePath);
 
     return gulp.src([basePath + '/**/*.js', '!./Content/bower_components/**/*'])
@@ -30,38 +30,33 @@ gulp.task('analyze', function () {
 });
 
 gulp.task('build-dev', function() {
-    gulp.src(['app/images/*.png', 'app/images/*.jpg', 'app/images/*.gif'])
+    gulp.src(['target/classes/images/*.png', 'target/classes/images/*.jpg', 'target/classes/images/*.gif'])
             .pipe(gulp.dest('dist/images'));
 
-    gulp.src(['app/partials/*.html'])
+    gulp.src(['target/classes/partials/*.html'])
         .pipe($$.htmlhint({'doctype-first': false}))
         .pipe($$.htmlhint.reporter())
         .pipe(gulp.dest('dist/partials'));
 
-    gulp.src(['app/bower_components/**/*'])
+    gulp.src(['target/classes/bower_components/**/*'])
         .pipe(gulp.dest('dist/bower_components'));
 
-    gulp.src(['app/js/**/*.js'])
+    gulp.src(['target/classes/js/**/*.js'])
         .pipe(gulp.dest('dist/js'));
 
-    gulp.src(['app/css/**/*.css'])
+    gulp.src(['target/classes/css/**/*.css'])
         .pipe(gulp.dest('dist/css'));
 
-    gulp.src(['app/*.appcache'])
-        .pipe(gulp.dest('dist'));
-
-    return gulp.src('app/index.html')
+    return gulp.src('target/classes/index.html')
         .pipe($$.debug({title: 'Processed output File: '}))
         .pipe(gulp.dest('dist'));
 });
 
 gulp.task('release', function() {
-    gulp.src(['app/images/*.png', 'app/images/*.jpg', 'app/images/*.gif'])
+    gulp.src(['target/classes/images/*.png', 'target/classes/images/*.jpg', 'target/classes/images/*.gif'])
         .pipe(gulp.dest('dist/images'));
-
-    gulp.src('app/recipes.appcache').pipe(gulp.dest('dist'));
     
-    var partials = gulp.src(['app/**/*.html', '!app/index.html', '!app/bower_components/**/*.html'])
+    var partials = gulp.src(['target/classes/**/*.html', '!target/classes/index.html', '!target/classes/bower_components/**/*.html'])
         .pipe($$.htmlhint({'doctype-first': false}))
         .pipe($$.htmlhint.reporter())
         .pipe($$.htmlmin({ removeComments: true }))
@@ -72,10 +67,10 @@ gulp.task('release', function() {
         //.pipe($$.rev())
         .pipe(gulp.dest('dist'));
 
-    gulp.src(['app/*.appcache'])
+    gulp.src(['target/classes/*.appcache'])
         .pipe(gulp.dest('dist'));
 
-    var main = gulp.src('app/*.html')
+    var main = gulp.src('target/classes/*.html')
         .pipe($$.useref())
         //.pipe(gulpif('*.js', $$.uglify()))
         //.pipe(gulpif('*.js', $$.rev()))
@@ -96,5 +91,5 @@ gulp.task('default', function(){
 });
 
 gulp.task('watch', function () {
-    gulp.watch(['./src/index.html', './src/app/**/*.js'], ['default']);
+    gulp.watch(['./target/classes/index.html', './target/classes/**/*.js'], ['default']);
 });

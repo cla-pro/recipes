@@ -30,8 +30,12 @@
       <div class="header-title">MyRecettes</div>
     </div>
 
-    <div ui-view ng-cloak>
+    <div ui-view ng-cloak class="content">
         <p>Opening...</p>
+    </div>
+
+    <div class="footer">
+        Version: ${recipes.version}
     </div>
 
     <!-- build:js vendor.js -->

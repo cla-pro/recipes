@@ -8,9 +8,20 @@ body {
 }
 
 .header {
+  position: fixed;
   background-color: #ef6c00;
   color: white;
   height: 45px;
+  width: 100%;
+  top: 0px;
+}
+
+.content {
+  padding-top: 45px;
+}
+
+.footer {
+  width: 100%;
 }
 
 .header-title {
