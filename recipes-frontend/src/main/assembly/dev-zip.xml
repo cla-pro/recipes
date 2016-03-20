@@ -6,7 +6,7 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>dist/</directory>
+            <directory>target/dist/</directory>
             <outputDirectory>/app/</outputDirectory>
             <includes>
                 <include>**/*.js</include>
