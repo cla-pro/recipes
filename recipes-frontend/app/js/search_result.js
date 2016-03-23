@@ -12,12 +12,17 @@
                 vm.recipe = {};
                 vm.tags = '';
                 vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
+                vm.loading = true;
 
                 Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
                     vm.recipe = recipe;
                     vm.tags = recipe.tags.join(', ');
                     $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
                 });
+
+                $scope.onLoad = function() {
+                    vm.loading = false;
+                };
 
                 $scope.editRecipe = function() {
                     $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });

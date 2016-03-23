@@ -37,17 +37,15 @@ public class Application {
         FilterHolder holder = new FilterHolder(CrossOriginFilter.class);
         holder.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
         holder.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
-        holder.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,POST,OPTIONS,HEAD");
+        holder.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,POST,PUT,OPTIONS,HEAD");
         holder.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin");
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
-        resourceHandler.setWelcomeFiles(new String[]{ "index.html" });
-        resourceHandler.setResourceBase("../recipes-frontend/");
+        resourceHandler.setResourceBase("./recipes-frontend/");
 
         final ServletContextHandler handler = new ServletContextHandler(server, "/");
         handler.addEventListener(new GuiceContext(RECIPES_PERSISTENCE_UNIT_TEST));
-        //handler.addEventListener(new GuiceContext());
         handler.addFilter(holder, "/*", null);
         handler.addFilter(new FilterHolder(GuiceFilter.class), "/*", null);
         handler.addServlet(DefaultServlet.class, "/");

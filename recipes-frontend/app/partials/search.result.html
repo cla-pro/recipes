@@ -5,6 +5,7 @@
         Tags: {{vm.tags}}
     </div>
     <div>
+        <img ng-show="vm.loading" src="images/loading.gif" alt="chargement..." class="loading" />
         <ng-pdf template-url="partials/pdf_viewer.html" scale="page-fit"></ng-pdf>
     </div>
 </div>
