@@ -27,14 +27,6 @@ public interface RecipesDaoLocal {
     List<RecipeEntity> findRecipeWithFilter(QueryOperation queryOperation);
 
     /**
-     * Find all the recipes whose name matches the given filter.
-     *
-     * @param filter Word that must be included in the recipe's name
-     * @return All the recipes whose name matches the filter
-     */
-    List<RecipeEntity> findRecipesFilteredByName(final String filter);
-
-    /**
      * Find a recipe by id.
      *
      * @param id The recipe's id

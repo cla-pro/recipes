@@ -47,14 +47,6 @@ public class RecipesDaoBean implements RecipesDaoLocal {
                 .getResultList();
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<RecipeEntity> findRecipesFilteredByName(String filter) {
-        final Query query = entityManager.createQuery("SELECT recipe FROM RecipeEntity recipe WHERE recipe.name LIKE :filter");
-        query.setParameter("filter", filter);
-        return query.getResultList();
-    }
-
     @Override
     public RecipeEntity findRecipeById(long id) {
         return entityManager.find(RecipeEntity.class, id);
