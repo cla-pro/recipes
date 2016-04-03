@@ -25,13 +25,6 @@ public class TagsDaoBean implements TagsDaoLocal {
     }
 
     @Override
-    public TagEntity findTagByName(final String name) {
-        final Query query = entityManager.createQuery("SELECT tagEntity FROM TagEntity tagEntity WHERE tagEntity.tag = :name");
-        query.setParameter("name", name);
-        return (TagEntity) query.getSingleResult();
-    }
-
-    @Override
     public TagEntity persistTag(final TagEntity tagEntity) {
         entityManager.persist(tagEntity);
         return tagEntity;
