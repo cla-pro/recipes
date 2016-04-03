@@ -50,6 +50,6 @@ class FilterQueryFactory {
     }
 
     private Predicate generateFilter(final TextFilterOp textFilterOp) {
-        return qRecipeEntity.filename.contains(textFilterOp.getFilter());
+        return qRecipeEntity.name.containsIgnoreCase(textFilterOp.getFilter());
     }
 }
