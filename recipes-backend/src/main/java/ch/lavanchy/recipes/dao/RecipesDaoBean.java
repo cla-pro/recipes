@@ -1,6 +1,9 @@
 package ch.lavanchy.recipes.dao;
 
+import ch.lavanchy.recipes.entities.QRecipeEntity;
 import ch.lavanchy.recipes.entities.RecipeEntity;
+import ch.lavanchy.recipes.query.QueryOperation;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -16,8 +19,13 @@ import java.util.List;
  * @since 1.0.0
  */
 public class RecipesDaoBean implements RecipesDaoLocal {
+    private final QRecipeEntity qRecipeEntity = QRecipeEntity.recipeEntity;
+
     @Inject
     private EntityManager entityManager;
+
+    @Inject
+    private FilterQueryFactory filterQueryFactory;
 
     @Override
     public List<RecipeEntity> findAllRecipes() {
@@ -27,6 +35,16 @@ public class RecipesDaoBean implements RecipesDaoLocal {
         criteriaQuery.select(recipeFrom);
         criteriaQuery.orderBy(criteriaBuilder.asc(recipeFrom.get("name")));
         return entityManager.createQuery(criteriaQuery).getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation) {
+        return new JPAQueryFactory(entityManager)
+                .selectFrom(qRecipeEntity)
+                .where(filterQueryFactory.generateWhereExpression(queryOperation))
+                .createQuery()
+                .getResultList();
     }
 
     @SuppressWarnings("unchecked")

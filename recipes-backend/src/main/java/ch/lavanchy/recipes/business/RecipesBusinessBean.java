@@ -1,6 +1,5 @@
 package ch.lavanchy.recipes.business;
 
-
 import ch.lavanchy.recipes.converter.RecipeConverter;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
