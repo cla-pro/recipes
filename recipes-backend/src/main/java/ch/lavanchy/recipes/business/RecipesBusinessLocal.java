@@ -1,6 +1,7 @@
 package ch.lavanchy.recipes.business;
 
 import ch.lavanchy.recipes.data.Recipe;
+import ch.lavanchy.recipes.query.QueryOperation;
 
 import java.util.List;
 
@@ -17,6 +18,14 @@ public interface RecipesBusinessLocal {
      * @return The matching recipes
      */
     List<Recipe> findRecipes(final String filter);
+
+    /**
+     * Find all the recipes matching the given filter
+     *
+     * @param filter Filter given as a string. Will be parsed to extract each word
+     * @return The matching recipes
+     */
+    List<Recipe> findRecipesWithFilter(final QueryOperation filter);
 
     /**
      * Find a single {@link Recipe} by id

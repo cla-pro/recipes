@@ -6,6 +6,7 @@ import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.query.QueryOperation;
 import ch.lavanchy.recipes.utils.AccentHandler;
 import ch.lavanchy.recipes.utils.KeywordFilter;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +42,12 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final List<RecipeEntity> recipeEntities = recipesDao.findAllRecipes();
         final List<RecipeEntity> filteredRecipeEntities = filterRecipeEntities(recipeEntities, filter);
         return recipeConverter.convertRecipeEntityListToRecipe(filteredRecipeEntities);
+    }
+
+    @Override
+    public List<Recipe> findRecipesWithFilter(QueryOperation filter) {
+        final List<RecipeEntity> filteredRecipes = recipesDao.findRecipeWithFilter(filter);
+        return recipeConverter.convertRecipeEntityListToRecipe(filteredRecipes);
     }
 
     @Override

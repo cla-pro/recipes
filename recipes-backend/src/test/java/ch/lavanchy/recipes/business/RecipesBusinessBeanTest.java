@@ -6,6 +6,8 @@ import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.query.QueryOperation;
+import ch.lavanchy.recipes.query.TextFilterOp;
 import ch.lavanchy.recipes.utils.AccentHandler;
 import ch.lavanchy.recipes.utils.KeywordFilter;
 import org.junit.Before;
@@ -27,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -66,6 +67,7 @@ public class RecipesBusinessBeanTest {
         recipeEntities = Arrays.asList(createRecipeEntity("Croissant au jambon"), createRecipeEntity("Jambon au madere"));
 
         when(recipesDao.findAllRecipes()).thenReturn(recipeEntities);
+        when(recipesDao.findRecipeWithFilter(any(QueryOperation.class))).thenReturn(recipeEntities);
         when(recipesDao.persistRecipe(any(RecipeEntity.class))).thenAnswer(new Answer<RecipeEntity>() {
             @Override
             public RecipeEntity answer(InvocationOnMock invocation) throws Throwable {
@@ -97,6 +99,14 @@ public class RecipesBusinessBeanTest {
         final RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setName(name);
         return recipeEntity;
+    }
+
+    @Test
+    public void testFindRecipesWithFilter() {
+        final TextFilterOp queryOperation = new TextFilterOp("myFilter");
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation);
+        verify(recipesDao).findRecipeWithFilter(eq(queryOperation));
+        assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 
     @Test
