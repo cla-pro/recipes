@@ -3,6 +3,8 @@ package ch.lavanchy.recipes.services;
 import ch.lavanchy.recipes.business.FileBusinessLocal;
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.data.Recipe;
+import ch.lavanchy.recipes.query.QueryOperation;
+import ch.lavanchy.recipes.query.QueryOperationFactory;
 import com.google.gson.Gson;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataMultiPart;
@@ -16,6 +18,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -38,10 +41,15 @@ public class RecipesService {
     @Inject
     private RecipesBusinessLocal recipesBusiness;
 
+    @Inject
+    private QueryOperationFactory queryOperationFactory;
+
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public String getRecipeList(@QueryParam("filter") String filter) {
         final String validatedFilter = validateFilter(filter);
-        final List<Recipe> recipes = recipesBusiness.findRecipes(validatedFilter);
+        final QueryOperation queryOperation = queryOperationFactory.createQueryOperation(validatedFilter);
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation);
         return new Gson().toJson(recipes);
     }
 

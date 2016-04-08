@@ -18,14 +18,6 @@ public interface TagsDaoLocal {
     List<TagEntity> findAllTags();
 
     /**
-     * Find a single {@link TagEntity} by name.
-     *
-     * @param name The name to search for
-     * @return The {@link TagEntity} if found, else null
-     */
-    TagEntity findTagByName(final String name);
-
-    /**
      * Persist the given {@link TagEntity}.
      *
      * @param tagEntity The tag to persist

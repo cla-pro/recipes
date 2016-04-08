@@ -1,5 +1,6 @@
 package ch.lavanchy.recipes.data;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,21 +17,12 @@ import java.util.List;
  * @since 1.0.0
  */
 public class Recipe {
-    private final Long id;
-    private final String name;
-    private final String filename;
-    private final List<String> tags;
+    private Long id;
+    private String name;
+    private String filename;
+    private final List<String> tags = new ArrayList<>();
 
-    public Recipe() {
-        this(null, null, null, Collections.<String>emptyList());
-    }
-
-    public Recipe(final Long id, final String filename, final String name, List<String> tags) {
-        this.id = id;
-        this.filename = filename;
-        this.name = name;
-        this.tags = tags;
-    }
+    private Recipe() {}
 
     public Long getId() {
         return id;
@@ -46,5 +38,34 @@ public class Recipe {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public static class RecipeBuilder {
+        private final Recipe recipe = new Recipe();
+
+        public RecipeBuilder withId(final Long id) {
+            recipe.id = id;
+            return this;
+        }
+
+        public RecipeBuilder withFilename(final String filename) {
+            recipe.filename = filename;
+            return this;
+        }
+
+        public RecipeBuilder withName(final String name) {
+            recipe.name = name;
+            return this;
+        }
+
+        public RecipeBuilder withTags(final List<String> tags) {
+            recipe.tags.clear();
+            recipe.tags.addAll(tags);
+            return this;
+        }
+
+        public Recipe build() {
+            return recipe;
+        }
     }
 }

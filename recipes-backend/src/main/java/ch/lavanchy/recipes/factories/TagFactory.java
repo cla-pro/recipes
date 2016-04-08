@@ -1,19 +1,17 @@
-package ch.lavanchy.recipes.converter;
+package ch.lavanchy.recipes.factories;
 
-import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.data.Tag;
-import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class used to convert the {@link TagEntity} to {@link Tag}
+ * Class used to create the {@link TagEntity} and the {@link Tag}
  *
  * @since 1.0.0
  */
-public class TagConverter {
+public class TagFactory {
     /**
      * Convert a list of {@link TagEntity} into a list of {@link Tag}
      *
@@ -36,8 +34,12 @@ public class TagConverter {
      * @param tagEntity The entity to convert
      * @return The converted object
      */
-    public Tag convertTagEntityToTag(final TagEntity tagEntity) {
-        return new Tag(tagEntity.getId(), tagEntity.getName(), tagEntity.getModificationDate());
+    private Tag convertTagEntityToTag(final TagEntity tagEntity) {
+        return new Tag.TagBuilder()
+                .withId(tagEntity.getId())
+                .withName(tagEntity.getName())
+                .withModificationDate(tagEntity.getModificationDate())
+                .build();
     }
 
     /**

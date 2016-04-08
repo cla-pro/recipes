@@ -1,6 +1,7 @@
 package ch.lavanchy.recipes.dao;
 
 import ch.lavanchy.recipes.entities.RecipeEntity;
+import ch.lavanchy.recipes.query.QueryOperation;
 
 import java.util.List;
 
@@ -11,19 +12,12 @@ import java.util.List;
  */
 public interface RecipesDaoLocal {
     /**
-     * Get all the recipes without any filtering.
+     * Find all the recipes that matches with the given queryOperation (filter by name and tags).
      *
-     * @return The whole list of recipes
+     * @param queryOperation The query filter
+     * @return All the matching recipes
      */
-    List<RecipeEntity> findAllRecipes();
-
-    /**
-     * Find all the recipes whose name matches the given filter.
-     *
-     * @param filter Word that must be included in the recipe's name
-     * @return All the recipes whose name matches the filter
-     */
-    List<RecipeEntity> findRecipesFilteredByName(final String filter);
+    List<RecipeEntity> findRecipeWithFilter(QueryOperation queryOperation);
 
     /**
      * Find a recipe by id.

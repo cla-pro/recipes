@@ -1,4 +1,4 @@
-package ch.lavanchy.recipes.converter;
+package ch.lavanchy.recipes.factories;
 
 import fr.opensagres.xdocreport.converter.ConverterRegistry;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;

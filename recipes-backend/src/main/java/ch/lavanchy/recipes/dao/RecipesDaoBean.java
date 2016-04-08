@@ -1,13 +1,12 @@
 package ch.lavanchy.recipes.dao;
 
+import ch.lavanchy.recipes.entities.QRecipeEntity;
 import ch.lavanchy.recipes.entities.RecipeEntity;
+import ch.lavanchy.recipes.query.QueryOperation;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -16,25 +15,23 @@ import java.util.List;
  * @since 1.0.0
  */
 public class RecipesDaoBean implements RecipesDaoLocal {
+    private final QRecipeEntity qRecipeEntity = QRecipeEntity.recipeEntity;
+
     @Inject
     private EntityManager entityManager;
 
-    @Override
-    public List<RecipeEntity> findAllRecipes() {
-        final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        final CriteriaQuery<RecipeEntity> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(RecipeEntity.class);
-        Root<RecipeEntity> recipeFrom = criteriaQuery.from(RecipeEntity.class);
-        criteriaQuery.select(recipeFrom);
-        criteriaQuery.orderBy(criteriaBuilder.asc(recipeFrom.get("name")));
-        return entityManager.createQuery(criteriaQuery).getResultList();
-    }
+    @Inject
+    private FilterQueryFactory filterQueryFactory;
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<RecipeEntity> findRecipesFilteredByName(String filter) {
-        final Query query = entityManager.createQuery("SELECT recipe FROM RecipeEntity recipe WHERE recipe.name LIKE :filter");
-        query.setParameter("filter", filter);
-        return query.getResultList();
+    public List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation) {
+        return new JPAQueryFactory(entityManager)
+                .selectFrom(qRecipeEntity)
+                .where(filterQueryFactory.generateWhereExpression(queryOperation))
+                .orderBy(qRecipeEntity.name.asc())
+                .createQuery()
+                .getResultList();
     }
 
     @Override
