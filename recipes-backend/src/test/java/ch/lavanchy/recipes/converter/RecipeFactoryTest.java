@@ -1,5 +1,7 @@
 package ch.lavanchy.recipes.converter;
 
+import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
+
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
@@ -13,15 +15,15 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Testclass for {@link RecipeConverter}
+ * Testclass for {@link RecipeFactory}
  */
-public class RecipeConverterTest {
+public class RecipeFactoryTest {
 
     @Test
     public void testConvertRecipeEntityListToRecipeEmptyList() {
         final List<RecipeEntity> recipeEntityList = new ArrayList<>();
 
-        final List<Recipe> recipeList = new RecipeConverter().convertRecipeEntityListToRecipe(recipeEntityList);
+        final List<Recipe> recipeList = new RecipeFactory().convertRecipeEntityListToRecipe(recipeEntityList);
         assertThat(recipeList).isEmpty();
     }
 
@@ -29,7 +31,7 @@ public class RecipeConverterTest {
     public void testConvertRecipeEntityListToRecipe() {
         final List<RecipeEntity> recipeEntityList = Arrays.asList(createRecipeEntity("Croissant au jambon"), createRecipeEntity("Jambon au madere"));
 
-        final List<Recipe> recipeList = new RecipeConverter().convertRecipeEntityListToRecipe(recipeEntityList);
+        final List<Recipe> recipeList = new RecipeFactory().convertRecipeEntityListToRecipe(recipeEntityList);
         assertThat(recipeEntityList).hasSize(recipeList.size());
     }
 
@@ -37,7 +39,7 @@ public class RecipeConverterTest {
     public void testConvertRecipeEntityToRecipe() {
         final RecipeEntity recipeEntity = createRecipeEntity("Croissant au jambon");
 
-        final Recipe recipe = new RecipeConverter().convertRecipeEntityToRecipe(recipeEntity);
+        final Recipe recipe = new RecipeFactory().convertRecipeEntityToRecipe(recipeEntity);
         assertThat(recipe.getId()).isEqualTo(recipeEntity.getId());
         assertThat(recipe.getName()).isEqualTo(recipeEntity.getName());
         assertThat(recipe.getFilename()).isEqualTo(recipeEntity.getFilename());
@@ -48,7 +50,7 @@ public class RecipeConverterTest {
     public void testConvertRecipeToRecipeEntity() {
         final Recipe recipe = createRecipe("Croissant au jambon");
 
-        final RecipeEntity recipeEntity = new RecipeConverter().convertRecipeToRecipeEntity(recipe);
+        final RecipeEntity recipeEntity = new RecipeFactory().convertRecipeToRecipeEntity(recipe);
         assertThat(recipeEntity.getId()).isEqualTo(recipe.getId());
         assertThat(recipeEntity.getName()).isEqualTo(recipe.getName());
         assertThat(recipeEntity.getFilename()).isEqualTo(recipe.getFilename());
@@ -70,6 +72,9 @@ public class RecipeConverterTest {
     }
 
     private Recipe createRecipe(String name) {
-        return new Recipe(4L, null, name, Collections.<String>emptyList());
+        return new RecipeBuilder()
+                .withId(4L)
+                .withName(name)
+                .build();
     }
 }

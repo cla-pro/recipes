@@ -1,6 +1,6 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.converter.TagConverter;
+import ch.lavanchy.recipes.converter.TagFactory;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;
@@ -19,19 +19,19 @@ public class TagsBusinessBean implements TagsBusinessLocal {
     private TagsDaoLocal tagsDao;
 
     @Inject
-    private TagConverter tagConverter;
+    private TagFactory tagFactory;
 
     @Override
     public List<Tag> findAllTags() {
         List<TagEntity> tags = tagsDao.findAllTags();
-        return tagConverter.convertTagEntityListToTag(tags);
+        return tagFactory.convertTagEntityListToTag(tags);
     }
 
     @Override
     public List<Tag> findAllTagsSince(long since) {
         List<TagEntity> tags = tagsDao.findAllTags();
         List<TagEntity> youngTags = filterTagsByModificationDate(tags, since);
-        return tagConverter.convertTagEntityListToTag(youngTags);
+        return tagFactory.convertTagEntityListToTag(youngTags);
     }
 
     private List<TagEntity> filterTagsByModificationDate(List<TagEntity> tags, long since) {

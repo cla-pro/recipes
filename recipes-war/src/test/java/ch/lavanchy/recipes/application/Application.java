@@ -5,6 +5,7 @@ import com.google.inject.servlet.GuiceFilter;
 import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.DatabaseException;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
 import org.eclipse.jetty.server.Handler;
@@ -57,7 +58,7 @@ public class Application {
         server.start();
     }
 
-    public static void initDB() throws ClassNotFoundException, SQLException, LiquibaseException {
+    private static void initDB() throws ClassNotFoundException, SQLException, LiquibaseException {
         Connection connection = null;
         liquibase.database.core.H2Database databaseConnection = null;
         try {
@@ -66,7 +67,7 @@ public class Application {
             // http://stackoverflow.com/questions/5763747/h2-in-memory-database-table-not-found
             // DB_CLOSE_DELAY is used to avoid the DB to be deleted when the
             // connection is closed.
-            connection = DriverManager.getConnection("jdbc:h2:mem:recipes;DB_CLOSE_DELAY=-1", "admin", "admin");
+            connection = DriverManager.getConnection("jdbc:h2:mem:recipes;DB_CLOSE_DELAY=-1", "sa", "sa");
             connection.setAutoCommit(true);
 
             final JdbcConnection jdbcConnection = new JdbcConnection(connection);

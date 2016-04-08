@@ -1,6 +1,8 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.converter.RecipeConverter;
+import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
+
+import ch.lavanchy.recipes.converter.RecipeFactory;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
@@ -20,7 +22,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,7 +56,7 @@ public class RecipesBusinessBeanTest {
     private KeywordFilter keywordFilter = new KeywordFilter();
 
     @Spy
-    private RecipeConverter recipeConverter = new RecipeConverter();
+    private RecipeFactory recipeFactory = new RecipeFactory();
 
     @InjectMocks
     private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
@@ -161,7 +162,7 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testCreateRecipe() {
         final String name = "recipeName";
-        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList("DESSERT", "strawberry")));
+        final Recipe created = recipesBusiness.createRecipe(new RecipeBuilder().withName(name).withTags(Arrays.asList("DESSERT", "strawberry")).build());
 
         verify(recipesDao).persistRecipe(any(RecipeEntity.class));
         verify(tagsDao).findAllTags();
@@ -179,7 +180,7 @@ public class RecipesBusinessBeanTest {
         recipeMock.setName("newName");
         when(recipesDao.findRecipeById(anyInt())).thenReturn(recipeMock);
 
-        final Recipe recipe = new Recipe(3L, "filename", "newName", Arrays.asList("DESSERT", "strawberry"));
+        final Recipe recipe = new RecipeBuilder().withId(3L).withFilename("filename").withName("newName").withTags(Arrays.asList("DESSERT", "strawberry")).build();
         final Recipe updatedRecipe = recipesBusiness.updateRecipe(recipe);
 
         verify(tagsDao).persistTag(any(TagEntity.class));
@@ -190,7 +191,11 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testCleanupTags() {
         final String name = "recipeName";
-        final Recipe created = recipesBusiness.createRecipe(new Recipe(null, null, name, Arrays.asList(null, "", "DESSERT", "à", "LA", "STRAWBERRY", "strawberry")));
+        final Recipe created = recipesBusiness.createRecipe(
+                new RecipeBuilder()
+                        .withName(name)
+                        .withTags(Arrays.asList(null, "", "DESSERT", "à", "LA", "STRAWBERRY", "strawberry"))
+                        .build());
         assertThat(created.getTags()).isEqualTo(Arrays.asList("dessert", "strawberry"));
     }
 

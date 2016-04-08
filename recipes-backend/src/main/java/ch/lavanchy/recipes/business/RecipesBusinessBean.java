@@ -1,6 +1,6 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.converter.RecipeConverter;
+import ch.lavanchy.recipes.converter.RecipeFactory;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
@@ -29,7 +29,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     private TagsDaoLocal tagsDao;
 
     @Inject
-    private RecipeConverter recipeConverter;
+    private RecipeFactory recipeFactory;
 
     @Inject
     private AccentHandler accentHandler;
@@ -41,29 +41,29 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     public List<Recipe> findRecipes(final String filter) {
         final List<RecipeEntity> recipeEntities = recipesDao.findAllRecipes();
         final List<RecipeEntity> filteredRecipeEntities = filterRecipeEntities(recipeEntities, filter);
-        return recipeConverter.convertRecipeEntityListToRecipe(filteredRecipeEntities);
+        return recipeFactory.convertRecipeEntityListToRecipe(filteredRecipeEntities);
     }
 
     @Override
     public List<Recipe> findRecipesWithFilter(QueryOperation filter) {
         final List<RecipeEntity> filteredRecipes = recipesDao.findRecipeWithFilter(filter);
-        return recipeConverter.convertRecipeEntityListToRecipe(filteredRecipes);
+        return recipeFactory.convertRecipeEntityListToRecipe(filteredRecipes);
     }
 
     @Override
     public Recipe findRecipeById(final long id) {
         final RecipeEntity recipeEntity = recipesDao.findRecipeById(id);
-        return recipeConverter.convertRecipeEntityToRecipe(recipeEntity);
+        return recipeFactory.convertRecipeEntityToRecipe(recipeEntity);
     }
 
     @Override
     public Recipe createRecipe(final Recipe recipe) {
-        final RecipeEntity recipeEntity = recipeConverter.convertRecipeToRecipeEntity(recipe);
+        final RecipeEntity recipeEntity = recipeFactory.convertRecipeToRecipeEntity(recipe);
         final RecipeEntity persistedEntity = recipesDao.persistRecipe(recipeEntity);
         final List<String> tags = checkAndCleanTags(recipe.getTags());
         extractAndPersistTags(tags, persistedEntity);
 
-        return recipeConverter.convertRecipeEntityToRecipe(persistedEntity);
+        return recipeFactory.convertRecipeEntityToRecipe(persistedEntity);
     }
 
     private List<String> checkAndCleanTags(final List<String> tags) {
@@ -88,7 +88,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         removeTags(recipeEntity);
         extractAndPersistTags(tags, recipeEntity);
 
-        return recipeConverter.convertRecipeEntityToRecipe(recipeEntity);
+        return recipeFactory.convertRecipeEntityToRecipe(recipeEntity);
     }
 
     private void removeTags(final RecipeEntity recipeEntity) {
@@ -102,7 +102,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
             return null;
         } else {
             recipeEntity.setFilename(filename);
-            return recipeConverter.convertRecipeEntityToRecipe(recipeEntity);
+            return recipeFactory.convertRecipeEntityToRecipe(recipeEntity);
         }
     }
 

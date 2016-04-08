@@ -15,19 +15,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @since 1.0.0
  */
 public class Tag {
-    private final Long id;
-    private final String name;
-    private final long modificationDate;
-
-    public Tag() {
-        this(null, null, 0L);
-    }
-
-    public Tag(Long id, String name, long modificationDate) {
-        this.id = id;
-        this.name = name;
-        this.modificationDate = modificationDate;
-    }
+    private Long id;
+    private String name;
+    private long modificationDate;
 
     public Long getId() {
         return id;
@@ -59,5 +49,28 @@ public class Tag {
                 .append(id)
                 .append(name)
                 .toHashCode();
+    }
+
+    public static class TagBuilder {
+        private final Tag tag = new Tag();
+
+        public TagBuilder withId(final Long id) {
+            tag.id = id;
+            return this;
+        }
+
+        public TagBuilder withName(final String name) {
+            tag.name = name;
+            return this;
+        }
+
+        public TagBuilder withModificationDate(final long modificationDate) {
+            tag.modificationDate = modificationDate;
+            return this;
+        }
+
+        public Tag build() {
+            return tag;
+        }
     }
 }

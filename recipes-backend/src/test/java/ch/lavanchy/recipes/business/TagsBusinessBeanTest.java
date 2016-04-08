@@ -1,6 +1,8 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.converter.TagConverter;
+import static ch.lavanchy.recipes.data.Tag.TagBuilder;
+
+import ch.lavanchy.recipes.converter.TagFactory;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;
@@ -29,7 +31,7 @@ public class TagsBusinessBeanTest {
     private TagsDaoLocal tagsDao;
 
     @Spy
-    private TagConverter tagConverter = new TagConverter();
+    private TagFactory tagFactory = new TagFactory();
 
     @InjectMocks
     private TagsBusinessLocal tagsBusiness = new TagsBusinessBean();
@@ -47,7 +49,10 @@ public class TagsBusinessBeanTest {
     }
 
     private Tag createTag(String name) {
-        return new Tag(null, name, 0L);
+        return new TagBuilder()
+                .withName(name)
+                .withModificationDate(0L)
+                .build();
     }
 
     @Test

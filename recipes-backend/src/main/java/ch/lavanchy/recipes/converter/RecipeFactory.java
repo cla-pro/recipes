@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class used to convert the {@link RecipeEntity} to {@link Recipe}
+ * Class used to create the {@link RecipeEntity} and the {@link Recipe}
  *
  * @since 1.0.0
  */
-public class RecipeConverter {
+public class RecipeFactory {
     /**
      * Convert a list of {@link RecipeEntity} into a list of {@link Recipe}
      *
@@ -36,7 +36,12 @@ public class RecipeConverter {
      * @return The converted object
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
-        return new Recipe(recipeEntity.getId(), recipeEntity.getFilename(), recipeEntity.getName(), extractTags(recipeEntity));
+        return new Recipe.RecipeBuilder()
+            .withId(recipeEntity.getId())
+            .withFilename(recipeEntity.getFilename())
+            .withName(recipeEntity.getName())
+            .withTags(extractTags(recipeEntity))
+            .build();
     }
 
     private List<String> extractTags(RecipeEntity recipeEntity) {

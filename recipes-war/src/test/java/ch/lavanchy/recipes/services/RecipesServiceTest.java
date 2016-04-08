@@ -1,5 +1,7 @@
 package ch.lavanchy.recipes.services;
 
+import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
+
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.query.AndOp;
@@ -17,7 +19,6 @@ import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +51,11 @@ public class RecipesServiceTest {
     }
 
     private Recipe createRecipe(final Long id, final String name) {
-        return new Recipe(id, "", name, Collections.<String> emptyList());
+        return new RecipeBuilder()
+                .withId(id)
+                .withFilename("")
+                .withName(name)
+                .build();
     }
 
     @Test
