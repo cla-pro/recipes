@@ -12,13 +12,6 @@ import java.util.List;
  */
 public interface RecipesDaoLocal {
     /**
-     * Get all the recipes without any filtering.
-     *
-     * @return The whole list of recipes
-     */
-    List<RecipeEntity> findAllRecipes();
-
-    /**
      * Find all the recipes that matches with the given queryOperation (filter by name and tags).
      *
      * @param queryOperation The query filter

@@ -1,6 +1,7 @@
 package ch.lavanchy.recipes.entities;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,12 +52,21 @@ public class TagEntity {
     }
 
     @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(id)
+                .toHashCode();
+    }
+
+    @Override
     public boolean equals(final Object that) {
         if (that == null || !(that instanceof  TagEntity)) {
             return false;
         }
 
         final TagEntity thatTag = (TagEntity) that;
-        return new EqualsBuilder().append(id, thatTag.id).isEquals();
+        return new EqualsBuilder()
+                .append(id, thatTag.id)
+                .isEquals();
     }
 }

@@ -66,7 +66,6 @@ public class RecipesBusinessBeanTest {
     public void setUp() {
         recipeEntities = Arrays.asList(createRecipeEntity("Croissant au jambon"), createRecipeEntity("Jambon au madere"));
 
-        when(recipesDao.findAllRecipes()).thenReturn(recipeEntities);
         when(recipesDao.findRecipeWithFilter(any(QueryOperation.class))).thenReturn(recipeEntities);
         when(recipesDao.persistRecipe(any(RecipeEntity.class))).thenAnswer(new Answer<RecipeEntity>() {
             @Override

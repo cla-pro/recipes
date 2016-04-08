@@ -9,6 +9,8 @@ import ch.lavanchy.recipes.query.QueryOperation;
 import ch.lavanchy.recipes.query.TextFilterOp;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 
 /**
  * Create the QueryDSL from the string query (received as param).
@@ -27,7 +29,7 @@ class FilterQueryFactory {
         } else if (queryOperation instanceof NotOp) {
             return generateNot((NotOp) queryOperation);
         } else if (queryOperation instanceof TextFilterOp) {
-            return generateFilter((TextFilterOp) queryOperation);
+            return generateTextFilter((TextFilterOp) queryOperation);
         } else {
             return new BooleanBuilder();
         }
@@ -51,21 +53,14 @@ class FilterQueryFactory {
         return generateWhereExpression(notOp.getOperation()).not();
     }
 
-    private Predicate generateFilter(final TextFilterOp textFilterOp) {
-        return new BooleanBuilder(
-                new BooleanBuilder(qTagEntity.name.isNull())
-                        .and(createRecipeFilter(textFilterOp))
-        ).or(
-                new BooleanBuilder(qTagEntity.name.isNotNull())
-                        .and(new BooleanBuilder(createTagFilter(textFilterOp)).or(createRecipeFilter(textFilterOp)))
-        );
+    private Predicate generateTextFilter(final TextFilterOp textFilterOp) {
+        final BooleanExpression recipeFilter = qRecipeEntity.name.containsIgnoreCase(textFilterOp.getFilter());
+
+        return new BooleanBuilder(qRecipeEntity.tags.isEmpty().and(recipeFilter))
+                .or(qRecipeEntity.tags.isNotEmpty().and(recipeFilter.or(createTagFilter(textFilterOp))));
     }
 
-    private Predicate createTagFilter(TextFilterOp textFilterOp) {
-        return qTagEntity.name.containsIgnoreCase(textFilterOp.getFilter());
-    }
-
-    private Predicate createRecipeFilter(TextFilterOp textFilterOp) {
-        return qRecipeEntity.name.containsIgnoreCase(textFilterOp.getFilter());
+    private Predicate createTagFilter(final TextFilterOp textFilterOp) {
+        return qRecipeEntity.tags.any().in(JPAExpressions.selectFrom(qTagEntity).where(qTagEntity.name.containsIgnoreCase(textFilterOp.getFilter())));
     }
 }

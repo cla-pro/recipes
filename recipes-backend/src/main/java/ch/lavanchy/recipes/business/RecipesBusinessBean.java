@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of {@see RecipesBusinessLocal}
@@ -104,7 +105,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     }
 
     private void mapTagsToRecipe(RecipeEntity persistedEntity, List<TagEntity> tagEntities) {
-        final List<TagEntity> persistedTags = persistedEntity.getTags();
+        final Set<TagEntity> persistedTags = persistedEntity.getTags();
         for (TagEntity tagEntity : tagEntities) {
             if (!persistedTags.contains(tagEntity)) {
                 persistedTags.add(tagEntity);

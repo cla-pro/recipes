@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Data object which represents the table RECIPE from the db
@@ -34,7 +34,7 @@ public class RecipeEntity {
     @JoinTable(name="recipe_tag",
             joinColumns={@JoinColumn(name="recipe_id")},
             inverseJoinColumns={@JoinColumn(name="tag_id")})
-    private List<TagEntity> tags = new ArrayList<>();
+    private Set<TagEntity> tags = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -60,7 +60,7 @@ public class RecipeEntity {
         this.filename = filename;
     }
 
-    public List<TagEntity> getTags() {
+    public Set<TagEntity> getTags() {
         return tags;
     }
 }
