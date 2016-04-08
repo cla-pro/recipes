@@ -1,11 +1,11 @@
 package ch.lavanchy.recipes.dao;
 
+import ch.lavanchy.recipes.entities.QTagEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 /**
@@ -14,14 +14,18 @@ import java.util.List;
  * @since 1.0.0
  */
 public class TagsDaoBean implements TagsDaoLocal {
+    private final QTagEntity qTagEntity = QTagEntity.tagEntity;
+
     @Inject
     private EntityManager entityManager;
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<TagEntity> findAllTags() {
-        final CriteriaQuery<TagEntity> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(TagEntity.class);
-        criteriaQuery.select(criteriaQuery.from(TagEntity.class));
-        return entityManager.createQuery(criteriaQuery).getResultList();
+        return new JPAQueryFactory(entityManager)
+                .selectFrom(qTagEntity)
+                .createQuery()
+                .getResultList();
     }
 
     @Override
