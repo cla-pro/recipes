@@ -1,6 +1,7 @@
 package ch.lavanchy.recipes.dao;
 
 import ch.lavanchy.recipes.entities.QRecipeEntity;
+import ch.lavanchy.recipes.entities.QTagEntity;
 import ch.lavanchy.recipes.query.AndOp;
 import ch.lavanchy.recipes.query.NotOp;
 import ch.lavanchy.recipes.query.OrOp;
@@ -16,6 +17,7 @@ import com.querydsl.core.types.Predicate;
  */
 class FilterQueryFactory {
     private final QRecipeEntity qRecipeEntity = QRecipeEntity.recipeEntity;
+    private final QTagEntity qTagEntity = QTagEntity.tagEntity;
 
     Predicate generateWhereExpression(final QueryOperation queryOperation) {
         if (queryOperation instanceof AndOp) {
@@ -50,6 +52,20 @@ class FilterQueryFactory {
     }
 
     private Predicate generateFilter(final TextFilterOp textFilterOp) {
+        return new BooleanBuilder(
+                new BooleanBuilder(qTagEntity.name.isNull())
+                        .and(createRecipeFilter(textFilterOp))
+        ).or(
+                new BooleanBuilder(qTagEntity.name.isNotNull())
+                        .and(new BooleanBuilder(createTagFilter(textFilterOp)).or(createRecipeFilter(textFilterOp)))
+        );
+    }
+
+    private Predicate createTagFilter(TextFilterOp textFilterOp) {
+        return qTagEntity.name.containsIgnoreCase(textFilterOp.getFilter());
+    }
+
+    private Predicate createRecipeFilter(TextFilterOp textFilterOp) {
         return qRecipeEntity.name.containsIgnoreCase(textFilterOp.getFilter());
     }
 }

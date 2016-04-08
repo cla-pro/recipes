@@ -1,6 +1,7 @@
 package ch.lavanchy.recipes.dao;
 
 import ch.lavanchy.recipes.entities.QRecipeEntity;
+import ch.lavanchy.recipes.entities.QTagEntity;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.query.QueryOperation;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 public class RecipesDaoBean implements RecipesDaoLocal {
     private final QRecipeEntity qRecipeEntity = QRecipeEntity.recipeEntity;
+    private final QTagEntity qTagEntity = QTagEntity.tagEntity;
 
     @Inject
     private EntityManager entityManager;
@@ -38,6 +40,7 @@ public class RecipesDaoBean implements RecipesDaoLocal {
     public List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation) {
         return new JPAQueryFactory(entityManager)
                 .selectFrom(qRecipeEntity)
+                .leftJoin(qRecipeEntity.tags, qTagEntity)
                 .where(filterQueryFactory.generateWhereExpression(queryOperation))
                 .orderBy(qRecipeEntity.name.asc())
                 .createQuery()

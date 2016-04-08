@@ -17,14 +17,6 @@ public interface RecipesBusinessLocal {
      * @param filter Filter given as a string. Will be parsed to extract each word
      * @return The matching recipes
      */
-    List<Recipe> findRecipes(final String filter);
-
-    /**
-     * Find all the recipes matching the given filter
-     *
-     * @param filter Filter given as a string. Will be parsed to extract each word
-     * @return The matching recipes
-     */
     List<Recipe> findRecipesWithFilter(final QueryOperation filter);
 
     /**

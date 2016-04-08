@@ -1,13 +1,11 @@
 package ch.lavanchy.recipes.business;
 
-import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
-
-import ch.lavanchy.recipes.factories.RecipeFactory;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.factories.RecipeFactory;
 import ch.lavanchy.recipes.query.QueryOperation;
 import ch.lavanchy.recipes.query.TextFilterOp;
 import ch.lavanchy.recipes.utils.AccentHandler;
@@ -26,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.any;
@@ -107,55 +106,6 @@ public class RecipesBusinessBeanTest {
         final TextFilterOp queryOperation = new TextFilterOp("myFilter");
         final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation);
         verify(recipesDao).findRecipeWithFilter(eq(queryOperation));
-        assertThat(recipes).hasSameSizeAs(recipeEntities);
-    }
-
-    @Test
-    public void testFindRecipesNoFilter() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("");
-        assertThat(recipes).hasSameSizeAs(recipeEntities);
-    }
-
-    @Test
-    public void testFindRecipesSpaceFilter() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("   ");
-        assertThat(recipes).hasSameSizeAs(recipeEntities);
-    }
-
-    @Test
-    public void testFindRecipesNoMatch() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("cheese");
-        assertThat(recipes).isEmpty();
-    }
-
-    @Test
-    public void testFindRecipesPartialMatch() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("croissant");
-        assertThat(recipes).hasSize(1);
-    }
-
-    @Test
-    public void testFindRecipesFullMatch() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("jambon");
-        assertThat(recipes).hasSameSizeAs(recipeEntities);
-    }
-
-    @Test
-    public void testFindRecipesAccentMatch() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("jâmbón");
-        assertThat(recipes).hasSameSizeAs(recipeEntities);
-    }
-
-    @Test
-    public void testFindRecipesKeywordMatch() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("au beurre");
-        assertThat(recipes).isEmpty();
-    }
-
-    @Test
-    public void testFindRecipesOnlyKeywords() {
-        final List<Recipe> recipes = recipesBusiness.findRecipes("au");
-        // if all the filters are ignored, behave as if no filter
         assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 

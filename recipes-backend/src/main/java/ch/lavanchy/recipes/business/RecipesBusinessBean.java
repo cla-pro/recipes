@@ -1,11 +1,11 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.factories.RecipeFactory;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.factories.RecipeFactory;
 import ch.lavanchy.recipes.query.QueryOperation;
 import ch.lavanchy.recipes.utils.AccentHandler;
 import ch.lavanchy.recipes.utils.KeywordFilter;
@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,13 +35,6 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
 
     @Inject
     private KeywordFilter keywordFilter;
-
-    @Override
-    public List<Recipe> findRecipes(final String filter) {
-        final List<RecipeEntity> recipeEntities = recipesDao.findAllRecipes();
-        final List<RecipeEntity> filteredRecipeEntities = filterRecipeEntities(recipeEntities, filter);
-        return recipeFactory.convertRecipeEntityListToRecipe(filteredRecipeEntities);
-    }
 
     @Override
     public List<Recipe> findRecipesWithFilter(QueryOperation filter) {
@@ -150,59 +142,5 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final TagEntity tagEntity = new TagEntity();
         tagEntity.setName(tagName);
         return tagsDao.persistTag(tagEntity);
-    }
-
-    private List<RecipeEntity> filterRecipeEntities(final List<RecipeEntity> recipeEntities, final String filter) {
-        final List<RecipeEntity> filteredRecipeEntities = new ArrayList<>();
-
-        final List<String> filters = splitFilter(filter);
-        final List<String> noKeywordFilters = keywordFilter.filterKeywords(filters);
-        for (RecipeEntity recipeEntity : recipeEntities) {
-            if (matches(recipeEntity, noKeywordFilters)) {
-                filteredRecipeEntities.add(recipeEntity);
-            }
-        }
-
-        return filteredRecipeEntities;
-    }
-
-    private boolean matches(final RecipeEntity recipeEntity, final List<String> filters) {
-        final String name = recipeEntity.getName().toLowerCase();
-        final List<TagEntity> tags = recipeEntity.getTags();
-
-        for (final String filter : filters) {
-            if (notMatchName(name, filter) && notMatchTag(tags, filter)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean notMatchTag(final List<TagEntity> tags, final String filter) {
-        for (TagEntity tag : tags) {
-            final String tagName = tag.getName();
-            if (tagName.contains(filter) || accentHandler.removeAccents(tagName).contains(accentHandler.removeAccents(filter))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean notMatchName(String name, String filter) {
-        return !(name.contains(filter) || accentHandler.removeAccents(name).contains(accentHandler.removeAccents(filter)));
-    }
-
-    private List<String> splitFilter(final String filter) {
-        final String[] splitedFilter = filter.split(" ");
-        return normalizeFilters(Arrays.asList(splitedFilter));
-    }
-
-    private List<String> normalizeFilters(List<String> filters) {
-        final List<String> normalized = new ArrayList<>(filters.size());
-        for (String filter : filters) {
-            normalized.add(filter.trim().toLowerCase());
-        }
-        return normalized;
     }
 }
