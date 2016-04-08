@@ -1,4 +1,4 @@
-package ch.lavanchy.recipes.converter;
+package ch.lavanchy.recipes.factories;
 
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;

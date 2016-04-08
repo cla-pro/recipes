@@ -43,7 +43,6 @@ public class TagsDaoBeanTest {
         assertThat(tagEntity.getId()).isNull();
         final TagEntity persistedEntity = testee.persistTag(tagEntity);
 
-        assertThat(persistedEntity).isNotNull();
         assertThat(persistedEntity.getId()).isNotNull();
     }
 

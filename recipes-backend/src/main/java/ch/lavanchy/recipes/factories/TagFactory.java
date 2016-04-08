@@ -1,4 +1,4 @@
-package ch.lavanchy.recipes.converter;
+package ch.lavanchy.recipes.factories;
 
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;

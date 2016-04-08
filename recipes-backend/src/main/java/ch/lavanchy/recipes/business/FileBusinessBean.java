@@ -1,6 +1,6 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.converter.FileConverter;
+import ch.lavanchy.recipes.factories.FileConverter;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
 
 import javax.inject.Inject;

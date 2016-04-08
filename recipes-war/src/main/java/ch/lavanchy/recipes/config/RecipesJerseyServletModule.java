@@ -2,13 +2,13 @@ package ch.lavanchy.recipes.config;
 
 import ch.lavanchy.recipes.business.FileBusinessBean;
 import ch.lavanchy.recipes.business.FileBusinessLocal;
-import ch.lavanchy.recipes.converter.FileConverter;
+import ch.lavanchy.recipes.factories.FileConverter;
 import ch.lavanchy.recipes.business.RecipesBusinessBean;
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.business.TagsBusinessBean;
 import ch.lavanchy.recipes.business.TagsBusinessLocal;
-import ch.lavanchy.recipes.converter.RecipeFactory;
-import ch.lavanchy.recipes.converter.TagFactory;
+import ch.lavanchy.recipes.factories.RecipeFactory;
+import ch.lavanchy.recipes.factories.TagFactory;
 import ch.lavanchy.recipes.dao.RecipesDaoBean;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoBean;
