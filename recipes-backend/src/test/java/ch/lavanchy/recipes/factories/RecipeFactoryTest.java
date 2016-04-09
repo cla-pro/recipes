@@ -1,7 +1,5 @@
 package ch.lavanchy.recipes.factories;
 
-import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
-
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
@@ -12,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -43,6 +42,7 @@ public class RecipeFactoryTest {
         assertThat(recipe.getId()).isEqualTo(recipeEntity.getId());
         assertThat(recipe.getName()).isEqualTo(recipeEntity.getName());
         assertThat(recipe.getFilename()).isEqualTo(recipeEntity.getFilename());
+        assertThat(recipe.getRating()).isEqualTo(recipeEntity.getRating());
         assertThat(recipe.getTags()).isEqualTo(Collections.singletonList("dessert"));
     }
 
@@ -54,12 +54,14 @@ public class RecipeFactoryTest {
         assertThat(recipeEntity.getId()).isEqualTo(recipe.getId());
         assertThat(recipeEntity.getName()).isEqualTo(recipe.getName());
         assertThat(recipeEntity.getFilename()).isEqualTo(recipe.getFilename());
+        assertThat(recipe.getRating()).isEqualTo(recipeEntity.getRating());
     }
 
     private RecipeEntity createRecipeEntity(final String name) {
         final RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setId(4L);
         recipeEntity.setName(name);
+        recipeEntity.setRating(2.0f);
         recipeEntity.getTags().add(createTagEntity("dessert"));
         return recipeEntity;
     }
@@ -75,6 +77,7 @@ public class RecipeFactoryTest {
         return new RecipeBuilder()
                 .withId(4L)
                 .withName(name)
+                .withRating(2.0f)
                 .build();
     }
 }

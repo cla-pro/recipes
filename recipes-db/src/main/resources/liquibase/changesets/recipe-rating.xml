@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"
+                   logicalFilePath="/recipe-rating.xml">
+
+    <changeSet id="1.0.3-1-add-recipe-rating" author="cla">
+        <addColumn tableName="recipe">
+            <column name="rating" type="NUMBER(2,2)" defaultValue="0" />
+        </addColumn>
+        <addNotNullConstraint tableName="recipe" columnName="rating" defaultNullValue="0" columnDataType="NUMBER(2,2)" />
+    </changeSet>
+</databaseChangeLog>

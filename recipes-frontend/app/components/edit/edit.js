@@ -5,7 +5,7 @@
     recipesControllers.directive('appEdit', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/edit.html',
+            templateUrl: 'components/edit/edit.html',
             controllerAs: 'vm',
             controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout', '$tags',
                     function($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags) {

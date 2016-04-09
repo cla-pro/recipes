@@ -5,7 +5,7 @@
     recipesControllers.directive('appInsert', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/insert.html',
+            templateUrl: 'components/insert/insert.html',
             controllerAs: 'vm',
             controller: ['$scope', '$http', 'Restangular', '$accents', '$timeout', '$tags',
                     function($scope, $http, Restangular, $accents, $timeout, $tags) {

@@ -5,7 +5,7 @@
     recipesControllers.directive('appAction', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/action.html',
+            templateUrl: 'shared/action/action.html',
             transclude: true,
             controllerAs: 'vm',
             controller: ['$scope', '$stateParams',

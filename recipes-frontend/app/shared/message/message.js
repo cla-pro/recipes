@@ -5,7 +5,7 @@
     recipesControllers.directive('appMessage', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/message.html',
+            templateUrl: 'shared/message/message.html',
             scope: {
                 message: '=',
                 isError: '='

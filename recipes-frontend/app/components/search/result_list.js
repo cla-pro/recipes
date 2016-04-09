@@ -5,7 +5,7 @@
     recipesControllers.directive('appResultList', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/result_list.html',
+            templateUrl: 'components/search/result_list.html',
             scope: {
                 results: '=',
                 message: '=',

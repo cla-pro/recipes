@@ -5,7 +5,7 @@
     recipesControllers.directive('appSearch', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/search.html',
+            templateUrl: 'components/search/search.html',
             controllerAs: 'vm',
             controller: ['$scope', '$stateParams', 'Restangular', '$timeout', function($scope, $stateParams, Restangular, $timeout) {
                 var vm = this;
