@@ -33,19 +33,18 @@ gulp.task('build-dev', function() {
     gulp.src(['target/classes/images/*.png', 'target/classes/images/*.jpg', 'target/classes/images/*.gif'])
             .pipe(gulp.dest('target/dist/images'));
 
-    gulp.src(['target/classes/partials/*.html'])
+    gulp.src(['target/classes/components/**/*.html', 'target/classes/shared/**/*.html'])
         .pipe($$.htmlhint({'doctype-first': false}))
-        .pipe($$.htmlhint.reporter())
-        .pipe(gulp.dest('target/dist/partials'));
+        .pipe($$.htmlhint.reporter());
 
     gulp.src(['target/classes/bower_components/**/*'])
         .pipe(gulp.dest('target/dist/bower_components'));
 
-    gulp.src(['target/classes/js/**/*.js'])
-        .pipe(gulp.dest('target/dist/js'));
+    gulp.src(['target/classes/components/**/*.css', 'target/classes/components/**/*.html', 'target/classes/components/**/*.js'])
+        .pipe(gulp.dest('target/dist/components'));
 
-    gulp.src(['target/classes/css/**/*.css'])
-        .pipe(gulp.dest('target/dist/css'));
+    gulp.src(['target/classes/shared/**/*.css', 'target/classes/shared/**/*.html', 'target/classes/shared/**/*.js'])
+        .pipe(gulp.dest('target/dist/shared'));
 
     return gulp.src('target/classes/index.html')
         .pipe($$.debug({title: 'Processed output File: '}))
