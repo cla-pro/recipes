@@ -42,7 +42,7 @@ public class RecipeFactoryTest {
         assertThat(recipe.getId()).isEqualTo(recipeEntity.getId());
         assertThat(recipe.getName()).isEqualTo(recipeEntity.getName());
         assertThat(recipe.getFilename()).isEqualTo(recipeEntity.getFilename());
-        assertThat(recipe.getRating()).isEqualTo(recipeEntity.getRating());
+        assertThat(recipe.getRating()).isEqualTo(Math.round(recipeEntity.getRating()));
         assertThat(recipe.getTags()).isEqualTo(Collections.singletonList("dessert"));
     }
 
@@ -54,7 +54,7 @@ public class RecipeFactoryTest {
         assertThat(recipeEntity.getId()).isEqualTo(recipe.getId());
         assertThat(recipeEntity.getName()).isEqualTo(recipe.getName());
         assertThat(recipeEntity.getFilename()).isEqualTo(recipe.getFilename());
-        assertThat(recipe.getRating()).isEqualTo(recipeEntity.getRating());
+        assertThat(Math.round(recipeEntity.getRating())).isEqualTo(recipe.getRating());
     }
 
     private RecipeEntity createRecipeEntity(final String name) {

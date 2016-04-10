@@ -15,6 +15,7 @@
                 vm.name = '';
                 vm.nameOverriden = false;
                 vm.tags = [];
+                vm.rating = 0;
                 $scope.file = undefined;
                 vm.message = '';
                 vm.isError = false;
@@ -45,7 +46,7 @@
                         vm.setMessage(undefined, false);
                     }
 
-                    var content = { name: vm.name, filename: file.name };
+                    var content = { name: vm.name, filename: file.name, rating: vm.rating };
                     if (vm.tags !== undefined && vm.tags !== null) {
                         content.tags = vm.tags.map(function(e) { return e.text; });
                     }
@@ -62,10 +63,11 @@
                         vm.name = '';
                         vm.nameOverriden = false;
                         vm.tags = '';
+                        vm.rating = 0;
                         $scope.file = undefined;
                         document.getElementById('iptRecipeFile').value = '';
                         vm.setMessage('Recette enregistrée', false);
-                        vm.loadAllTags();
+                        $tags.reloadTags();
 
                         return $timeout(function() {
                             vm.setMessage('', false);

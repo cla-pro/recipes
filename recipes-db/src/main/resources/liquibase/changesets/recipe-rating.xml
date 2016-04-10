@@ -10,4 +10,7 @@
         </addColumn>
         <addNotNullConstraint tableName="recipe" columnName="rating" defaultNullValue="0" columnDataType="NUMBER(2,2)" />
     </changeSet>
+    <changeSet id="1.0.3-2-increase-size-recipe-rating" author="cla">
+        <modifyDataType tableName="recipe" columnName="rating" newDataType="NUMBER(4,2)" />
+    </changeSet>
 </databaseChangeLog>

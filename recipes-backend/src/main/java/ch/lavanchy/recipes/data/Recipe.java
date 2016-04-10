@@ -19,7 +19,7 @@ public class Recipe {
     private Long id;
     private String name;
     private String filename;
-    private float rating;
+    private int rating;
     private final List<String> tags = new ArrayList<>();
 
     private Recipe() {}
@@ -36,7 +36,7 @@ public class Recipe {
         return name;
     }
 
-    public float getRating() {
+    public int getRating() {
         return rating;
     }
 
@@ -63,7 +63,7 @@ public class Recipe {
         }
 
         public RecipeBuilder withRating(final float rating) {
-            recipe.rating = rating;
+            recipe.rating = Math.round(rating);
             return this;
         }
 

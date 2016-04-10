@@ -15,6 +15,7 @@
                 vm.id = undefined;
                 vm.name = undefined
                 vm.tags = [];
+                vm.rating = 0;
                 $scope.file = undefined;
                 vm.message = '';
                 vm.isError = false;
@@ -25,6 +26,7 @@
                     vm.id = recipe.id;
                     vm.name = recipe.name;
                     vm.tags = recipe.tags.map(function(t) { return { text: t };});
+                    vm.rating = recipe.rating;
                 });
 
                 vm.findTags = function(query) { return $tags.findTags(query); };
@@ -35,7 +37,7 @@
                     vm.setMessage(undefined, false);
 
                     var fd = new FormData();
-                    var content = { id: vm.id, name: vm.name };
+                    var content = { id: vm.id, name: vm.name, rating: vm.rating };
                     if (isObjectEmpty(vm.name)) {
                         vm.setMessage('Le nom de la recette est obligatoires', true);
                         return;
@@ -46,7 +48,7 @@
                         fd.append('file', file);
                     }
 
-                    if (isObjectNotEmpty(vm.tags)) { //vm.tags !== undefined && vm.tags !== null) {
+                    if (isObjectNotEmpty(vm.tags)) {
                         content.tags = vm.tags.map(function(e) { return e.text; });
                     }
                     fd.append('recipe', angular.toJson(content));
@@ -59,7 +61,7 @@
                         $scope.file = undefined;
                         document.getElementById('iptRecipeFile').value = '';
                         vm.setMessage('Recette enregistrée', false);
-                        vm.loadAllTags();
+                        $tags.reloadTags();
 
                         return $timeout(function() {
                             vm.setMessage('', false);
