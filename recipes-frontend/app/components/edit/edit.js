@@ -60,12 +60,10 @@
                         vm.loading = false;
                         $scope.file = undefined;
                         document.getElementById('iptRecipeFile').value = '';
-                        vm.setMessage('Recette enregistrée', false);
+
                         $tags.reloadTags();
 
-                        return $timeout(function() {
-                            vm.setMessage('', false);
-                        }, 5000);
+                        vm.back();
                     }).catch(function() {
                         vm.loading = false;
                         vm.setMessage('Une erreur est survenue pendant l\'enregistrement de la recette', true);
@@ -77,9 +75,9 @@
                     vm.isError = isError;
                 };
 
-                $scope.back = function() {
+                $scope.$parent.enableBack(function() {
                     $state.go('search_result', { 'id': $stateParams.id, 'query': vm.query });
-                };
+                });
             }]
         };
     });

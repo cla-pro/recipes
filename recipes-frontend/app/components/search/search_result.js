@@ -24,12 +24,12 @@
                     vm.loading = false;
                 };
 
-                $scope.editRecipe = function() {
-                    $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });
-                }
-                $scope.back = function() {
+                $scope.$parent.enableBack(function() {
                     $state.go('search', { 'query': vm.query });
-                }
+                });
+                $scope.$parent.enableEdit(function() {
+                    $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });
+                });
             }]
         };
     });
