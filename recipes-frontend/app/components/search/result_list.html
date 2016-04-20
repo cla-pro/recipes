@@ -3,6 +3,7 @@
     <ul>
         <li ng-repeat="result in results">
             <a ng-href="#/search/{{result.id}}?query={{query}}">{{result.name}}</a>
+            <app-star-rating my-rating="result.rating" read-only="true"></app-star-rating>
         </li>
     </ul>
 </div>

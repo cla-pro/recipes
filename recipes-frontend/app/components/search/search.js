@@ -5,7 +5,7 @@
     recipesControllers.directive('appSearch', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/search.html',
+            templateUrl: 'components/search/search.html',
             controllerAs: 'vm',
             controller: ['$scope', '$stateParams', 'Restangular', '$timeout', function($scope, $stateParams, Restangular, $timeout) {
                 var vm = this;
@@ -21,15 +21,20 @@
 
                 vm.search = function() {
                     vm.loading = true;
-                    Restangular.all('recipes').getList({'filter': vm.query}).then(function(recipes) {
-                        vm.recipes = recipes;
-                        vm.loading = false;
-                        if (vm.recipes.length === 0) {
-                            vm.message = 'Pas de recette trouvée';
-                        } else {
-                            vm.message = '';
-                        }
-                    });
+                    Restangular.all('recipes').getList({'filter': vm.query})
+                        .then(function(recipes) {
+                            vm.recipes = recipes;
+                            vm.loading = false;
+                            if (vm.recipes.length === 0) {
+                                vm.message = 'Pas de recette trouvée';
+                            } else {
+                                vm.message = '';
+                            }
+                        })
+                        .catch(function() {
+                            vm.loading = false;
+                            vm.message = 'Erreur lors de la requete';
+                        });
                 };
 
                 if (isObjectNotEmpty(vm.query)) {

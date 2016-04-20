@@ -37,11 +37,12 @@ public class RecipeFactory {
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
         return new Recipe.RecipeBuilder()
-            .withId(recipeEntity.getId())
-            .withFilename(recipeEntity.getFilename())
-            .withName(recipeEntity.getName())
-            .withTags(extractTags(recipeEntity))
-            .build();
+                .withId(recipeEntity.getId())
+                .withFilename(recipeEntity.getFilename())
+                .withName(recipeEntity.getName())
+                .withRating(recipeEntity.getRating())
+                .withTags(extractTags(recipeEntity))
+                .build();
     }
 
     private List<String> extractTags(RecipeEntity recipeEntity) {
@@ -64,6 +65,7 @@ public class RecipeFactory {
         recipeEntity.setId(recipe.getId());
         recipeEntity.setName(recipe.getName());
         recipeEntity.setFilename(recipe.getFilename());
+        recipeEntity.setRating(recipe.getRating());
         return recipeEntity;
     }
 }

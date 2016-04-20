@@ -1,6 +1,4 @@
 <div>
-    <app-action display-back="true" on-click-back="back()"></app-action>
-
     <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx"/>
     <br /><br />
     <input style="width: 99%" type="text" ng-model="vm.name" placeholder="Nom" autofocus />
@@ -8,6 +6,8 @@
     <tags-input style="width: 99%" ng-model="vm.tags" add-on-paste="true">
         <auto-complete source="vm.findTags($query)" ></auto-complete>
     </tags-input>
+    <br />
+    <app-star-rating my-rating="vm.rating" read-only="false"></app-star-rating>
     <br /><br />
 
     <button ng-hide="loading" ng-click="vm.save()">Enregistrer</button>

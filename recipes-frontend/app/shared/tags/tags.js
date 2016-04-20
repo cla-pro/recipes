@@ -16,9 +16,12 @@
             return matchingTags.map(function(e) {return e.name;});
         };
 
-        Restangular.all('tags').getList().then(function(allTags) {
-            service.tags = allTags;
-        });
+        service.reloadTags = function() {
+            Restangular.all('tags').getList().then(function(allTags) {
+                service.tags = allTags;
+            });
+        };
+        service.reloadTags();
 
         return service;
     }]);

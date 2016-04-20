@@ -1,0 +1,11 @@
+<ul class="star-rating">
+    <li ng-repeat="star in vm.stars"
+        class="star"
+        ng-mouseenter="vm.starMouseHover(star.index)"
+        ng-mouseleave="vm.starMouseLeave()"
+        ng-click="vm.starClick(star.index)">
+        <img
+                ng-src="images/{{star.image}}"
+                class="star-img" />
+    </li>
+</ul>

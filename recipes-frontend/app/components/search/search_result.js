@@ -5,7 +5,7 @@
     recipesControllers.directive('appSearchResult', function() {
         return {
             restrict: 'E',
-            templateUrl: 'partials/search.result.html',
+            templateUrl: 'components/search/search.result.html',
             controllerAs: 'vm',
             controller: ['$scope', '$state', '$stateParams', 'Restangular', function($scope, $state, $stateParams, Restangular) {
                 var vm = this;
@@ -24,12 +24,12 @@
                     vm.loading = false;
                 };
 
-                $scope.editRecipe = function() {
-                    $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });
-                }
-                $scope.back = function() {
+                $scope.$parent.enableBack(function() {
                     $state.go('search', { 'query': vm.query });
-                }
+                });
+                $scope.$parent.enableEdit(function() {
+                    $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });
+                });
             }]
         };
     });

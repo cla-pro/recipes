@@ -16,9 +16,10 @@
     <!-- endbuild -->
 
     <!-- build:css app.css -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/action.css">
-    <link rel="stylesheet" href="css/message.css">
+    <link rel="stylesheet" href="components/main/style.css">
+    <link rel="stylesheet" href="shared/action/action.css">
+    <link rel="stylesheet" href="shared/message/message.css">
+    <link rel="stylesheet" href="shared/rating/rating.css">
     <!-- endbuild -->
 
     <link rel="icon" type="image/png" href="images/favicon-94x94.png" />
@@ -26,8 +27,15 @@
 </head>
 <body ng-controller="MainCtrl">
     <div class="header">
-      <input type="image" src="images/menu-icon.png" ng-click="openAside()" alt="Menu" class="btn-menu"></button>
-      <div class="header-title">MyRecettes</div>
+        <input type="image" src="images/menu-icon.png" ng-click="openAside()" alt="Menu" class="btn-menu"></button>
+        <div class="header-title">MyRecettes</div>
+
+        <app-action
+                display-back="displayBack"
+                on-click-back="onClickBack()"
+                display-edit="displayEdit"
+                on-click-edit="onClickEdit()">
+        </app-action>
     </div>
 
     <div ui-view ng-cloak class="content">
@@ -56,20 +64,21 @@
     <!-- endbuild -->
 
     <!-- build:js app.js -->
-    <script src="js/utils.js"></script>
-    <script src="js/accents.js"></script>
-    <script src="js/tags.js"></script>
-    <script src="js/controllers.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/file_model.js"></script>
-    <script src="js/action.js"></script>
-    <script src="js/insert.js"></script>
-    <script src="js/edit.js"></script>
-    <script src="js/message.js"></script>
-    <script src="js/result_list.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/search_result.js"></script>
-    <script src="js/app.js"></script>
+    <script src="shared/utils/utils.js"></script>
+    <script src="shared/utils/accents.js"></script>
+    <script src="shared/tags/tags.js"></script>
+    <script src="components/main/controllers.js"></script>
+    <script src="components/main/main.js"></script>
+    <script src="shared/file/file_model.js"></script>
+    <script src="shared/action/action.js"></script>
+    <script src="components/insert/insert.js"></script>
+    <script src="components/edit/edit.js"></script>
+    <script src="shared/message/message.js"></script>
+    <script src="components/search/result_list.js"></script>
+    <script src="components/search/search.js"></script>
+    <script src="components/search/search_result.js"></script>
+    <script src="shared/rating/rating.js"></script>
+    <script src="components/main/app.js"></script>
     <!-- endbuild -->
 
     <!-- inject:template-js -->

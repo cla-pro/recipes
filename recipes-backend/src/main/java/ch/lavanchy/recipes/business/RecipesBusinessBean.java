@@ -77,6 +77,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         final RecipeEntity recipeEntity = recipesDao.findRecipeById(recipe.getId());
         final List<String> tags = checkAndCleanTags(recipe.getTags());
         recipeEntity.setName(recipe.getName());
+        recipeEntity.setRating(recipe.getRating());
 
         removeTags(recipeEntity);
         extractAndPersistTags(tags, recipeEntity);

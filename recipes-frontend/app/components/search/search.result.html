@@ -1,0 +1,10 @@
+<div>
+    <div>
+        <h1>{{vm.recipe.name}}</h1>
+        Tags: {{vm.tags}}
+    </div>
+    <div>
+        <img ng-show="vm.loading" src="images/loading.gif" alt="chargement..." class="loading" />
+        <ng-pdf ng-hide="vm.loading" template-url="shared/pdf/pdf_viewer.html" scale="page-fit"></ng-pdf>
+    </div>
+</div>

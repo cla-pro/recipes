@@ -1,14 +1,6 @@
 package ch.lavanchy.recipes.entities;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +21,9 @@ public class RecipeEntity {
 
     @Column(name = "filename")
     private String filename;
+
+    @Column(name = "rating")
+    private float rating;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name="recipe_tag",
@@ -58,6 +53,14 @@ public class RecipeEntity {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public Set<TagEntity> getTags() {

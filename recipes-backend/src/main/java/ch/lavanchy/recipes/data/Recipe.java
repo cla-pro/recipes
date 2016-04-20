@@ -1,7 +1,6 @@
 package ch.lavanchy.recipes.data;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +19,7 @@ public class Recipe {
     private Long id;
     private String name;
     private String filename;
+    private int rating;
     private final List<String> tags = new ArrayList<>();
 
     private Recipe() {}
@@ -34,6 +34,10 @@ public class Recipe {
 
     public String getName() {
         return name;
+    }
+
+    public int getRating() {
+        return rating;
     }
 
     public List<String> getTags() {
@@ -55,6 +59,11 @@ public class Recipe {
 
         public RecipeBuilder withName(final String name) {
             recipe.name = name;
+            return this;
+        }
+
+        public RecipeBuilder withRating(final float rating) {
+            recipe.rating = Math.round(rating);
             return this;
         }
 
