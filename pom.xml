@@ -23,6 +23,10 @@
         <version.querydsl>4.0.9</version.querydsl>
     </properties>
 
+    <scm>
+        <developerConnection>scm:git:ssh://git@cheznous/volume1/git-repos/recipes.git</developerConnection>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
@@ -32,6 +36,16 @@
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <lineLength>120</lineLength>
+                    <indentSize>4</indentSize>
                 </configuration>
             </plugin>
         </plugins>
