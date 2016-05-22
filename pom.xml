@@ -46,7 +46,6 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <lineLength>120</lineLength>
                     <indentSize>4</indentSize>
-                    <password>git</password>
                 </configuration>
             </plugin>
         </plugins>
