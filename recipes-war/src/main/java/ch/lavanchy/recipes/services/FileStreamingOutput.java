@@ -12,11 +12,11 @@ import java.io.OutputStream;
  *
  * @since 1.0.0
  */
-public class FileStreamingOutput implements StreamingOutput {
+class FileStreamingOutput implements StreamingOutput {
 
     private InputStream input;
 
-    public FileStreamingOutput(InputStream input) {
+    FileStreamingOutput(InputStream input) {
         this.input = input;
     }
 

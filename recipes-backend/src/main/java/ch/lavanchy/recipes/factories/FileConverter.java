@@ -1,20 +1,11 @@
 package ch.lavanchy.recipes.factories;
 
-import fr.opensagres.xdocreport.converter.ConverterRegistry;
-import fr.opensagres.xdocreport.converter.ConverterTypeTo;
-import fr.opensagres.xdocreport.converter.IConverter;
-import fr.opensagres.xdocreport.converter.Options;
-import fr.opensagres.xdocreport.converter.XDocConverterException;
-import fr.opensagres.xdocreport.core.document.DocumentKind;
+import ch.lavanchy.recipes.factories.converters.ToPDFConverterFactory;
 import org.apache.commons.io.FilenameUtils;
 
+import javax.inject.Inject;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Convert files of different types (ODT, DOCX, ...) to PDF
@@ -24,6 +15,9 @@ import java.io.OutputStream;
 public class FileConverter {
     private final static String PDF_EXTENSION = "pdf";
     private final static String PDF_FILENAME_EXTENSION = "." + PDF_EXTENSION;
+
+    @Inject
+    private ToPDFConverterFactory toPDFConverterFactory;
 
     /**
      * Return true if the file needs to be converted to a PDF. This checks is based on the filename's extension
@@ -59,43 +53,10 @@ public class FileConverter {
             return targetFile;
         }
 
-        return convertToPDF(sourceFile, targetFile, extension);
+        return toPDFConverterFactory.createConverter(extension).convertToPDFInFile(sourceFile, targetFile);
     }
 
     private boolean sourceOlderThanPDF(File sourceFile, File targetFile) {
         return sourceFile.lastModified() < targetFile.lastModified();
-    }
-
-    private File convertToPDF(final File sourceFile, final File targetFile, final String extension) throws FileNotFoundException {
-        final Options options = getOptions(extension);
-        final IConverter converter = ConverterRegistry.getRegistry().getConverter(options);
-
-        final InputStream in = new FileInputStream(sourceFile);
-        final OutputStream out = new FileOutputStream(targetFile);
-        try {
-            converter.convert(in, out, options);
-        } catch (XDocConverterException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                in.close();
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return targetFile;
-    }
-
-    private Options getOptions(final String extension) {
-        switch (extension.toLowerCase()) {
-            case "odt":
-                return Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF);
-            case "docx":
-                return Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF);
-            default:
-                return Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF);
-        }
     }
 }
