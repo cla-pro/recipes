@@ -4,6 +4,7 @@ import ch.lavanchy.recipes.factories.ToPDFConverter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import java.io.File;
@@ -19,12 +20,12 @@ class ImageToPDFConverter implements ToPDFConverter {
     @Override
     public File convertToPDFInFile(File sourceFile, File targetFile) {
         try (final PDDocument doc = new PDDocument()) {
-            final PDPage page = new PDPage();
+            final PDPage page = new PDPage(PDRectangle.A4);
             doc.addPage(page);
 
             final PDImageXObject pdImage = PDImageXObject.createFromFileByExtension(sourceFile, doc);
             final PDPageContentStream contents = new PDPageContentStream(doc, page);
-            contents.drawImage(pdImage, 0, 0);
+            contents.drawImage(pdImage, 0, 0, PDRectangle.A4.getWidth(), PDRectangle.A4.getHeight());
 
             contents.close();
             doc.save(targetFile);
