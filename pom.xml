@@ -21,6 +21,7 @@
         <version.h2>1.4.191</version.h2>
         <version.xdocreport>1.0.5</version.xdocreport>
         <version.querydsl>4.0.9</version.querydsl>
+        <version.mysql>5.1.39</version.mysql>
     </properties>
 
     <scm>
@@ -134,6 +135,11 @@
                 <groupId>org.mariadb.jdbc</groupId>
                 <artifactId>mariadb-java-client</artifactId>
                 <version>${version.mariadb}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${version.mysql}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>

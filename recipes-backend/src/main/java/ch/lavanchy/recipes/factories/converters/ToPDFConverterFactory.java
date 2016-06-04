@@ -22,7 +22,7 @@ public class ToPDFConverterFactory {
             case "docx":
                 return new DocToPDFConverter(Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF));
             default:
-                return new DocToPDFConverter(Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF));
+                throw new IllegalArgumentException(String.format("File extension unknown %s", extension));
         }
     }
 }

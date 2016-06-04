@@ -48,11 +48,13 @@ public class FileConverter {
 
         final String folder = sourceFile.getParent();
         final String filenamePDF = FilenameUtils.removeExtension(filename) + PDF_FILENAME_EXTENSION;
-        final File targetFile = new File(folder + File.separatorChar +  filenamePDF);
+        final File targetFile = new File(folder, filenamePDF);
+        System.out.println(String.format("Reading PDF file at %s and exists=%s", targetFile.getAbsolutePath(), targetFile.exists()));
         if (targetFile.exists() && sourceOlderThanPDF(sourceFile, targetFile)) {
             return targetFile;
         }
 
+        System.out.println(String.format("Converting file at %s to PDF", sourceFile.getAbsolutePath()));
         return toPDFConverterFactory.createConverter(extension).convertToPDFInFile(sourceFile, targetFile);
     }
 

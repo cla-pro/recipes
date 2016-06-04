@@ -15,6 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <db.driver_class>toBeDefinedWithinAProfile</db.driver_class>
         <db.url>toBeDefinedWithinAProfile</db.url>
         <db.username>toBeDefinedWithinAProfile</db.username>
         <db.password>toBeDefinedWithinAProfile</db.password>
@@ -22,8 +23,18 @@
 
     <profiles>
         <profile>
-            <id>cheznous</id>
+            <id>devenv</id>
             <properties>
+                <db.driver_class>com.mysql.jdbc.Driver</db.driver_class>
+                <db.url>jdbc:mysql://localhost/recipes</db.url>
+                <db.username>recipes</db.username>
+                <db.password>recipes</db.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <properties>
+                <db.driver_class>org.mariadb.jdbc.Driver</db.driver_class>
                 <db.url>jdbc:mariadb://cheznous:3306/recipes</db.url>
                 <db.username>recipes_dba</db.username>
                 <db.password>recipesdba</db.password>
@@ -36,6 +47,7 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.5.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -45,8 +57,8 @@
                 </executions>
                 <configuration>
                     <changeLogFile>src/main/resources/liquibase/database.xml</changeLogFile>
-                    <driver>org.mariadb.jdbc.Driver</driver>
                     <migrationSqlOutputFile>${project.build.directory}/liquibase-${project.version}.sql</migrationSqlOutputFile>
+                    <driver>${db.driver_class}</driver>
                     <url>${db.url}</url>
                     <username>${db.username}</username>
                     <password>${db.password}</password>
@@ -69,6 +81,10 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
     </dependencies>
 

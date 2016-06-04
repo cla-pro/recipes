@@ -11,10 +11,10 @@
         <class>ch.lavanchy.recipes.entities.TagEntity</class>
 
         <properties>
-            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:mariadb://cheznous:3306/recipes" />
-            <property name="hibernate.connection.username" value="recipes_dba" />
-            <property name="hibernate.connection.password" value="recipesdba" />
+            <property name="hibernate.connection.driver_class" value="${ch.lavanchy.recipes.db.driver_class}" />
+            <property name="hibernate.connection.url" value="${ch.lavanchy.recipes.db.url}" />
+            <property name="hibernate.connection.username" value="${ch.lavanchy.recipes.db.username}" />
+            <property name="hibernate.connection.password" value="${ch.lavanchy.recipes.db.password}" />
             <property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.id.new_generator_mappings" value="true" />

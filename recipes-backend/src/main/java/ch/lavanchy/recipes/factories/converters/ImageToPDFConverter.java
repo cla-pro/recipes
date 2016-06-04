@@ -19,7 +19,8 @@ import java.io.IOException;
 class ImageToPDFConverter implements ToPDFConverter {
     @Override
     public File convertToPDFInFile(File sourceFile, File targetFile) {
-        try (final PDDocument doc = new PDDocument()) {
+        PDDocument doc = new PDDocument();
+        try {
             final PDPage page = new PDPage(PDRectangle.A4);
             doc.addPage(page);
 
@@ -29,11 +30,21 @@ class ImageToPDFConverter implements ToPDFConverter {
 
             contents.close();
             doc.save(targetFile);
+            System.out.println(String.format("ImageToPDFConverter PDF saved %s", targetFile.getAbsolutePath()));
             return targetFile;
         } catch (final IOException e) {
             throw new RuntimeException(
                     String.format("Error during the conversion from the image=%s to PDF", sourceFile.getAbsolutePath()),
                     e);
+        } finally {
+            try {
+                doc.close();
+                System.out.println("Document closed");
+            } catch (IOException e) {
+                throw new RuntimeException(
+                        String.format("Error while closing the PDF document (%s)", sourceFile.getAbsolutePath()),
+                        e);
+            }
         }
     }
 }
