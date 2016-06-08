@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of {@see RecipesBusinessLocal}
@@ -60,15 +61,11 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     }
 
     private List<String> checkAndCleanTags(final List<String> tags) {
-        final List<String> cleaned = new ArrayList<>();
-        for (String tag : tags) {
-            if (StringUtils.isNotEmpty(tag)) {
-                final String lowerCase = tag.trim().toLowerCase();
-                if (!cleaned.contains(lowerCase)) {
-                    cleaned.add(lowerCase);
-                }
-            }
-        }
+        final List<String> cleaned = tags.stream()
+                .filter(tag -> StringUtils.isNotEmpty(tag))
+                .map(tag -> tag.trim().toLowerCase())
+                .distinct()
+                .collect(Collectors.toList());
         return keywordFilter.filterKeywords(cleaned);
     }
 

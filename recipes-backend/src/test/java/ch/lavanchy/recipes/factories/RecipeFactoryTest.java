@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -57,6 +56,17 @@ public class RecipeFactoryTest {
         assertThat(Math.round(recipeEntity.getRating())).isEqualTo(recipe.getRating());
     }
 
+    @Test
+    public void testFixFilename() {
+        final Recipe recipe = Recipe.builder()
+                .withId(1L)
+                .withFilename(",")
+                .withTags(new ArrayList<>())
+                .build();
+
+        assertThat(new RecipeFactory().convertRecipeToRecipeEntity(recipe).getFilename()).isEmpty();
+    }
+
     private RecipeEntity createRecipeEntity(final String name) {
         final RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setId(4L);
@@ -74,10 +84,11 @@ public class RecipeFactoryTest {
     }
 
     private Recipe createRecipe(String name) {
-        return new RecipeBuilder()
+        return Recipe.builder()
                 .withId(4L)
                 .withName(name)
                 .withRating(2.0f)
+                .withFilename("filename")
                 .build();
     }
 }

@@ -44,8 +44,14 @@ public class Recipe {
         return tags;
     }
 
+    public static RecipeBuilder builder() {
+        return new RecipeBuilder();
+    }
+
     public static class RecipeBuilder {
         private final Recipe recipe = new Recipe();
+
+        private RecipeBuilder() {}
 
         public RecipeBuilder withId(final Long id) {
             recipe.id = id;

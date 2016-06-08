@@ -24,13 +24,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Testclass for {@link RecipesBusinessBean}
@@ -111,7 +107,11 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testCreateRecipe() {
         final String name = "recipeName";
-        final Recipe created = recipesBusiness.createRecipe(new RecipeBuilder().withName(name).withTags(Arrays.asList("DESSERT", "strawberry")).build());
+        final Recipe created = recipesBusiness.createRecipe(Recipe.builder()
+                .withName(name)
+                .withFilename("")
+                .withTags(Arrays.asList("DESSERT", "strawberry"))
+                .build());
 
         verify(recipesDao).persistRecipe(any(RecipeEntity.class));
         verify(tagsDao).findAllTags();
@@ -129,7 +129,12 @@ public class RecipesBusinessBeanTest {
         recipeMock.setName("newName");
         when(recipesDao.findRecipeById(anyInt())).thenReturn(recipeMock);
 
-        final Recipe recipe = new RecipeBuilder().withId(3L).withFilename("filename").withName("newName").withTags(Arrays.asList("DESSERT", "strawberry")).build();
+        final Recipe recipe = Recipe.builder()
+                .withId(3L)
+                .withFilename("filename")
+                .withName("newName")
+                .withTags(Arrays.asList("DESSERT", "strawberry"))
+                .build();
         final Recipe updatedRecipe = recipesBusiness.updateRecipe(recipe);
 
         verify(tagsDao).persistTag(any(TagEntity.class));
@@ -141,8 +146,9 @@ public class RecipesBusinessBeanTest {
     public void testCleanupTags() {
         final String name = "recipeName";
         final Recipe created = recipesBusiness.createRecipe(
-                new RecipeBuilder()
+                Recipe.builder()
                         .withName(name)
+                        .withFilename("")
                         .withTags(Arrays.asList(null, "", "DESSERT", "à", "LA", "STRAWBERRY", "strawberry"))
                         .build());
         assertThat(created.getTags()).isEqualTo(Arrays.asList("dessert", "strawberry"));

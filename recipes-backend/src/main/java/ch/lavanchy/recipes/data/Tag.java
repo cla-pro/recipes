@@ -31,6 +31,10 @@ public class Tag {
         return modificationDate;
     }
 
+    public static TagBuilder builder() {
+        return new TagBuilder();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,6 +57,8 @@ public class Tag {
 
     public static class TagBuilder {
         private final Tag tag = new Tag();
+
+        private TagBuilder() {}
 
         public TagBuilder withId(final Long id) {
             tag.id = id;

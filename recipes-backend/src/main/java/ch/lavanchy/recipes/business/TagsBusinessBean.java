@@ -1,13 +1,13 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.factories.TagFactory;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.factories.TagFactory;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of {@see TagsBusinessLocal}
@@ -35,12 +35,8 @@ public class TagsBusinessBean implements TagsBusinessLocal {
     }
 
     private List<TagEntity> filterTagsByModificationDate(List<TagEntity> tags, long since) {
-        List<TagEntity> filtered = new ArrayList<>();
-        for (TagEntity tagEntity : tags) {
-            if (tagEntity.getModificationDate() > since) {
-                filtered.add(tagEntity);
-            }
-        }
-        return filtered;
+        return tags.stream()
+                .filter(tagEntity -> tagEntity.getModificationDate() > since)
+                .collect(Collectors.toList());
     }
 }

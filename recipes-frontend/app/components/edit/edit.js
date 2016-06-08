@@ -75,9 +75,10 @@
                     vm.isError = isError;
                 };
 
-                $scope.$parent.enableBack(function() {
+                vm.back = function() {
                     $state.go('search_result', { 'id': $stateParams.id, 'query': vm.query });
-                });
+                };
+                $scope.$parent.enableBack(vm.back);
             }]
         };
     });

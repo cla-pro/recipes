@@ -26,13 +26,10 @@ class FileStreamingOutput implements StreamingOutput {
         try {
             System.out.println(String.format("Start reading file. Estimated size=%d", input.available()));
             int bytes;
-            int numberOfBytes = 0;
             while ((bytes = input.read()) != -1) {
                 output.write(bytes);
-                System.out.println(String.format("Byte %d = %d", ++numberOfBytes, bytes));
             }
-            System.out.println();
-            System.out.println("Reading complete");
+            System.out.println("Reading the stream complete");
         } catch (Exception e) {
             throw new WebApplicationException(e);
         } finally {

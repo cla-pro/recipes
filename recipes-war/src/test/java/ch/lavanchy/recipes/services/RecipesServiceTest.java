@@ -1,14 +1,8 @@
 package ch.lavanchy.recipes.services;
 
-import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
-
 import ch.lavanchy.recipes.business.RecipesBusinessLocal;
 import ch.lavanchy.recipes.data.Recipe;
-import ch.lavanchy.recipes.query.AndOp;
-import ch.lavanchy.recipes.query.EmptyOp;
-import ch.lavanchy.recipes.query.QueryOperation;
-import ch.lavanchy.recipes.query.QueryOperationFactory;
-import ch.lavanchy.recipes.query.TextFilterOp;
+import ch.lavanchy.recipes.query.*;
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +45,7 @@ public class RecipesServiceTest {
     }
 
     private Recipe createRecipe(final Long id, final String name) {
-        return new RecipeBuilder()
+        return Recipe.builder()
                 .withId(id)
                 .withFilename("")
                 .withName(name)
