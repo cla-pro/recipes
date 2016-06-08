@@ -26,7 +26,7 @@ public class TagsService {
         return new Gson().toJson(tags);
     }
 
-    private List<Tag> findAllTags(@QueryParam("since") Long since) {
+    private List<Tag> findAllTags(final Long since) {
         if (since == null) {
             return tagsBusiness.findAllTags();
         } else {

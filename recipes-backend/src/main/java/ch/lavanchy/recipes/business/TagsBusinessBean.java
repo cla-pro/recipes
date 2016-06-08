@@ -23,18 +23,18 @@ public class TagsBusinessBean implements TagsBusinessLocal {
 
     @Override
     public List<Tag> findAllTags() {
-        List<TagEntity> tags = tagsDao.findAllTags();
+        final List<TagEntity> tags = tagsDao.findAllTags();
         return tagFactory.convertTagEntityListToTag(tags);
     }
 
     @Override
-    public List<Tag> findAllTagsSince(long since) {
-        List<TagEntity> tags = tagsDao.findAllTags();
-        List<TagEntity> youngTags = filterTagsByModificationDate(tags, since);
+    public List<Tag> findAllTagsSince(final long since) {
+        final List<TagEntity> tags = tagsDao.findAllTags();
+        final List<TagEntity> youngTags = filterTagsByModificationDate(tags, since);
         return tagFactory.convertTagEntityListToTag(youngTags);
     }
 
-    private List<TagEntity> filterTagsByModificationDate(List<TagEntity> tags, long since) {
+    private List<TagEntity> filterTagsByModificationDate(final List<TagEntity> tags, final long since) {
         return tags.stream()
                 .filter(tagEntity -> tagEntity.getModificationDate() > since)
                 .collect(Collectors.toList());

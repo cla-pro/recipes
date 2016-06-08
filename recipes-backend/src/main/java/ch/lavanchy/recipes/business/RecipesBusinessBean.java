@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,7 +40,7 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     private KeywordFilter keywordFilter;
 
     @Override
-    public List<Recipe> findRecipesWithFilter(QueryOperation filter) {
+    public List<Recipe> findRecipesWithFilter(final QueryOperation filter) {
         final List<RecipeEntity> filteredRecipes = recipesDao.findRecipeWithFilter(filter);
         return recipeFactory.convertRecipeEntityListToRecipe(filteredRecipes);
     }
@@ -102,39 +103,38 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
         mapTagsToRecipe(persistedEntity, tagEntities);
     }
 
-    private void mapTagsToRecipe(RecipeEntity persistedEntity, List<TagEntity> tagEntities) {
+    private void mapTagsToRecipe(final RecipeEntity persistedEntity, final List<TagEntity> tagEntities) {
         final Set<TagEntity> persistedTags = persistedEntity.getTags();
-        for (TagEntity tagEntity : tagEntities) {
-            if (!persistedTags.contains(tagEntity)) {
-                persistedTags.add(tagEntity);
-            }
-        }
+        tagEntities.stream()
+                .filter(tagEntity -> !persistedTags.contains(tagEntity))
+                .forEach(persistedTags::add);
     }
 
-    private List<TagEntity> getAndPersistTags(List<String> tags) {
+    private List<TagEntity> getAndPersistTags(final List<String> tags) {
         final List<TagEntity> tagEntities = new ArrayList<>(tags.size());
         final List<TagEntity> allTags = tagsDao.findAllTags();
 
         for (final String tag : tags) {
-            final TagEntity tagEntity = findTagEntity(tag, allTags);
+            final Optional<TagEntity> tagEntity = findTagEntity(tag, allTags);
 
-            if (tagEntity == null) {
+            if (tagEntity.isPresent()) {
+                tagEntities.add(tagEntity.get());
+            } else {
                 final TagEntity createTag = createAndPersistTag(tag);
                 tagEntities.add(createTag);
-            } else {
-                tagEntities.add(tagEntity);
             }
         }
         return tagEntities;
     }
 
-    private TagEntity findTagEntity(String tag, List<TagEntity> allTags) {
-        for (TagEntity tagEntity : allTags) {
+    private Optional<TagEntity> findTagEntity(final String tag, final List<TagEntity> allTags) {
+        // Don't use streams for efficiency
+        for (final TagEntity tagEntity : allTags) {
             if (tagEntity.getName().equals(tag)) {
-                return tagEntity;
+                return Optional.of(tagEntity);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     private TagEntity createAndPersistTag(final String tagName) {
