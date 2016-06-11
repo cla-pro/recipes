@@ -1,0 +1,4 @@
+<div class="help">
+    <input type="image" ng-hide="vm.isOpened" ng-click="vm.switchState()" src="images/help-icon.png" alt="Help" class="help-btn" />
+    <div ng-show="vm.isOpened" ng-click="vm.switchState()">{{helpText}}</div>
+</div>
