@@ -64,14 +64,8 @@ public class RecipeFactory {
         final RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setId(recipe.getId());
         recipeEntity.setName(recipe.getName());
-        recipeEntity.setFilename(fixRecipeName(recipe.getFilename()));
+        recipeEntity.setFilename(recipe.getFilename());
         recipeEntity.setRating(recipe.getRating());
         return recipeEntity;
-    }
-
-    private String fixRecipeName(final String toBeFixed) {
-        return INVALID_FILENAME_CHARS
-                .stream()
-                .reduce(toBeFixed, (acc, invalid) -> acc.replaceAll(invalid, EMPTY_STRING));
     }
 }

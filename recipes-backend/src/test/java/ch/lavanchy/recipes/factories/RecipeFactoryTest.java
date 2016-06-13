@@ -56,17 +56,6 @@ public class RecipeFactoryTest {
         assertThat(Math.round(recipeEntity.getRating())).isEqualTo(recipe.getRating());
     }
 
-    @Test
-    public void testFixFilename() {
-        final Recipe recipe = Recipe.builder()
-                .withId(1L)
-                .withFilename(",")
-                .withTags(new ArrayList<>())
-                .build();
-
-        assertThat(new RecipeFactory().convertRecipeToRecipeEntity(recipe).getFilename()).isEmpty();
-    }
-
     private RecipeEntity createRecipeEntity(final String name) {
         final RecipeEntity recipeEntity = new RecipeEntity();
         recipeEntity.setId(4L);

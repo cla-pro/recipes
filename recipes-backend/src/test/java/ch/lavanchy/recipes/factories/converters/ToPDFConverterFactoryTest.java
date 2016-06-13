@@ -15,6 +15,7 @@ public class ToPDFConverterFactoryTest {
         assertThat(testee.createConverter("jpg")).isInstanceOf(ImageToPDFConverter.class);
         assertThat(testee.createConverter("JpG")).isInstanceOf(ImageToPDFConverter.class);
         assertThat(testee.createConverter("JPG")).isInstanceOf(ImageToPDFConverter.class);
+        assertThat(testee.createConverter("jpeg")).isInstanceOf(ImageToPDFConverter.class);
         assertThat(testee.createConverter("BMP")).isInstanceOf(ImageToPDFConverter.class);
         assertThat(testee.createConverter("PNG")).isInstanceOf(ImageToPDFConverter.class);
 

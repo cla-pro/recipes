@@ -72,7 +72,7 @@ public class RecipesService {
         final Recipe persisted = recipesBusiness.updateRecipe(recipe);
 
         if (fileInputStream != null) {
-            fileBusiness.saveFile(fileInputStream, recipe.getFilename(), true);
+            fileBusiness.saveFile(fileInputStream, persisted.getFilename(), true);
         }
 
         return new Gson().toJson(persisted);

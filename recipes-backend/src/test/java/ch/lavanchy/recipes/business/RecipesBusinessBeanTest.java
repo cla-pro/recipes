@@ -53,6 +53,9 @@ public class RecipesBusinessBeanTest {
     @Spy
     private RecipeFactory recipeFactory = new RecipeFactory();
 
+    @Spy
+    private FilenameFixer filenameFixer = new FilenameFixer();
+
     @InjectMocks
     private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
 

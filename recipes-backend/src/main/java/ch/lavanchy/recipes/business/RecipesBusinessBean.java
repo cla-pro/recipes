@@ -9,6 +9,7 @@ import ch.lavanchy.recipes.factories.RecipeFactory;
 import ch.lavanchy.recipes.query.QueryOperation;
 import ch.lavanchy.recipes.utils.AccentHandler;
 import ch.lavanchy.recipes.utils.KeywordFilter;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
@@ -39,6 +40,9 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     @Inject
     private KeywordFilter keywordFilter;
 
+    @Inject
+    private FilenameFixer filenameFixer;
+
     @Override
     public List<Recipe> findRecipesWithFilter(final QueryOperation filter) {
         final List<RecipeEntity> filteredRecipes = recipesDao.findRecipeWithFilter(filter);
@@ -53,7 +57,11 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
 
     @Override
     public Recipe createRecipe(final Recipe recipe) {
-        final RecipeEntity recipeEntity = recipeFactory.convertRecipeToRecipeEntity(recipe);
+        final Recipe fixedRecipe = Recipe
+                .builder(recipe)
+                .withFilename(filenameFixer.fixFilename(recipe.getName(), FilenameUtils.getExtension(recipe.getFilename())))
+                .build();
+        final RecipeEntity recipeEntity = recipeFactory.convertRecipeToRecipeEntity(fixedRecipe);
         final RecipeEntity persistedEntity = recipesDao.persistRecipe(recipeEntity);
         final List<String> tags = checkAndCleanTags(recipe.getTags());
         extractAndPersistTags(tags, persistedEntity);

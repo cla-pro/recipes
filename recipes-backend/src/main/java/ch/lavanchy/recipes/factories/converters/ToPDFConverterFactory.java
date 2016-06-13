@@ -14,6 +14,7 @@ public class ToPDFConverterFactory {
     public ToPDFConverter createConverter(final String extension) {
         switch (extension.toLowerCase()) {
             case "jpg":
+            case "jpeg":
             case "png":
             case "bmp":
                 return new ImageToPDFConverter();
