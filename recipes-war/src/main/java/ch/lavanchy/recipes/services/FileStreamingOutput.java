@@ -12,11 +12,11 @@ import java.io.OutputStream;
  *
  * @since 1.0.0
  */
-public class FileStreamingOutput implements StreamingOutput {
+class FileStreamingOutput implements StreamingOutput {
 
     private InputStream input;
 
-    public FileStreamingOutput(InputStream input) {
+    FileStreamingOutput(InputStream input) {
         this.input = input;
     }
 
@@ -24,10 +24,12 @@ public class FileStreamingOutput implements StreamingOutput {
     public void write(OutputStream output)
             throws IOException, WebApplicationException {
         try {
+            System.out.println(String.format("Start reading file. Estimated size=%d", input.available()));
             int bytes;
             while ((bytes = input.read()) != -1) {
                 output.write(bytes);
             }
+            System.out.println("Reading the stream complete");
         } catch (Exception e) {
             throw new WebApplicationException(e);
         } finally {

@@ -21,7 +21,12 @@
         <version.h2>1.4.191</version.h2>
         <version.xdocreport>1.0.5</version.xdocreport>
         <version.querydsl>4.0.9</version.querydsl>
+        <version.mysql>5.1.39</version.mysql>
     </properties>
+
+    <scm>
+        <developerConnection>scm:git:ssh://git@cheznous/volume1/git-repos/recipes.git</developerConnection>
+    </scm>
 
     <build>
         <plugins>
@@ -30,8 +35,18 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <lineLength>120</lineLength>
+                    <indentSize>4</indentSize>
                 </configuration>
             </plugin>
         </plugins>
@@ -122,6 +137,11 @@
                 <version>${version.mariadb}</version>
             </dependency>
             <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${version.mysql}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${version.hibernate}</version>
@@ -148,6 +168,7 @@
                 <version>${version.querydsl}</version>
             </dependency>
 
+            <!-- PDF Management -->
             <dependency>
                 <groupId>fr.opensagres.xdocreport</groupId>
                 <artifactId>fr.opensagres.xdocreport.converter</artifactId>
@@ -162,6 +183,11 @@
                 <groupId>fr.opensagres.xdocreport</groupId>
                 <artifactId>fr.opensagres.xdocreport.converter.odt.odfdom</artifactId>
                 <version>${version.xdocreport}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>2.0.0</version>
             </dependency>
 
             <!-- Utils -->
@@ -227,4 +253,31 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

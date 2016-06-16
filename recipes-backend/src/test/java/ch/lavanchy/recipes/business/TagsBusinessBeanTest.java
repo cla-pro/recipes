@@ -1,11 +1,9 @@
 package ch.lavanchy.recipes.business;
 
-import static ch.lavanchy.recipes.data.Tag.TagBuilder;
-
-import ch.lavanchy.recipes.factories.TagFactory;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.factories.TagFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +47,7 @@ public class TagsBusinessBeanTest {
     }
 
     private Tag createTag(String name) {
-        return new TagBuilder()
+        return Tag.builder()
                 .withName(name)
                 .withModificationDate(0L)
                 .build();

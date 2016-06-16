@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static ch.lavanchy.recipes.data.Recipe.RecipeBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -74,10 +73,11 @@ public class RecipeFactoryTest {
     }
 
     private Recipe createRecipe(String name) {
-        return new RecipeBuilder()
+        return Recipe.builder()
                 .withId(4L)
                 .withName(name)
                 .withRating(2.0f)
+                .withFilename("filename")
                 .build();
     }
 }

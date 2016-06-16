@@ -6,7 +6,7 @@
 
     <changeSet id="1.0.0-1-tables" author="cla">
         <createTable tableName="recipe">
-            <column name="id" type="int">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="filename" type="java.sql.Types.VARCHAR(50)">
@@ -18,7 +18,7 @@
         </createTable>
 
         <createTable tableName="tag">
-            <column name="id" type="int">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="tag" type="java.sql.Types.VARCHAR(50)">
@@ -48,15 +48,8 @@
     </changeSet>
 
     <changeSet id="1.0.0-3-sequences" author="cla">
-        <createSequence incrementBy="1" cycle="true"
-                        sequenceName="seq_recipe_id"/>
-        <createSequence incrementBy="1" cycle="true"
-                        sequenceName="seq_tag_id"/>
-    </changeSet>
-
-    <changeSet id="1.0.0-4-auto-increment" author="cla">
-        <addAutoIncrement tableName="recipe" columnName="id" columnDataType="int" incrementBy="1" />
-        <addAutoIncrement tableName="tag" columnName="id" columnDataType="int" incrementBy="1" />
+        <createSequence incrementBy="1" cycle="true" sequenceName="seq_recipe_id"/>
+        <createSequence incrementBy="1" cycle="true" sequenceName="seq_tag_id"/>
     </changeSet>
 
     <changeSet id="1.0.0-5-add-tag-modification" author="cla">

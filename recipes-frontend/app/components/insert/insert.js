@@ -11,6 +11,7 @@
                     function($scope, $http, Restangular, $accents, $timeout, $tags) {
                 var vm = this;
 
+                vm.helpText = 'my help text';
                 vm.loading = false;
                 vm.name = '';
                 vm.nameOverriden = false;

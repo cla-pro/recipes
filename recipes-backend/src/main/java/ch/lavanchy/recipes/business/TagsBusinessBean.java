@@ -1,13 +1,13 @@
 package ch.lavanchy.recipes.business;
 
-import ch.lavanchy.recipes.factories.TagFactory;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;
+import ch.lavanchy.recipes.factories.TagFactory;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of {@see TagsBusinessLocal}
@@ -23,24 +23,20 @@ public class TagsBusinessBean implements TagsBusinessLocal {
 
     @Override
     public List<Tag> findAllTags() {
-        List<TagEntity> tags = tagsDao.findAllTags();
+        final List<TagEntity> tags = tagsDao.findAllTags();
         return tagFactory.convertTagEntityListToTag(tags);
     }
 
     @Override
-    public List<Tag> findAllTagsSince(long since) {
-        List<TagEntity> tags = tagsDao.findAllTags();
-        List<TagEntity> youngTags = filterTagsByModificationDate(tags, since);
+    public List<Tag> findAllTagsSince(final long since) {
+        final List<TagEntity> tags = tagsDao.findAllTags();
+        final List<TagEntity> youngTags = filterTagsByModificationDate(tags, since);
         return tagFactory.convertTagEntityListToTag(youngTags);
     }
 
-    private List<TagEntity> filterTagsByModificationDate(List<TagEntity> tags, long since) {
-        List<TagEntity> filtered = new ArrayList<>();
-        for (TagEntity tagEntity : tags) {
-            if (tagEntity.getModificationDate() > since) {
-                filtered.add(tagEntity);
-            }
-        }
-        return filtered;
+    private List<TagEntity> filterTagsByModificationDate(final List<TagEntity> tags, final long since) {
+        return tags.stream()
+                .filter(tagEntity -> tagEntity.getModificationDate() > since)
+                .collect(Collectors.toList());
     }
 }

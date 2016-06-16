@@ -3,8 +3,8 @@ package ch.lavanchy.recipes.factories;
 import ch.lavanchy.recipes.data.Tag;
 import ch.lavanchy.recipes.entities.TagEntity;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class used to create the {@link TagEntity} and the {@link Tag}
@@ -19,13 +19,9 @@ public class TagFactory {
      * @return The converted list
      */
     public List<Tag> convertTagEntityListToTag(final List<TagEntity> tagEntities) {
-        final List<Tag> tags = new ArrayList<>();
-
-        for (TagEntity tagEntity : tagEntities) {
-            tags.add(convertTagEntityToTag(tagEntity));
-        }
-
-        return tags;
+        return tagEntities.stream()
+                .map(tagEntity -> convertTagEntityToTag(tagEntity))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -35,7 +31,7 @@ public class TagFactory {
      * @return The converted object
      */
     private Tag convertTagEntityToTag(final TagEntity tagEntity) {
-        return new Tag.TagBuilder()
+        return Tag.builder()
                 .withId(tagEntity.getId())
                 .withName(tagEntity.getName())
                 .withModificationDate(tagEntity.getModificationDate())

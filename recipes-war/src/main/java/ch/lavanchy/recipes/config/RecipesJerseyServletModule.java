@@ -1,24 +1,16 @@
 package ch.lavanchy.recipes.config;
 
-import ch.lavanchy.recipes.business.FileBusinessBean;
-import ch.lavanchy.recipes.business.FileBusinessLocal;
-import ch.lavanchy.recipes.factories.FileConverter;
-import ch.lavanchy.recipes.business.RecipesBusinessBean;
-import ch.lavanchy.recipes.business.RecipesBusinessLocal;
-import ch.lavanchy.recipes.business.TagsBusinessBean;
-import ch.lavanchy.recipes.business.TagsBusinessLocal;
-import ch.lavanchy.recipes.factories.RecipeFactory;
-import ch.lavanchy.recipes.factories.TagFactory;
+import ch.lavanchy.recipes.business.*;
 import ch.lavanchy.recipes.dao.RecipesDaoBean;
 import ch.lavanchy.recipes.dao.RecipesDaoLocal;
 import ch.lavanchy.recipes.dao.TagsDaoBean;
 import ch.lavanchy.recipes.dao.TagsDaoLocal;
+import ch.lavanchy.recipes.factories.FileConverter;
+import ch.lavanchy.recipes.factories.RecipeFactory;
+import ch.lavanchy.recipes.factories.TagFactory;
+import ch.lavanchy.recipes.factories.converters.ToPDFConverterFactory;
 import ch.lavanchy.recipes.query.QueryOperationFactory;
-import ch.lavanchy.recipes.services.CheckService;
-import ch.lavanchy.recipes.services.RecipesService;
-import ch.lavanchy.recipes.services.RootService;
-import ch.lavanchy.recipes.services.TagsService;
-import ch.lavanchy.recipes.services.TransactionFilter;
+import ch.lavanchy.recipes.services.*;
 import ch.lavanchy.recipes.utils.PropertyProviderBean;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
 import com.google.inject.Singleton;
@@ -42,6 +34,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         bind(RecipeFactory.class).in(Singleton.class);
         bind(TagFactory.class).in(Singleton.class);
         bind(FileConverter.class).in(Singleton.class);
+        bind(ToPDFConverterFactory.class).in(Singleton.class);
         bind(QueryOperationFactory.class).in(Singleton.class);
 
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);

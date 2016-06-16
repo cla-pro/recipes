@@ -13,17 +13,10 @@ public class PropertyProviderBean implements PropertyProviderLocal {
     private final Properties properties = new Properties();
 
     {
-        final InputStream propertyFile = this.getClass().getClassLoader().getResourceAsStream("config.properties");
-        try {
+        try(final InputStream propertyFile = this.getClass().getClassLoader().getResourceAsStream("config.properties")) {
             properties.load(propertyFile);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                propertyFile.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 

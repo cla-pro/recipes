@@ -2,10 +2,11 @@ package ch.lavanchy.recipes.factories;
 
 import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
-import ch.lavanchy.recipes.entities.TagEntity;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class used to create the {@link RecipeEntity} and the {@link Recipe}
@@ -13,6 +14,9 @@ import java.util.List;
  * @since 1.0.0
  */
 public class RecipeFactory {
+    private final static Set<String> INVALID_FILENAME_CHARS = Stream.of(",").collect(Collectors.toSet());
+    private final static String EMPTY_STRING = "";
+
     /**
      * Convert a list of {@link RecipeEntity} into a list of {@link Recipe}
      *
@@ -20,13 +24,10 @@ public class RecipeFactory {
      * @return The converted list
      */
     public List<Recipe> convertRecipeEntityListToRecipe(final List<RecipeEntity> recipeEntities) {
-        final List<Recipe> recipes = new ArrayList<>();
-
-        for (RecipeEntity recipeEntity : recipeEntities) {
-            recipes.add(convertRecipeEntityToRecipe(recipeEntity));
-        }
-
-        return recipes;
+        return recipeEntities
+                .stream()
+                .map(recipeEntity -> convertRecipeEntityToRecipe(recipeEntity))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -36,7 +37,7 @@ public class RecipeFactory {
      * @return The converted object
      */
     public Recipe convertRecipeEntityToRecipe(final RecipeEntity recipeEntity) {
-        return new Recipe.RecipeBuilder()
+        return Recipe.builder()
                 .withId(recipeEntity.getId())
                 .withFilename(recipeEntity.getFilename())
                 .withName(recipeEntity.getName())
@@ -46,12 +47,11 @@ public class RecipeFactory {
     }
 
     private List<String> extractTags(RecipeEntity recipeEntity) {
-        final List<String> tags = new ArrayList<>();
-        for (TagEntity tagEntity : recipeEntity.getTags()) {
-            tags.add(tagEntity.getName());
-        }
-
-        return tags;
+        return recipeEntity
+                .getTags()
+                .stream()
+                .map(tagEntity -> tagEntity.getName())
+                .collect(Collectors.toList());
     }
 
     /**

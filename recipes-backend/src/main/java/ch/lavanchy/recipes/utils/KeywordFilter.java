@@ -1,9 +1,9 @@
 package ch.lavanchy.recipes.utils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Help class to filter the keywords
@@ -31,14 +31,8 @@ public class KeywordFilter {
     }
 
     public List<String> filterKeywords(final List<String> base) {
-        final List<String> filtered = new ArrayList<>();
-
-        for (String text : base) {
-            if (!keywords.contains(text.trim())) {
-                filtered.add(text);
-            }
-        }
-
-        return filtered;
+        return base.stream()
+                .filter(text -> !keywords.contains(text.trim()))
+                .collect(Collectors.toList());
     }
 }

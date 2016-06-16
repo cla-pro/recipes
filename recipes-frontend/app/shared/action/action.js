@@ -10,7 +10,6 @@
             controllerAs: 'vm',
             controller: ['$scope', '$stateParams',
                     function($scope, $stateParams) {
-
             }],
             scope: {
                 displayBack: '=',

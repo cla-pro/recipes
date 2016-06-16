@@ -22,7 +22,8 @@ public class Recipe {
     private int rating;
     private final List<String> tags = new ArrayList<>();
 
-    private Recipe() {}
+    private Recipe() {
+    }
 
     public Long getId() {
         return id;
@@ -44,30 +45,46 @@ public class Recipe {
         return tags;
     }
 
+    public static RecipeBuilder builder() {
+        return new RecipeBuilder();
+    }
+
+    public static RecipeBuilder builder(final Recipe base) {
+        return new RecipeBuilder()
+                .withId(base.id)
+                .withFilename(base.filename)
+                .withName(base.name)
+                .withRating(base.rating)
+                .withTags(base.tags);
+    }
+
     public static class RecipeBuilder {
         private final Recipe recipe = new Recipe();
 
-        public RecipeBuilder withId(final Long id) {
+        private RecipeBuilder() {
+        }
+
+        public final RecipeBuilder withId(final Long id) {
             recipe.id = id;
             return this;
         }
 
-        public RecipeBuilder withFilename(final String filename) {
+        public final RecipeBuilder withFilename(final String filename) {
             recipe.filename = filename;
             return this;
         }
 
-        public RecipeBuilder withName(final String name) {
+        public final RecipeBuilder withName(final String name) {
             recipe.name = name;
             return this;
         }
 
-        public RecipeBuilder withRating(final float rating) {
+        public final RecipeBuilder withRating(final float rating) {
             recipe.rating = Math.round(rating);
             return this;
         }
 
-        public RecipeBuilder withTags(final List<String> tags) {
+        public final RecipeBuilder withTags(final List<String> tags) {
             recipe.tags.clear();
             recipe.tags.addAll(tags);
             return this;
