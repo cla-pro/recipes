@@ -1,7 +1,8 @@
 <div>
     <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx,image/*"/>
-    <!--<app-help help-text="vm.helpText"></app-help>-->
-    <br /><br />
+    <br />
+    <app-help help-text="vm.helpText"></app-help>
+    <br />
     <input style="width: 99%" type="text" ng-model="vm.name" ng-change="vm.textChanged()" placeholder="Nom" autofocus />
     <br /><br />
     <tags-input style="width: 99%" ng-model="vm.tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">

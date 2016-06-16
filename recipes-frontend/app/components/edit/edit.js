@@ -11,6 +11,7 @@
                     function($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags) {
                 var vm = this;
 
+                vm.helpText = 'PDF, Word (docx), ODT, images';
                 vm.loading = false;
                 vm.id = undefined;
                 vm.name = undefined

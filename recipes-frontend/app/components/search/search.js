@@ -9,6 +9,8 @@
             controllerAs: 'vm',
             controller: ['$scope', '$stateParams', 'Restangular', '$timeout', function($scope, $stateParams, Restangular, $timeout) {
                 var vm = this;
+                vm.helpText = 'AND (par défaut quand rien n\' indiqué) et OR pour coupler les critères, ' +
+                    'NOT pour inverser et (...) pour grouper';
                 vm.query = (isObjectEmpty($stateParams.query) ? '' : decodeURIComponent($stateParams.query));
                 vm.encodedQuery = encodeURIComponent(vm.query);
                 vm.recipes = [];
