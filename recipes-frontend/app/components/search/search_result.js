@@ -14,10 +14,13 @@
                 vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
                 vm.loading = true;
 
+                var parentScope = $scope.$parent;
                 Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
                     vm.recipe = recipe;
                     vm.tags = recipe.tags.join(', ');
                     $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
+
+                    parentScope.enableDownload('../services/recipes/pdf/' + vm.recipe.id);
                 });
 
                 $scope.onLoad = function() {
