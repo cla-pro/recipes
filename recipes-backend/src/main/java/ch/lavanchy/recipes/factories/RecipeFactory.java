@@ -4,9 +4,7 @@ import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Class used to create the {@link RecipeEntity} and the {@link Recipe}
@@ -14,9 +12,6 @@ import java.util.stream.Stream;
  * @since 1.0.0
  */
 public class RecipeFactory {
-    private final static Set<String> INVALID_FILENAME_CHARS = Stream.of(",").collect(Collectors.toSet());
-    private final static String EMPTY_STRING = "";
-
     /**
      * Convert a list of {@link RecipeEntity} into a list of {@link Recipe}
      *
