@@ -1,0 +1,19 @@
+<div class="comment">
+    <!-- header: horizontal line with right 2 buttons: delete and edit -->
+    <hr>
+
+    <div ng-show="vm.isViewingState()">
+        <!--<input type="image" ng-click="clickDelete()" src="images/delete-icon.png" alt="Delete" class="comment-btn" />-->
+        <!--<input type="image" ng-click="clickEdit()" src="images/edit-icon.png" alt="Edit" class="comment-btn" />-->
+
+        <!--<div marked="vm.comment.content" class="comment-content"></div>-->
+        <div class="comment-content">{{vm.comment.content}}</div>
+    </div>
+    <div ng-show="vm.isEditingState()" class="comment-content">
+        <textarea ng-model='vm.editingContent'></textarea>
+        <br />
+        <button ng-click="vm.saveComment()">Sauvegarder</button>
+        <button ng-click="vm.cancelEditing()">Annuler</button>
+    </div>
+    <button ng-show="vm.isEmptyState()" ng-click="vm.addNewComment()">Ajouter un commentaire</button>
+</div>

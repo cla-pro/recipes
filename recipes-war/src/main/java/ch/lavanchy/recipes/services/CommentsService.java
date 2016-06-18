@@ -22,7 +22,7 @@ public class CommentsService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getComments(final Long recipeId) {
+    public Response getComments(@QueryParam("recipe_id") final Long recipeId) {
         if (recipeId == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         } else {

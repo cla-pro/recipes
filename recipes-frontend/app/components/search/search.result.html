@@ -7,4 +7,14 @@
         <img ng-show="vm.loading" src="images/loading.gif" alt="chargement..." class="loading" />
         <ng-pdf ng-hide="vm.loading" template-url="shared/pdf/pdf_viewer.html" scale="page-fit"></ng-pdf>
     </div>
+    <div>
+        <ul>
+            <li ng-repeat="comment in vm.comments" class="no-bullet-list">
+                <app-comment comment="comment" recipe-id="vm.recipeId"></app-comment>
+            </li>
+            <li class="no-bullet-list">
+                <app-comment comment-added="vm.commentAdded(comment)" recipe-id="vm.recipeId"></app-comment>
+            </li>
+        </ul>
+    </div>
 </div>
