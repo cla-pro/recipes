@@ -8,6 +8,7 @@ import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.factories.CommentFactory;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,5 +39,19 @@ public class CommentsBusinessBean implements CommentsBusinessLocal {
         commentEntity.setRecipe(recipe);
         final CommentEntity persisted = commentsDao.persist(commentEntity);
         return commentFactory.createCommentFromEntity(persisted);
+    }
+
+    @Override
+    public Comment updateComment(Comment base) {
+        final CommentEntity dbComment = commentsDao.findById(base.getId());
+        dbComment.setContent(base.getContent());
+        dbComment.setLastModification(LocalDateTime.now());
+        return commentFactory.createCommentFromEntity(dbComment);
+    }
+
+    @Override
+    public void deleteComment(long id) {
+        final CommentEntity toBeDeleted = commentsDao.findById(id);
+        commentsDao.delete(toBeDeleted);
     }
 }

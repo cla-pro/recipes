@@ -38,8 +38,22 @@ public class CommentsService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String createRecipe(final Comment comment) {
+    public String createComment(final Comment comment) {
         final Comment persisted = commentsBusiness.createComment(comment);
         return new Gson().toJson(persisted);
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public String updateComment(@PathParam("id") final long id, final Comment comment) {
+        final Comment persisted = commentsBusiness.updateComment(comment);
+        return new Gson().toJson(persisted);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteComment(@PathParam("id") final Long commentId) {
+        commentsBusiness.deleteComment(commentId);
     }
 }

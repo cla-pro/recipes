@@ -29,8 +29,8 @@
                     vm.comments = comments;
                 });
 
-                vm.commentAdded = function(comment) {
-                    return Restangular.all('comments').getList({'recipe_id': vm.recipeId}).then(function(comments) { vm.comments = comments; });
+                vm.commentUpdated = function(comment) {
+                    Restangular.all('comments').getList({'recipe_id': vm.recipeId}).then(function(comments) { vm.comments = comments; });
                 };
 
                 $scope.onLoad = function() {

@@ -10,5 +10,9 @@ import java.util.List;
 public interface CommentsDaoLocal {
     List<CommentEntity> findCommentsForRecipe(final long recipeId);
 
+    CommentEntity findById(final long id);
+
     CommentEntity persist(final CommentEntity toPersist);
+
+    void delete(final CommentEntity toDelete);
 }

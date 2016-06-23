@@ -29,8 +29,18 @@ public class CommentsDaoBean implements CommentsDaoLocal {
     }
 
     @Override
-    public CommentEntity persist(CommentEntity toPersist) {
+    public CommentEntity findById(final long id) {
+        return entityManager.find(CommentEntity.class, id);
+    }
+
+    @Override
+    public CommentEntity persist(final CommentEntity toPersist) {
         entityManager.persist(toPersist);
         return toPersist;
+    }
+
+    @Override
+    public void delete(final CommentEntity toDelete) {
+        entityManager.remove(toDelete);
     }
 }

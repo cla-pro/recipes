@@ -11,4 +11,8 @@ public interface CommentsBusinessLocal {
     List<Comment> findCommentsForRecipe(final long recipeId);
 
     Comment createComment(final Comment base);
+
+    Comment updateComment(final Comment base);
+
+    void deleteComment(long id);
 }

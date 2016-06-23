@@ -8,12 +8,12 @@
         <ng-pdf ng-hide="vm.loading" template-url="shared/pdf/pdf_viewer.html" scale="page-fit"></ng-pdf>
     </div>
     <div>
-        <ul>
-            <li class="no-bullet-list">
-                <app-comment comment-added="vm.commentAdded(comment)" recipe-id="vm.recipeId"></app-comment>
+        <ul class="no-bullet-list">
+            <li>
+                <app-comment comment-updated="vm.commentUpdated(comment)" recipe-id="vm.recipeId"></app-comment>
             </li>
-            <li ng-repeat="comment in vm.comments" class="no-bullet-list">
-                <app-comment comment="comment" recipe-id="vm.recipeId"></app-comment>
+            <li ng-repeat="comment in vm.comments">
+                <app-comment comment-updated="vm.commentUpdated(comment)" comment="comment" recipe-id="vm.recipeId"></app-comment>
             </li>
         </ul>
     </div>

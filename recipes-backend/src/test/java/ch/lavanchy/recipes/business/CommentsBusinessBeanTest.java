@@ -51,8 +51,7 @@ public class CommentsBusinessBeanTest {
     @Test
     public void testCreateComment() {
         final long recipeId = 12345L;
-        final RecipeEntity recipeEntity = mock(RecipeEntity.class);
-        doReturn(recipeId).when(recipeEntity).getId();
+        final RecipeEntity recipeEntity = mockRecipeEntity(recipeId);
         doReturn(recipeEntity).when(recipesDao).findRecipeById(anyLong());
 
         doReturn(mockCommentEntity(recipeEntity)).when(commentsDao).persist(any(CommentEntity.class));
@@ -65,11 +64,36 @@ public class CommentsBusinessBeanTest {
         verify(commentsDao).persist(any(CommentEntity.class));
     }
 
+    @Test
+    public void testUpdateComment() {
+        final RecipeEntity recipeEntity = mockRecipeEntity(12345L);
+        doReturn(mockCommentEntity(recipeEntity)).when(commentsDao).findById(anyLong());
+
+        final LocalDateTime before = LocalDateTime.now().minusDays(1);
+        final Comment base = Comment.builder().withRecipeId(12345L).withContent("bla bla").withLastModification(before).build();
+
+        final Comment result = testee.updateComment(base);
+
+        assertThat(result.getContent()).isEqualTo(base.getContent());
+        assertThat(result.getLastModification()).isAfter(base.getLastModification());
+    }
+
+    @Test
+    public void testDeleteComment() {
+        final CommentEntity commentEntity = mockCommentEntity(mockRecipeEntity(12345L));
+        doReturn(commentEntity).when(commentsDao).findById(anyLong());
+
+        testee.deleteComment(3L);
+
+        verify(commentsDao).delete(eq(commentEntity));
+    }
+
     private CommentEntity mockCommentEntity(final RecipeEntity recipe) {
         final CommentEntity entity = new CommentEntity();
         entity.setId(1L);
         entity.setRecipe(recipe);
         entity.setLastModification(LocalDateTime.now());
+        entity.setContent("123 bla");
         return entity;
     }
 
