@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true" name="production">
+    <Filter type="ThresholdFilter" level="trace"/>
+
+    <Appenders>
+        <Appender type="Console" name="STDOUT">
+            <Layout type="PatternLayout" pattern="%X %d %p [%t] %C %m%n"/>
+        </Appender>
+        <Appender type="File" name="File" fileName="../logs/ch.lavanchy.recipes.log">
+            <Layout type="PatternLayout">
+                <Pattern>%X %d %p [%t] %C %m%n</Pattern>
+            </Layout>
+        </Appender>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="ch.lavanchy" level="debug" additivity="false">
+            <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="File" />
+        </Logger>
+
+        <Logger name="org.apache.logging.log4j.test2" level="debug" additivity="false">
+            <AppenderRef ref="File" />
+        </Logger>
+
+        <Root level="trace">
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>

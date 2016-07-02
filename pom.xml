@@ -21,6 +21,7 @@
         <version.h2>1.4.191</version.h2>
         <version.xdocreport>1.0.5</version.xdocreport>
         <version.querydsl>4.0.9</version.querydsl>
+        <version.log4j>2.6.1</version.log4j>
         <version.mysql>5.1.39</version.mysql>
     </properties>
 
@@ -70,6 +71,17 @@
                 <groupId>javax.transaction</groupId>
                 <artifactId>javax.transaction-api</artifactId>
                 <version>1.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${version.log4j}</version>
             </dependency>
 
             <dependency>
@@ -278,6 +290,15 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
         </dependency>
 
         <dependency>
