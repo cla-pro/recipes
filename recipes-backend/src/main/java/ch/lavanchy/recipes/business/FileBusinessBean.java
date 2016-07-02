@@ -4,7 +4,10 @@ import ch.lavanchy.recipes.factories.FileConverter;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
 
 import javax.inject.Inject;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 
 /**
@@ -51,13 +54,22 @@ public class FileBusinessBean implements FileBusinessLocal {
     }
 
     @Override
-    public InputStream readFile(String filename) throws FileNotFoundException {
+    public File readPDFFile(String filename) throws FileNotFoundException {
         final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
         final File file = getFileToRead(filename, location);
         final File pdfFile = fileConverter.getFileAsPDF(file);
         System.out.println(String.format("%d bytes to read for file=%s", pdfFile.length(), pdfFile.getAbsolutePath()));
 
-        return new FileInputStream(pdfFile);
+        return pdfFile;
+    }
+
+    @Override
+    public File readOriginalFile(String filename) throws FileNotFoundException {
+        final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
+        final File file = getFileToRead(filename, location);
+        System.out.println(String.format("%d bytes to read for file=%s", file.length(), file.getAbsolutePath()));
+
+        return file;
     }
 
     private File getFileToRead(String filename, String location) throws FileNotFoundException {

@@ -1,10 +1,8 @@
 package ch.lavanchy.recipes.config;
 
 import ch.lavanchy.recipes.business.*;
-import ch.lavanchy.recipes.dao.RecipesDaoBean;
-import ch.lavanchy.recipes.dao.RecipesDaoLocal;
-import ch.lavanchy.recipes.dao.TagsDaoBean;
-import ch.lavanchy.recipes.dao.TagsDaoLocal;
+import ch.lavanchy.recipes.dao.*;
+import ch.lavanchy.recipes.factories.CommentFactory;
 import ch.lavanchy.recipes.factories.FileConverter;
 import ch.lavanchy.recipes.factories.RecipeFactory;
 import ch.lavanchy.recipes.factories.TagFactory;
@@ -31,6 +29,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
     protected void configureServlets() {
         bind(TransactionFilter.class).in(Singleton.class);
 
+        bind(CommentFactory.class).in(Singleton.class);
         bind(RecipeFactory.class).in(Singleton.class);
         bind(TagFactory.class).in(Singleton.class);
         bind(FileConverter.class).in(Singleton.class);
@@ -39,13 +38,16 @@ class RecipesJerseyServletModule extends JerseyServletModule {
 
         bind(PropertyProviderLocal.class).to(PropertyProviderBean.class);
 
+        bind(CommentsDaoLocal.class).to(CommentsDaoBean.class);
         bind(RecipesDaoLocal.class).to(RecipesDaoBean.class);
         bind(TagsDaoLocal.class).to(TagsDaoBean.class);
 
+        bind(CommentsBusinessLocal.class).to(CommentsBusinessBean.class);
         bind(FileBusinessLocal.class).to(FileBusinessBean.class);
         bind(RecipesBusinessLocal.class).to(RecipesBusinessBean.class);
         bind(TagsBusinessLocal.class).to(TagsBusinessBean.class);
 
+        bind(CommentsService.class);
         bind(RecipesService.class);
         bind(TagsService.class);
         bind(CheckService.class);

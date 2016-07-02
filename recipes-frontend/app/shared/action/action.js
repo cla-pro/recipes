@@ -8,12 +8,13 @@
             templateUrl: 'shared/action/action.html',
             transclude: true,
             controllerAs: 'vm',
-            controller: ['$scope', '$stateParams',
-                    function($scope, $stateParams) {
-            }],
+            controller: ['$scope', '$stateParams', function($scope, $stateParams) {}],
             scope: {
                 displayBack: '=',
                 displayEdit: '=',
+                displayDownload: '=',
+                downloadUrl: '=',
+                downloadUrlPdf: '=',
                 clickBack: '&onClickBack',
                 clickEdit: '&onClickEdit'
             }

@@ -1,6 +1,11 @@
 package ch.lavanchy.recipes.factories.converters;
 
 import ch.lavanchy.recipes.factories.ToPDFConverter;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.MetadataException;
+import com.drew.metadata.exif.ExifIFD0Directory;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -22,11 +27,14 @@ class ImageToPDFConverter implements ToPDFConverter {
         PDDocument doc = new PDDocument();
         try {
             final PDPage page = new PDPage(PDRectangle.A4);
+            final ImageOrientation imageOrientation = getImageOrientation(sourceFile);
+            page.setRotation(imageOrientation.getRotation());
             doc.addPage(page);
 
             final PDImageXObject pdImage = PDImageXObject.createFromFileByExtension(sourceFile, doc);
             final PDPageContentStream contents = new PDPageContentStream(doc, page);
-            contents.drawImage(pdImage, 0, 0, PDRectangle.A4.getWidth(), PDRectangle.A4.getHeight());
+            contents.transform(imageOrientation.getTransformMatrix(page.getMediaBox()));
+            imageOrientation.drawImage(contents, pdImage);
 
             contents.close();
             doc.save(targetFile);
@@ -45,6 +53,24 @@ class ImageToPDFConverter implements ToPDFConverter {
                         String.format("Error while closing the PDF document (%s)", sourceFile.getAbsolutePath()),
                         e);
             }
+        }
+    }
+
+    private ImageOrientation getImageOrientation(final File file) throws IOException {
+        try {
+            final Metadata metadata = ImageMetadataReader.readMetadata(file);
+            final ExifIFD0Directory exifIFD0Directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
+
+            if (exifIFD0Directory == null) {
+                return ImageOrientation.PORTRAIT;
+            } else if (exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION) == 0 ||
+                    exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION) == 180) {
+                return ImageOrientation.PORTRAIT;
+            } else {
+                return ImageOrientation.LANDSCAPE;
+            }
+        } catch (final ImageProcessingException | MetadataException e) {
+            return ImageOrientation.PORTRAIT;
         }
     }
 }

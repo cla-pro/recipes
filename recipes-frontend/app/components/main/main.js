@@ -8,6 +8,7 @@
 
             $scope.displayBack = false;
             $scope.displayEdit = false;
+            $scope.displayDownload = false;
 
             $scope.enableBack = function(onClickBack) {
                 $scope.displayBack = true;
@@ -17,6 +18,11 @@
                 $scope.displayEdit = true;
                 $scope.onClickEdit = onClickEdit;
             };
+            $scope.enableDownload = function(url, urlPdf) {
+                $scope.displayDownload = true;
+                $scope.downloadUrl = url;
+                $scope.downloadUrlPdf = urlPdf;
+            };
             var scope = $scope;
             $rootScope.$on('$stateChangeStart',
                 function(){
@@ -24,6 +30,8 @@
                     scope.onClickBack = undefined;
                     scope.displayEdit = false;
                     scope.onClickEdit = undefined;
+                    scope.displayDownload = false;
+                    scope.downloadUrl = undefined;
                 });
 
             $scope.asideState = {

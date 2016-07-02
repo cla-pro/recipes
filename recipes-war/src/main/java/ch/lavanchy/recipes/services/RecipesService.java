@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -80,16 +81,27 @@ public class RecipesService {
 
     @GET
     @Path("/pdf/{id}")
-    public Response getFile(@PathParam("id") long id) throws IOException {
-        Recipe recipe = recipesBusiness.findRecipeById(id);
-        final InputStream inputStream = fileBusiness.readFile(recipe.getFilename());
+    public Response getPDFFile(@PathParam("id") long id) throws IOException {
+        final Recipe recipe = recipesBusiness.findRecipeById(id);
+        final File toUpload = fileBusiness.readPDFFile(recipe.getFilename());
+        return createResponseFromFile(toUpload);
+    }
 
-        if (inputStream == null) {
+    @GET
+    @Path("/file/{id}")
+    public Response getOriginalFile(@PathParam("id") long id) throws IOException {
+        final Recipe recipe = recipesBusiness.findRecipeById(id);
+        final File toUpload = fileBusiness.readOriginalFile(recipe.getFilename());
+        return createResponseFromFile(toUpload);
+    }
+
+    private Response createResponseFromFile(final File toUpload) {
+        if (toUpload == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } else {
             return Response
-                    .ok(new FileStreamingOutput(inputStream))
-                    .header("content-disposition", "attachment; filename = " + recipe.getFilename())
+                    .ok(new BytesStreamingOutput(toUpload))
+                    .header("content-disposition", "attachment; filename = " + toUpload.getName())
                     .build();
         }
     }

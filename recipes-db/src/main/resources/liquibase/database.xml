@@ -5,5 +5,6 @@
 
     <include file="changesets/recipe-initial.xml" relativeToChangelogFile="true" />
     <include file="changesets/recipe-rating.xml" relativeToChangelogFile="true" />
+    <include file="changesets/recipe-comment.xml" relativeToChangelogFile="true" />
 
 </databaseChangeLog>

@@ -13,12 +13,27 @@
                 vm.tags = '';
                 vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
                 vm.loading = true;
+                vm.comments = [];
+                vm.recipeId = $stateParams.id;
 
-                Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
+                var parentScope = $scope.$parent;
+                Restangular.one('recipes', vm.recipeId).get().then(function(recipe) {
                     vm.recipe = recipe;
                     vm.tags = recipe.tags.join(', ');
                     $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
+
+                    parentScope.enableDownload(
+                        '../services/recipes/file/' + vm.recipe.id,
+                        '../services/recipes/pdf/' + vm.recipe.id);
+
+                    return Restangular.all('comments').getList({'recipe_id': vm.recipeId});
+                }).then(function(comments) {
+                    vm.comments = comments;
                 });
+
+                vm.commentUpdated = function(comment) {
+                    Restangular.all('comments').getList({'recipe_id': vm.recipeId}).then(function(comments) { vm.comments = comments; });
+                };
 
                 $scope.onLoad = function() {
                     vm.loading = false;

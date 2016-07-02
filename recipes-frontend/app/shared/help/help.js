@@ -6,12 +6,11 @@
         return {
             restrict: 'E',
             templateUrl: 'shared/help/help.html',
-            //transclude: true,
             controllerAs: 'vm',
             controller: ['$scope',
                 function($scope) {
                     var vm = this;
-                    vm.isOpened = false;
+                    vm.isClosed = true;
                     vm.switchState = function() {
                         vm.isClosed = !vm.isClosed;
                     };

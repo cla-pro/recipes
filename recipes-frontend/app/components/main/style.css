@@ -78,6 +78,7 @@ body {
 
 .no-bullet-list {
   list-style-type: none;
+  padding-left: 0;
 }
 
 .box ul.boxList {

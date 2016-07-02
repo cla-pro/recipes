@@ -21,8 +21,9 @@ public class CheckService {
     public String check() {
         final String userStmt = generateUserStmt();
         final String fileLocationStmt = generateFileLocationStmt();
+        final String backVersionStmt = generateBackendVersionStmt();
 
-        return String.format("<html><body>%s %s</body>", userStmt, fileLocationStmt);
+        return String.format("<html><body>%s %s %s</body>", userStmt, fileLocationStmt, backVersionStmt);
     }
 
     private String generateFileLocationStmt() {
@@ -35,5 +36,9 @@ public class CheckService {
 
     private String generateUserStmt() {
         return "User: " + System.getProperty("user.name") + "<br />";
+    }
+
+    private String generateBackendVersionStmt() {
+        return "Backend version: " + getClass().getPackage().getImplementationVersion() + "<br />";
     }
 }
