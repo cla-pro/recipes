@@ -50,6 +50,7 @@
                             .then(function(args) {
                                 vm.state = 'VIEWING';
                                 vm.editingContent = '';
+                                vm._comment = args;
                                 that.commentUpdated(vm._comment);
                             });
                     }

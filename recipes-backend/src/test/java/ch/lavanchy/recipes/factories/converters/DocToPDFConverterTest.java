@@ -32,5 +32,7 @@ public class DocToPDFConverterTest {
         assertThat(result).isNotNull();
         assertThat(result.exists()).isTrue();
         assertThat(result.length()).isGreaterThan(0L);
+
+        folder.delete();
     }
 }

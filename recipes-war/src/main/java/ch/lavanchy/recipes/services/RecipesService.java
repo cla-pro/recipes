@@ -16,7 +16,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -90,7 +89,7 @@ public class RecipesService {
             return Response.status(Response.Status.NOT_FOUND).build();
         } else {
             return Response
-                    .ok(new FileStreamingOutput(new FileInputStream(pdf)))
+                    .ok(new BytesStreamingOutput(pdf))
                     .header("content-disposition", "attachment; filename = " + pdf.getName())
                     .build();
         }

@@ -58,6 +58,7 @@
                 <configuration>
                     <changeLogFile>src/main/resources/liquibase/database.xml</changeLogFile>
                     <migrationSqlOutputFile>${project.build.directory}/liquibase-${project.version}.sql</migrationSqlOutputFile>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                     <driver>${db.driver_class}</driver>
                     <url>${db.url}</url>
                     <username>${db.username}</username>
