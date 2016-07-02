@@ -54,13 +54,22 @@ public class FileBusinessBean implements FileBusinessLocal {
     }
 
     @Override
-    public File readFile(String filename) throws FileNotFoundException {
+    public File readPDFFile(String filename) throws FileNotFoundException {
         final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
         final File file = getFileToRead(filename, location);
         final File pdfFile = fileConverter.getFileAsPDF(file);
         System.out.println(String.format("%d bytes to read for file=%s", pdfFile.length(), pdfFile.getAbsolutePath()));
 
         return pdfFile;
+    }
+
+    @Override
+    public File readOriginalFile(String filename) throws FileNotFoundException {
+        final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
+        final File file = getFileToRead(filename, location);
+        System.out.println(String.format("%d bytes to read for file=%s", file.length(), file.getAbsolutePath()));
+
+        return file;
     }
 
     private File getFileToRead(String filename, String location) throws FileNotFoundException {

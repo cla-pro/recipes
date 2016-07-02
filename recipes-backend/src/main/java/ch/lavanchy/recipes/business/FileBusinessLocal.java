@@ -19,11 +19,20 @@ public interface FileBusinessLocal {
     void saveFile(final InputStream inputStream, final String filename, final boolean overwrite);
 
     /**
+     * Return the PDF file identified by the filename
+     *
+     * @param filename The name of the file to read
+     * @return The file
+     * @throws FileNotFoundException if the file cannot be found
+     */
+    File readPDFFile(final String filename) throws FileNotFoundException;
+
+    /**
      * Return the file identified by the filename
      *
      * @param filename The name of the file to read
      * @return The file
      * @throws FileNotFoundException if the file cannot be found
      */
-    File readFile(final String filename) throws FileNotFoundException;
+    File readOriginalFile(final String filename) throws FileNotFoundException;
 }

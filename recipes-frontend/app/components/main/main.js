@@ -18,9 +18,10 @@
                 $scope.displayEdit = true;
                 $scope.onClickEdit = onClickEdit;
             };
-            $scope.enableDownload = function(url) {
+            $scope.enableDownload = function(url, urlPdf) {
                 $scope.displayDownload = true;
                 $scope.downloadUrl = url;
+                $scope.downloadUrlPdf = urlPdf;
             };
             var scope = $scope;
             $rootScope.$on('$stateChangeStart',

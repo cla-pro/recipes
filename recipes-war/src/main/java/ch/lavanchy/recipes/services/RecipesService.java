@@ -81,16 +81,27 @@ public class RecipesService {
 
     @GET
     @Path("/pdf/{id}")
-    public Response getFile(@PathParam("id") long id) throws IOException {
-        Recipe recipe = recipesBusiness.findRecipeById(id);
-        final File pdf = fileBusiness.readFile(recipe.getFilename());
+    public Response getPDFFile(@PathParam("id") long id) throws IOException {
+        final Recipe recipe = recipesBusiness.findRecipeById(id);
+        final File toUpload = fileBusiness.readPDFFile(recipe.getFilename());
+        return createResponseFromFile(toUpload);
+    }
 
-        if (pdf == null) {
+    @GET
+    @Path("/file/{id}")
+    public Response getOriginalFile(@PathParam("id") long id) throws IOException {
+        final Recipe recipe = recipesBusiness.findRecipeById(id);
+        final File toUpload = fileBusiness.readOriginalFile(recipe.getFilename());
+        return createResponseFromFile(toUpload);
+    }
+
+    private Response createResponseFromFile(final File toUpload) {
+        if (toUpload == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         } else {
             return Response
-                    .ok(new BytesStreamingOutput(pdf))
-                    .header("content-disposition", "attachment; filename = " + pdf.getName())
+                    .ok(new BytesStreamingOutput(toUpload))
+                    .header("content-disposition", "attachment; filename = " + toUpload.getName())
                     .build();
         }
     }

@@ -14,6 +14,7 @@
                 displayEdit: '=',
                 displayDownload: '=',
                 downloadUrl: '=',
+                downloadUrlPdf: '=',
                 clickBack: '&onClickBack',
                 clickEdit: '&onClickEdit'
             }
