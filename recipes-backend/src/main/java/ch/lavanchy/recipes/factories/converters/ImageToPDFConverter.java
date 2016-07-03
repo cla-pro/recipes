@@ -6,6 +6,8 @@ import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.MetadataException;
 import com.drew.metadata.exif.ExifIFD0Directory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -22,6 +24,8 @@ import java.io.IOException;
  * @since 2.0.0
  */
 class ImageToPDFConverter implements ToPDFConverter {
+    private static final Logger LOGGER = LogManager.getLogger(ImageToPDFConverter.class);
+
     @Override
     public File convertToPDFInFile(File sourceFile, File targetFile) {
         PDDocument doc = new PDDocument();
@@ -38,7 +42,7 @@ class ImageToPDFConverter implements ToPDFConverter {
 
             contents.close();
             doc.save(targetFile);
-            System.out.println(String.format("ImageToPDFConverter PDF saved %s", targetFile.getAbsolutePath()));
+            LOGGER.debug("ImageToPDFConverter PDF saved {}", targetFile.getAbsolutePath());
             return targetFile;
         } catch (final IOException e) {
             throw new RuntimeException(
@@ -47,7 +51,7 @@ class ImageToPDFConverter implements ToPDFConverter {
         } finally {
             try {
                 doc.close();
-                System.out.println("Document closed");
+                LOGGER.debug("Document closed name={}", targetFile.getName());
             } catch (IOException e) {
                 throw new RuntimeException(
                         String.format("Error while closing the PDF document (%s)", sourceFile.getAbsolutePath()),

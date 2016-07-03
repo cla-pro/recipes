@@ -2,6 +2,8 @@ package ch.lavanchy.recipes.business;
 
 import ch.lavanchy.recipes.factories.FileConverter;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -16,6 +18,8 @@ import java.nio.file.Files;
  * @since 1.0.0
  */
 public class FileBusinessBean implements FileBusinessLocal {
+    private static final Logger LOGGER = LogManager.getLogger(FileBusinessBean.class);
+
     @Inject
     private PropertyProviderLocal propertyProvider;
 
@@ -35,7 +39,7 @@ public class FileBusinessBean implements FileBusinessLocal {
             if (file.exists()) {
                 if (overwrite) {
                     if (file.delete()) {
-                        System.out.println("Previous file deleted");
+                        LOGGER.info("Previous file deleted name={}", file.getName());
                     } else {
                         throw new RuntimeException(String.format("Unable to delete file %s", filename));
                     }
@@ -58,7 +62,7 @@ public class FileBusinessBean implements FileBusinessLocal {
         final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
         final File file = getFileToRead(filename, location);
         final File pdfFile = fileConverter.getFileAsPDF(file);
-        System.out.println(String.format("%d bytes to read for file=%s", pdfFile.length(), pdfFile.getAbsolutePath()));
+        LOGGER.debug("{} bytes to read for file={}", pdfFile.length(), pdfFile.getAbsolutePath());
 
         return pdfFile;
     }
@@ -67,7 +71,7 @@ public class FileBusinessBean implements FileBusinessLocal {
     public File readOriginalFile(String filename) throws FileNotFoundException {
         final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
         final File file = getFileToRead(filename, location);
-        System.out.println(String.format("%d bytes to read for file=%s", file.length(), file.getAbsolutePath()));
+        LOGGER.debug("{} bytes to read for file={}", file.length(), file.getAbsolutePath());
 
         return file;
     }
@@ -83,7 +87,7 @@ public class FileBusinessBean implements FileBusinessLocal {
             throw new FileNotFoundException(String.format("File with name \"%s\" does not exists", file.getAbsolutePath()));
         }
 
-        System.out.println(String.format("Reading file at %s", file.getAbsolutePath()));
+        LOGGER.debug("Reading file at {}", file.getAbsolutePath());
         return file;
     }
 }

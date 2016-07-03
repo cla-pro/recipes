@@ -1,5 +1,8 @@
 package ch.lavanchy.recipes.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.StreamingOutput;
 import java.io.ByteArrayOutputStream;
@@ -14,6 +17,8 @@ import java.nio.file.Files;
  * @since 2.0.0
  */
 class BytesStreamingOutput implements StreamingOutput {
+    private static final Logger LOGGER = LogManager.getLogger(BytesStreamingOutput.class);
+
     private final File pdf;
 
     BytesStreamingOutput(final File pdf) {
@@ -21,27 +26,26 @@ class BytesStreamingOutput implements StreamingOutput {
     }
 
     @Override
-    public void write(OutputStream outputStream) throws IOException, WebApplicationException {
+    public void write(final OutputStream outputStream) throws IOException, WebApplicationException {
         try {
             final byte[] bytes = Files.readAllBytes(pdf.toPath());
             final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(bytes.length);
-            System.out.println(String.format("Start reading file. Estimated size=%d", bytes.length));
+            LOGGER.debug("Start reading file. Estimated size={}", bytes.length);
 
             final long start = System.currentTimeMillis();
             byteArrayOutputStream.write(bytes, 0, bytes.length);
             byteArrayOutputStream.writeTo(outputStream);
             final long end = System.currentTimeMillis();
 
-            System.out.println("Reading the stream complete - duration: " + (end - start));
-        } catch (Exception e) {
+            LOGGER.debug("Reading the stream complete - duration={}", end - start);
+        } catch (final Exception e) {
             throw new WebApplicationException(e);
         } finally {
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (final IOException e) {
-                    System.out.println("Error while closing the output stream");
-                    e.printStackTrace();
+                    LOGGER.error("Error while closing the output stream", e);
                 }
             }
         }
