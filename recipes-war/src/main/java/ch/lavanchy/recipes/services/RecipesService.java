@@ -135,7 +135,7 @@ public class RecipesService {
     private void validateRecipe(final Recipe recipe) {
         if (StringUtils.isEmpty(recipe.getName())) {
             LOGGER.info("Invalid recipe name=\"{}\"", recipe.getName());
-            throw new RuntimeException("Recipe's name is empty");
+            throw new IllegalArgumentException("Recipe's name is empty");
         }
     }
 }
