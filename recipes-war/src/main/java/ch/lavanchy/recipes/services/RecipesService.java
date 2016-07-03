@@ -10,6 +10,8 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import com.sun.jersey.multipart.FormDataParam;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -27,6 +29,8 @@ import java.util.List;
  */
 @Path("/recipes")
 public class RecipesService {
+    private static final Logger LOGGER = LogManager.getLogger(RecipesService.class);
+
     private static final String EMPTY_FILTER = "";
 
     @Inject
@@ -130,6 +134,7 @@ public class RecipesService {
 
     private void validateRecipe(final Recipe recipe) {
         if (StringUtils.isEmpty(recipe.getName())) {
+            LOGGER.info("Invalid recipe name=\"{}\"", recipe.getName());
             throw new RuntimeException("Recipe's name is empty");
         }
     }

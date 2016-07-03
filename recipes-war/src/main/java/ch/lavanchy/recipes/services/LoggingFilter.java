@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -34,9 +35,18 @@ public class LoggingFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Service call url={} duration={}", "", stopWatch.getTime());
+            LOGGER.info("Service call url={} duration={}", extractUrl(servletRequest), stopWatch.getTime());
 
             ThreadContext.clearAll();
+        }
+    }
+
+    private String extractUrl(final ServletRequest servletRequest) {
+        if (servletRequest instanceof HttpServletRequest) {
+            return ((HttpServletRequest) servletRequest).getRequestURL() + "?"
+                    + ((HttpServletRequest) servletRequest).getQueryString();
+        } else {
+            return "cannot extract URL from " + servletRequest.getClass().getName();
         }
     }
 
