@@ -2,6 +2,8 @@ package ch.lavanchy.recipes.factories;
 
 import ch.lavanchy.recipes.factories.converters.ToPDFConverterFactory;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -13,6 +15,8 @@ import java.io.FileNotFoundException;
  * @since 1.0.0
  */
 public class FileConverter {
+    private static final Logger LOGGER = LogManager.getLogger(FileConverter.class);
+
     private final static String PDF_EXTENSION = "pdf";
     private final static String PDF_FILENAME_EXTENSION = "." + PDF_EXTENSION;
 
@@ -49,12 +53,12 @@ public class FileConverter {
         final String folder = sourceFile.getParent();
         final String filenamePDF = FilenameUtils.removeExtension(filename) + PDF_FILENAME_EXTENSION;
         final File targetFile = new File(folder, filenamePDF);
-        System.out.println(String.format("Reading PDF file at %s and exists=%s", targetFile.getAbsolutePath(), targetFile.exists()));
+        LOGGER.debug("Reading PDF file at {} and exists={}", targetFile.getAbsolutePath(), targetFile.exists());
         if (targetFile.exists() && sourceOlderThanPDF(sourceFile, targetFile)) {
             return targetFile;
         }
 
-        System.out.println(String.format("Converting file at %s to PDF", sourceFile.getAbsolutePath()));
+        LOGGER.debug("Converting file at {} to PDF", sourceFile.getAbsolutePath());
         return toPDFConverterFactory.createConverter(extension).convertToPDFInFile(sourceFile, targetFile);
     }
 

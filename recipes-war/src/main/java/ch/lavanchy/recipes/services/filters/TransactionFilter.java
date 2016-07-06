@@ -1,15 +1,9 @@
-package ch.lavanchy.recipes.services;
-
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+package ch.lavanchy.recipes.services.filters;
 
 import com.google.inject.persist.Transactional;
+
+import javax.servlet.*;
+import java.io.IOException;
 
 /**
  * Filter that starts and commit (or rollback) the transaction.
@@ -19,7 +13,9 @@ import com.google.inject.persist.Transactional;
 public class TransactionFilter implements Filter {
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {}
+    public void init(final FilterConfig filterConfig) throws ServletException {
+        // Do nothing
+    }
 
     @Transactional
     @Override
@@ -28,5 +24,7 @@ public class TransactionFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+        // Do nothing
+    }
 }
