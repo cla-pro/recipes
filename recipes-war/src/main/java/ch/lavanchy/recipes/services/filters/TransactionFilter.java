@@ -1,4 +1,4 @@
-package ch.lavanchy.recipes.services;
+package ch.lavanchy.recipes.services.filters;
 
 import com.google.inject.persist.Transactional;
 

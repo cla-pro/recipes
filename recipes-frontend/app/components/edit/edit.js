@@ -58,11 +58,11 @@
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     }).then(function(args) {
-                        vm.loading = false;
                         $scope.file = undefined;
                         document.getElementById('iptRecipeFile').value = '';
 
                         $tags.reloadTags();
+                        vm.loading = false;
 
                         vm.back();
                     }).catch(function() {

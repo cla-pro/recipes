@@ -1,4 +1,4 @@
-package ch.lavanchy.recipes.services;
+package ch.lavanchy.recipes.services.filters;
 
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;

@@ -60,7 +60,6 @@
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     }).then(function(args) {
-                        vm.loading = false;
                         vm.name = '';
                         vm.nameOverriden = false;
                         vm.tags = '';
@@ -69,6 +68,7 @@
                         document.getElementById('iptRecipeFile').value = '';
                         vm.setMessage('Recette enregistrée', false);
                         $tags.reloadTags();
+                        vm.loading = false;
 
                         return $timeout(function() {
                             vm.setMessage('', false);
