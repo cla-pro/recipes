@@ -5,7 +5,7 @@
     <groupId>ch.lavanchy</groupId>
     <artifactId>recipes</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.1</version>
+    <version>2.0.2-SNAPSHOT</version>
     <name>Recipes seeker</name>
 
     <properties>
@@ -25,7 +25,7 @@
 
     <scm>
         <developerConnection>scm:git:ssh://git@cheznous/volume1/git-repos/recipes.git</developerConnection>
-      <tag>2.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <build>
