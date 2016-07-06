@@ -48,6 +48,7 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <lineLength>120</lineLength>
                     <indentSize>4</indentSize>
+                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
         </plugins>
