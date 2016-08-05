@@ -14,8 +14,8 @@
     <app-star-rating my-rating="vm.rating" read-only="false"></app-star-rating>
     <br /><br />
 
-    <button ng-hide="loading" ng-click="vm.save()">Enregistrer</button>
-    <img class="loading" src="images/loading.gif" ng-show="loading" />
+    <button ng-hide="vm.loading" ng-click="vm.save()">Enregistrer</button>
+    <img class="loading" src="images/loading.gif" ng-show="vm.loading" />
 
     <br /><br />
     <app-message message="vm.message" is-error="vm.isError" />
