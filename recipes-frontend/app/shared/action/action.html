@@ -1,10 +1,15 @@
 <div class="action">
     <input type="image" ng-show="displayBack" ng-click="clickBack()" src="images/back-icon.png" alt="Back" class="action-btn" />
-    <input type="image" ng-show="displayEdit" ng-click="clickEdit()" src="images/edit-icon.png" alt="Edit" class="action-btn" />
-    <a ng-show="displayDownload" ng-href="{{downloadUrl}}">
-        <img src="images/download-icon.png" alt="Download" class="action-btn" />
-    </a>
-    <a ng-show="displayDownload" ng-href="{{downloadUrlPdf}}">
-        <img src="images/download-pdf-icon.png" alt="Download PDF" class="action-btn" />
-    </a>
+    <input type="image" ng-show="hasAdditionalActions" ng-click="clickAdditional()" src="images/additional.png" alt="More" class="action-btn" />
+    <div ng-show="displayAdditionalActions" class="action-block">
+        <input type="image" ng-show="displayEdit" ng-click="clickEdit()" src="images/edit-icon.png" alt="Edit" class="action-btn" />
+        <br />
+        <a ng-show="displayDownload" ng-href="{{downloadUrl}}">
+            <img src="images/download-icon.png" alt="Download" class="action-btn" />
+        </a>
+        <br />
+        <a ng-show="displayDownload" ng-href="{{downloadUrlPdf}}">
+            <img src="images/download-pdf-icon.png" alt="Download PDF" class="action-btn" />
+        </a>
+    </div>
 </div>
