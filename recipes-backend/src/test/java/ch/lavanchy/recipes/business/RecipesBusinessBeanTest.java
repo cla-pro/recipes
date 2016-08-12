@@ -23,6 +23,7 @@ import org.mockito.stubbing.Answer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.anyInt;
@@ -35,8 +36,8 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class RecipesBusinessBeanTest {
-    private final long knownRecipeId = 123L;
-    private final String knownTagName = "dessert";
+    private static final long KNOWN_RECIPE_ID = 123L;
+    private static final String KNOWN_TAG_NAME = "dessert";
 
     @Mock
     private RecipesDaoLocal recipesDao;
@@ -45,41 +46,42 @@ public class RecipesBusinessBeanTest {
     private TagsDaoLocal tagsDao;
 
     @Spy
-    private AccentHandler accentHandler = new AccentHandler();
+    private final AccentHandler accentHandler = new AccentHandler();
 
     @Spy
-    private KeywordFilter keywordFilter = new KeywordFilter();
+    private final KeywordFilter keywordFilter = new KeywordFilter();
 
     @Spy
-    private RecipeFactory recipeFactory = new RecipeFactory();
+    private final RecipeFactory recipeFactory = new RecipeFactory();
 
     @Spy
-    private FilenameFixer filenameFixer = new FilenameFixer();
+    private final FilenameFixer filenameFixer = new FilenameFixer();
 
     @InjectMocks
-    private RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
+    private final RecipesBusinessLocal recipesBusiness = new RecipesBusinessBean();
 
     private List<RecipeEntity> recipeEntities;
 
     @Before
+    @SuppressWarnings("unchecked")
     public void setUp() {
         recipeEntities = Arrays.asList(createRecipeEntity("Croissant au jambon"), createRecipeEntity("Jambon au madere"));
 
-        when(recipesDao.findRecipeWithFilter(any(QueryOperation.class))).thenReturn(recipeEntities);
+        when(recipesDao.findRecipeWithFilter(any(QueryOperation.class), any(Optional.class))).thenReturn(recipeEntities);
         when(recipesDao.persistRecipe(any(RecipeEntity.class))).thenAnswer(new Answer<RecipeEntity>() {
             @Override
-            public RecipeEntity answer(InvocationOnMock invocation) throws Throwable {
+            public RecipeEntity answer(final InvocationOnMock invocation) throws Throwable {
                 final RecipeEntity param = (RecipeEntity) invocation.getArguments()[0];
                 param.setId(0L);
                 return param;
             }
         });
-        when(recipesDao.findRecipeById(eq(knownRecipeId))).thenReturn(createRecipeEntity("My Recipe"));
+        when(recipesDao.findRecipeById(eq(KNOWN_RECIPE_ID))).thenReturn(createRecipeEntity("My Recipe"));
 
-        when(tagsDao.findAllTags()).thenReturn(Collections.singletonList(createTagEntity(knownTagName)));
+        when(tagsDao.findAllTags()).thenReturn(Collections.singletonList(createTagEntity(KNOWN_TAG_NAME)));
         when(tagsDao.persistTag(any(TagEntity.class))).thenAnswer(new Answer<TagEntity>() {
             @Override
-            public TagEntity answer(InvocationOnMock invocation) throws Throwable {
+            public TagEntity answer(final InvocationOnMock invocation) throws Throwable {
                 final TagEntity param = (TagEntity) invocation.getArguments()[0];
                 param.setId(0L);
                 return param;
@@ -102,8 +104,11 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testFindRecipesWithFilter() {
         final TextFilterOp queryOperation = new TextFilterOp("myFilter");
-        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation);
-        verify(recipesDao).findRecipeWithFilter(eq(queryOperation));
+        final Optional<String> chunkStart = Optional.of("chunkStart");
+
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation, chunkStart);
+
+        verify(recipesDao).findRecipeWithFilter(eq(queryOperation), eq(chunkStart));
         assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 
@@ -161,13 +166,13 @@ public class RecipesBusinessBeanTest {
     public void testSetRecipeFilename() {
         final String filename = "recipe.xml";
 
-        final Recipe recipe = recipesBusiness.setRecipeFilename(knownRecipeId, filename);
+        final Recipe recipe = recipesBusiness.setRecipeFilename(KNOWN_RECIPE_ID, filename);
         assertThat(recipe.getFilename()).isEqualTo(filename);
     }
 
     @Test
     public void testSetRecipeFilenameNotFound() {
-        Recipe persistedRecipe = recipesBusiness.setRecipeFilename(456L, "recipe.xml");
+        final Recipe persistedRecipe = recipesBusiness.setRecipeFilename(456L, "recipe.xml");
         assertThat(persistedRecipe).isNull();
     }
 }

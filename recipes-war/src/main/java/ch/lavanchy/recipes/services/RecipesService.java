@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST Webservice to manage the recipes
@@ -44,16 +45,16 @@ public class RecipesService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getRecipeList(@QueryParam("filter") String filter) {
+    public String getRecipeList(@QueryParam("filter") final String filter, @QueryParam("chunkStart") final String chunkStart) {
         final String validatedFilter = validateFilter(filter);
         final QueryOperation queryOperation = queryOperationFactory.createQueryOperation(validatedFilter);
-        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation);
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation, Optional.ofNullable(chunkStart));
         return new Gson().toJson(recipes);
     }
 
     @GET
     @Path("/{id}")
-    public String getRecipe(@PathParam("id") long id) {
+    public String getRecipe(@PathParam("id") final long id) {
         final Recipe recipe = recipesBusiness.findRecipeById(id);
         return new Gson().toJson(recipe);
     }
@@ -71,8 +72,8 @@ public class RecipesService {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public String updateRecipe(
             final FormDataMultiPart multiPart,
-            @FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+            @FormDataParam("file") final InputStream fileInputStream,
+            @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
         final Recipe recipe = new Gson().fromJson(multiPart.getField("recipe").getValue(), Recipe.class);
         final Recipe persisted = recipesBusiness.updateRecipe(recipe);
 
@@ -85,7 +86,7 @@ public class RecipesService {
 
     @GET
     @Path("/pdf/{id}")
-    public Response getPDFFile(@PathParam("id") long id) throws IOException {
+    public Response getPDFFile(@PathParam("id") final long id) throws IOException {
         final Recipe recipe = recipesBusiness.findRecipeById(id);
         final File toUpload = fileBusiness.readPDFFile(recipe.getFilename());
         return createResponseFromFile(toUpload);
@@ -93,7 +94,7 @@ public class RecipesService {
 
     @GET
     @Path("/file/{id}")
-    public Response getOriginalFile(@PathParam("id") long id) throws IOException {
+    public Response getOriginalFile(@PathParam("id") final long id) throws IOException {
         final Recipe recipe = recipesBusiness.findRecipeById(id);
         final File toUpload = fileBusiness.readOriginalFile(recipe.getFilename());
         return createResponseFromFile(toUpload);
@@ -115,8 +116,8 @@ public class RecipesService {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public String uploadFile(
             final FormDataMultiPart multiPart,
-            @FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
+            @FormDataParam("file") final InputStream fileInputStream,
+            @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
         final Recipe recipe = new Gson().fromJson(multiPart.getField("recipe").getValue(), Recipe.class);
         validateRecipe(recipe);
         final Recipe persisted = recipesBusiness.createRecipe(recipe);

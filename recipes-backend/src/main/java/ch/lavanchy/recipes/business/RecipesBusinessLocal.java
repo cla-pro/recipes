@@ -4,6 +4,7 @@ import ch.lavanchy.recipes.data.Recipe;
 import ch.lavanchy.recipes.query.QueryOperation;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Provide the logic to handle the recipes' references
@@ -15,9 +16,10 @@ public interface RecipesBusinessLocal {
      * Find all the recipes matching the given filter
      *
      * @param filter Filter given as a string. Will be parsed to extract each word
+     * @param chunkStart String used to get the next chunk, the chunkStart is not part of the result (>)
      * @return The matching recipes
      */
-    List<Recipe> findRecipesWithFilter(final QueryOperation filter);
+    List<Recipe> findRecipesWithFilter(final QueryOperation filter, final Optional<String> chunkStart);
 
     /**
      * Find a single {@link Recipe} by id

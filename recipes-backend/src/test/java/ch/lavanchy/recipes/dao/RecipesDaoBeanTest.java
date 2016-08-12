@@ -4,10 +4,7 @@ import ch.lavanchy.recipes.InjectEntityManager;
 import ch.lavanchy.recipes.JpaTransactionRule;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.entities.TagEntity;
-import ch.lavanchy.recipes.query.AndOp;
-import ch.lavanchy.recipes.query.NotOp;
-import ch.lavanchy.recipes.query.OrOp;
-import ch.lavanchy.recipes.query.TextFilterOp;
+import ch.lavanchy.recipes.query.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
@@ -19,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,17 +31,17 @@ public class RecipesDaoBeanTest {
     public TestRule jpaTransactionRule = new JpaTransactionRule(this);
 
     @Spy
-    private FilterQueryFactory filterQueryFactory = new FilterQueryFactory();
+    private final FilterQueryFactory filterQueryFactory = new FilterQueryFactory();
 
     @Inject
     private EntityManager entityManager;
 
     @InjectMocks
     @InjectEntityManager
-    private RecipesDaoLocal testee = new RecipesDaoBean();
+    private final RecipesDaoLocal testee = new RecipesDaoBean();
 
     @Test
-    public void testFindRecipeByQueryNoTags() {
+    public void testFindRecipeWithFilterNoTags() {
         final String recipeName1 = "myRecipeFirst";
         testee.persistRecipe(createRecipeWithNameAndTags(recipeName1));
         final String recipeName2 = "myRecipeSecond";
@@ -51,21 +49,21 @@ public class RecipesDaoBeanTest {
         final String recipeName3 = "myRecipeThird";
         testee.persistRecipe(createRecipeWithNameAndTags(recipeName3));
 
-        TextFilterOp filterText1 = new TextFilterOp(recipeName1);
-        TextFilterOp filterText2 = new TextFilterOp(recipeName2);
-        TextFilterOp filterText3 = new TextFilterOp(recipeName3);
-        assertThat(testee.findRecipeWithFilter(filterText1)).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterText2)).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterText3)).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("myRecipe"))).hasSize(3);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"))).isEmpty();
-        assertThat(testee.findRecipeWithFilter(new NotOp(filterText1))).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(new AndOp(filterText1, filterText2))).isEmpty();
-        assertThat(testee.findRecipeWithFilter(new OrOp(filterText1, filterText2))).hasSize(2);
+        final TextFilterOp filterText1 = new TextFilterOp(recipeName1);
+        final TextFilterOp filterText2 = new TextFilterOp(recipeName2);
+        final TextFilterOp filterText3 = new TextFilterOp(recipeName3);
+        assertThat(testee.findRecipeWithFilter(filterText1, Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterText2, Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterText3, Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("myRecipe"), Optional.empty())).hasSize(3);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"), Optional.empty())).isEmpty();
+        assertThat(testee.findRecipeWithFilter(new NotOp(filterText1), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(new AndOp(filterText1, filterText2), Optional.empty())).isEmpty();
+        assertThat(testee.findRecipeWithFilter(new OrOp(filterText1, filterText2), Optional.empty())).hasSize(2);
     }
 
     @Test
-    public void testFindRecipeByQueryWithTags() {
+    public void testFindRecipeWithFilterWithTags() {
         final String tagName1 = "tag1";
         final TagEntity tagEntity1 = createAndPersistTagWithName(tagName1);
         final String tagName2 = "tag2";
@@ -78,23 +76,35 @@ public class RecipesDaoBeanTest {
         final String recipeName3 = "myRecipeThird";
         testee.persistRecipe(createRecipeWithNameAndTags(recipeName3, tagEntity1, tagEntity2));
 
-        TextFilterOp filterTagText1 = new TextFilterOp(tagName1);
-        TextFilterOp filterTagText2 = new TextFilterOp(tagName2);
-        TextFilterOp filterRecipeText1 = new TextFilterOp(recipeName1);
-        TextFilterOp filterRecipeText2 = new TextFilterOp(recipeName2);
-        TextFilterOp filterRecipeText3 = new TextFilterOp(recipeName3);
-        assertThat(testee.findRecipeWithFilter(filterTagText1)).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(filterTagText2)).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(filterRecipeText1)).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterRecipeText2)).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterRecipeText3)).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("tag"))).hasSize(3);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"))).isEmpty();
-        assertThat(testee.findRecipeWithFilter(new NotOp(filterTagText1))).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new NotOp(filterRecipeText1))).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterTagText2))).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterRecipeText3))).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new OrOp(filterTagText1, filterTagText2))).hasSize(3);
+        final TextFilterOp filterTagText1 = new TextFilterOp(tagName1);
+        final TextFilterOp filterTagText2 = new TextFilterOp(tagName2);
+        final TextFilterOp filterRecipeText1 = new TextFilterOp(recipeName1);
+        final TextFilterOp filterRecipeText2 = new TextFilterOp(recipeName2);
+        final TextFilterOp filterRecipeText3 = new TextFilterOp(recipeName3);
+        assertThat(testee.findRecipeWithFilter(filterTagText1, Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(filterTagText2, Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(filterRecipeText1, Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterRecipeText2, Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterRecipeText3, Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("tag"), Optional.empty())).hasSize(3);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"), Optional.empty())).isEmpty();
+        assertThat(testee.findRecipeWithFilter(new NotOp(filterTagText1), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new NotOp(filterRecipeText1), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterTagText2), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterRecipeText3), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new OrOp(filterTagText1, filterTagText2), Optional.empty())).hasSize(3);
+    }
+
+    @Test
+    public void testFindRecipeWithFilterChunk() {
+        final String recipeName1 = "myRecipeFirst";
+        testee.persistRecipe(createRecipeWithNameAndTags(recipeName1));
+        final String recipeName2 = "myRecipeSecond";
+        testee.persistRecipe(createRecipeWithNameAndTags(recipeName2));
+        final String recipeName3 = "myRecipeThird";
+        testee.persistRecipe(createRecipeWithNameAndTags(recipeName3));
+
+        assertThat(testee.findRecipeWithFilter(new EmptyOp(), Optional.of(recipeName2)).get(0).getName()).isEqualTo(recipeName3);
     }
 
     @Test

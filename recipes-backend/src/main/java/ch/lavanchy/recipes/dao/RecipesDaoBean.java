@@ -3,11 +3,14 @@ package ch.lavanchy.recipes.dao;
 import ch.lavanchy.recipes.entities.QRecipeEntity;
 import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.query.QueryOperation;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @since 1.0.0
@@ -23,22 +26,31 @@ public class RecipesDaoBean implements RecipesDaoLocal {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation) {
+    public List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation, final Optional<String> chunkStart) {
         return new JPAQueryFactory(entityManager)
                 .selectFrom(qRecipeEntity)
-                .where(filterQueryFactory.generateWhereExpression(queryOperation))
+                .where(generateWhereClause(queryOperation, chunkStart))
                 .orderBy(qRecipeEntity.name.asc())
                 .createQuery()
                 .getResultList();
     }
 
+    private Predicate generateWhereClause(final QueryOperation queryOperation, final Optional<String> chunkStart) {
+        final Predicate where = filterQueryFactory.generateWhereExpression(queryOperation);
+        if (chunkStart.isPresent()) {
+            return new BooleanBuilder(where).and(qRecipeEntity.name.gt(chunkStart.get()));
+        } else {
+            return where;
+        }
+    }
+
     @Override
-    public RecipeEntity findRecipeById(long id) {
+    public RecipeEntity findRecipeById(final long id) {
         return entityManager.find(RecipeEntity.class, id);
     }
 
     @Override
-    public RecipeEntity persistRecipe(RecipeEntity recipeEntity) {
+    public RecipeEntity persistRecipe(final RecipeEntity recipeEntity) {
         entityManager.persist(recipeEntity);
         return recipeEntity;
     }
