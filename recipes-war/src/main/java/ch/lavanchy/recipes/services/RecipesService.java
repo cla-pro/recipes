@@ -45,10 +45,16 @@ public class RecipesService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getRecipeList(@QueryParam("filter") final String filter, @QueryParam("chunkStart") final String chunkStart) {
+    public String getRecipeList(
+            @QueryParam("filter") final String filter,
+            @QueryParam("chunkStart") final String chunkStart,
+            @QueryParam("size") final Integer size) {
         final String validatedFilter = validateFilter(filter);
         final QueryOperation queryOperation = queryOperationFactory.createQueryOperation(validatedFilter);
-        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation, Optional.ofNullable(chunkStart));
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(
+                queryOperation,
+                Optional.ofNullable(chunkStart),
+                Optional.ofNullable(size));
         return new Gson().toJson(recipes);
     }
 

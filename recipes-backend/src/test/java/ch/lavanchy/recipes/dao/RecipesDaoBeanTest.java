@@ -16,6 +16,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,14 +53,14 @@ public class RecipesDaoBeanTest {
         final TextFilterOp filterText1 = new TextFilterOp(recipeName1);
         final TextFilterOp filterText2 = new TextFilterOp(recipeName2);
         final TextFilterOp filterText3 = new TextFilterOp(recipeName3);
-        assertThat(testee.findRecipeWithFilter(filterText1, Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterText2, Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterText3, Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("myRecipe"), Optional.empty())).hasSize(3);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"), Optional.empty())).isEmpty();
-        assertThat(testee.findRecipeWithFilter(new NotOp(filterText1), Optional.empty())).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(new AndOp(filterText1, filterText2), Optional.empty())).isEmpty();
-        assertThat(testee.findRecipeWithFilter(new OrOp(filterText1, filterText2), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(filterText1, Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterText2, Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterText3, Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("myRecipe"), Optional.empty(), Optional.empty())).hasSize(3);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"), Optional.empty(), Optional.empty())).isEmpty();
+        assertThat(testee.findRecipeWithFilter(new NotOp(filterText1), Optional.empty(), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(new AndOp(filterText1, filterText2), Optional.empty(), Optional.empty())).isEmpty();
+        assertThat(testee.findRecipeWithFilter(new OrOp(filterText1, filterText2), Optional.empty(), Optional.empty())).hasSize(2);
     }
 
     @Test
@@ -81,18 +82,18 @@ public class RecipesDaoBeanTest {
         final TextFilterOp filterRecipeText1 = new TextFilterOp(recipeName1);
         final TextFilterOp filterRecipeText2 = new TextFilterOp(recipeName2);
         final TextFilterOp filterRecipeText3 = new TextFilterOp(recipeName3);
-        assertThat(testee.findRecipeWithFilter(filterTagText1, Optional.empty())).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(filterTagText2, Optional.empty())).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(filterRecipeText1, Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterRecipeText2, Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(filterRecipeText3, Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("tag"), Optional.empty())).hasSize(3);
-        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"), Optional.empty())).isEmpty();
-        assertThat(testee.findRecipeWithFilter(new NotOp(filterTagText1), Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new NotOp(filterRecipeText1), Optional.empty())).hasSize(2);
-        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterTagText2), Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterRecipeText3), Optional.empty())).hasSize(1);
-        assertThat(testee.findRecipeWithFilter(new OrOp(filterTagText1, filterTagText2), Optional.empty())).hasSize(3);
+        assertThat(testee.findRecipeWithFilter(filterTagText1, Optional.empty(), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(filterTagText2, Optional.empty(), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(filterRecipeText1, Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterRecipeText2, Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(filterRecipeText3, Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("tag"), Optional.empty(), Optional.empty())).hasSize(3);
+        assertThat(testee.findRecipeWithFilter(new TextFilterOp("bla"), Optional.empty(), Optional.empty())).isEmpty();
+        assertThat(testee.findRecipeWithFilter(new NotOp(filterTagText1), Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new NotOp(filterRecipeText1), Optional.empty(), Optional.empty())).hasSize(2);
+        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterTagText2), Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new AndOp(filterTagText1, filterRecipeText3), Optional.empty(), Optional.empty())).hasSize(1);
+        assertThat(testee.findRecipeWithFilter(new OrOp(filterTagText1, filterTagText2), Optional.empty(), Optional.empty())).hasSize(3);
     }
 
     @Test
@@ -104,7 +105,22 @@ public class RecipesDaoBeanTest {
         final String recipeName3 = "myRecipeThird";
         testee.persistRecipe(createRecipeWithNameAndTags(recipeName3));
 
-        assertThat(testee.findRecipeWithFilter(new EmptyOp(), Optional.of(recipeName2)).get(0).getName()).isEqualTo(recipeName3);
+        assertThat(testee.findRecipeWithFilter(new EmptyOp(), Optional.of(recipeName2), Optional.empty()).get(0).getName())
+                .isEqualTo(recipeName3);
+    }
+
+    @Test
+    public void testFindRecipeWithSize() {
+        final String recipeName1 = "myRecipeFirst";
+        testee.persistRecipe(createRecipeWithNameAndTags(recipeName1));
+        final String recipeName2 = "myRecipeSecond";
+        testee.persistRecipe(createRecipeWithNameAndTags(recipeName2));
+        final String recipeName3 = "myRecipeThird";
+        testee.persistRecipe(createRecipeWithNameAndTags(recipeName3));
+
+        final List<RecipeEntity> recipes = testee.findRecipeWithFilter(new EmptyOp(), Optional.empty(), Optional.of(1));
+        assertThat(recipes).hasSize(1);
+        assertThat(recipes.get(0).getName()).isEqualTo(recipeName1);
     }
 
     @Test

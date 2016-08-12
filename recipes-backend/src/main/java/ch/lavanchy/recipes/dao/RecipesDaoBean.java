@@ -5,6 +5,7 @@ import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.query.QueryOperation;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import javax.inject.Inject;
@@ -26,13 +27,33 @@ public class RecipesDaoBean implements RecipesDaoLocal {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation, final Optional<String> chunkStart) {
-        return new JPAQueryFactory(entityManager)
-                .selectFrom(qRecipeEntity)
-                .where(generateWhereClause(queryOperation, chunkStart))
-                .orderBy(qRecipeEntity.name.asc())
+    public List<RecipeEntity> findRecipeWithFilter(
+            final QueryOperation queryOperation,
+            final Optional<String> chunkStart,
+            final Optional<Integer> size) {
+        return createQueryDSL(queryOperation, chunkStart, size)
                 .createQuery()
                 .getResultList();
+    }
+
+    private JPAQuery<RecipeEntity> createQueryDSL(
+            final QueryOperation queryOperation,
+            final Optional<String> chunkStart,
+            final Optional<Integer> chunkSize) {
+        return applyChunkSize(
+                new JPAQueryFactory(entityManager)
+                        .selectFrom(qRecipeEntity)
+                        .where(generateWhereClause(queryOperation, chunkStart))
+                        .orderBy(qRecipeEntity.name.asc()),
+                chunkSize);
+    }
+
+    private JPAQuery<RecipeEntity> applyChunkSize(final JPAQuery<RecipeEntity> query, final Optional<Integer> chunkSize) {
+        if (chunkSize.isPresent()) {
+            return query.limit(chunkSize.get());
+        } else {
+            return query;
+        }
     }
 
     private Predicate generateWhereClause(final QueryOperation queryOperation, final Optional<String> chunkStart) {

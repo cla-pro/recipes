@@ -15,11 +15,12 @@ public interface RecipesBusinessLocal {
     /**
      * Find all the recipes matching the given filter
      *
-     * @param filter Filter given as a string. Will be parsed to extract each word
-     * @param chunkStart String used to get the next chunk, the chunkStart is not part of the result (>)
+     * @param filter Filter given as a string. Will be parsed to extract each word.
+     * @param chunkStart String used to get the next chunk, the chunkStart is not part of the result (>).
+     * @param size The size of the result list to return, return all if empty.
      * @return The matching recipes
      */
-    List<Recipe> findRecipesWithFilter(final QueryOperation filter, final Optional<String> chunkStart);
+    List<Recipe> findRecipesWithFilter(final QueryOperation filter, final Optional<String> chunkStart, final Optional<Integer> size);
 
     /**
      * Find a single {@link Recipe} by id

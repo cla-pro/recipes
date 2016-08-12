@@ -67,26 +67,30 @@ public class RecipesBusinessBeanTest {
     public void setUp() {
         recipeEntities = Arrays.asList(createRecipeEntity("Croissant au jambon"), createRecipeEntity("Jambon au madere"));
 
-        when(recipesDao.findRecipeWithFilter(any(QueryOperation.class), any(Optional.class))).thenReturn(recipeEntities);
-        when(recipesDao.persistRecipe(any(RecipeEntity.class))).thenAnswer(new Answer<RecipeEntity>() {
+        doReturn(recipeEntities)
+                .when(recipesDao)
+                .findRecipeWithFilter(any(QueryOperation.class), any(Optional.class), any(Optional.class));
+        doAnswer(new Answer<RecipeEntity>() {
             @Override
             public RecipeEntity answer(final InvocationOnMock invocation) throws Throwable {
                 final RecipeEntity param = (RecipeEntity) invocation.getArguments()[0];
                 param.setId(0L);
                 return param;
             }
-        });
-        when(recipesDao.findRecipeById(eq(KNOWN_RECIPE_ID))).thenReturn(createRecipeEntity("My Recipe"));
+        })
+                .when(recipesDao)
+                .persistRecipe(any(RecipeEntity.class));
 
-        when(tagsDao.findAllTags()).thenReturn(Collections.singletonList(createTagEntity(KNOWN_TAG_NAME)));
-        when(tagsDao.persistTag(any(TagEntity.class))).thenAnswer(new Answer<TagEntity>() {
+        doReturn(createRecipeEntity("My Recipe")).when(recipesDao).findRecipeById(eq(KNOWN_RECIPE_ID));
+        doReturn(Collections.singletonList(createTagEntity(KNOWN_TAG_NAME))).when(tagsDao).findAllTags();
+        doAnswer(new Answer<TagEntity>() {
             @Override
             public TagEntity answer(final InvocationOnMock invocation) throws Throwable {
                 final TagEntity param = (TagEntity) invocation.getArguments()[0];
                 param.setId(0L);
                 return param;
             }
-        });
+        }).when(tagsDao).persistTag(any(TagEntity.class));
     }
 
     private TagEntity createTagEntity(final String knownTagName) {
@@ -105,10 +109,11 @@ public class RecipesBusinessBeanTest {
     public void testFindRecipesWithFilter() {
         final TextFilterOp queryOperation = new TextFilterOp("myFilter");
         final Optional<String> chunkStart = Optional.of("chunkStart");
+        final Optional<Integer> size = Optional.of(50);
 
-        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation, chunkStart);
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation, chunkStart, size);
 
-        verify(recipesDao).findRecipeWithFilter(eq(queryOperation), eq(chunkStart));
+        verify(recipesDao).findRecipeWithFilter(eq(queryOperation), eq(chunkStart), eq(size));
         assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 
@@ -135,7 +140,7 @@ public class RecipesBusinessBeanTest {
         recipeMock.getTags().add(createTagEntity("dessert"));
         recipeMock.getTags().add(createTagEntity("blackberry"));
         recipeMock.setName("newName");
-        when(recipesDao.findRecipeById(anyInt())).thenReturn(recipeMock);
+        doReturn(recipeMock).when(recipesDao).findRecipeById(anyInt());
 
         final Recipe recipe = Recipe.builder()
                 .withId(3L)

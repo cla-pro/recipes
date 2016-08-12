@@ -15,11 +15,15 @@ public interface RecipesDaoLocal {
     /**
      * Find all the recipes that matches with the given queryOperation (filter by name and tags).
      *
-     * @param queryOperation The query filter
-     * @param chunkStart String used to get the next chunk, the chunkStart is not part of the result (>)
+     * @param queryOperation The query filter.
+     * @param chunkStart String used to get the next chunk, the chunkStart is not part of the result (>).
+     * @param size The size of the result list to return, return all if empty.
      * @return All the matching recipes
      */
-    List<RecipeEntity> findRecipeWithFilter(final QueryOperation queryOperation, final Optional<String> chunkStart);
+    List<RecipeEntity> findRecipeWithFilter(
+            final QueryOperation queryOperation,
+            final Optional<String> chunkStart,
+            final Optional<Integer> size);
 
     /**
      * Find a recipe by id.
