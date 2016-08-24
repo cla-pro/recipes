@@ -2,14 +2,15 @@
     <!-- Search box -->
     <div>
         <input style="width: 99%" type="text" ng-model="vm.query" autofocus
-               ng-keyup="$event.keyCode == 13 && vm.search()" placeholder="Filtre" />
+               ng-keyup="$event.keyCode == 13 && vm.newSearch()" placeholder="Filtre" />
         <br /><br />
         <app-help help-text="vm.helpText"></app-help>
         <br />
-        <button ng-click="vm.search()">Rechercher</button>
+        <button ng-click="vm.newSearch()">Rechercher</button>
     </div>
     <br />
     <img ng-show="vm.loading" src="images/loading.gif" alt="chargement..." class="loading" />
     <!-- Results -->
     <app-result-list ng-hide="vm.loading" results="vm.recipes" message="vm.message" query="vm.encodedQuery"></app-result-list>
+    <div ng-show="vm.hasMoreRecipes" ng-click="vm.search()" class="more">Plus de recettes</div>
 </div>

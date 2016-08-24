@@ -16,20 +16,36 @@
                 vm.recipes = [];
                 vm.message = '';
                 vm.loading = false;
+                vm.chunkSize = 50;
+                vm.hasMoreRecipes = false;
 
                 $scope.$watch('vm.query', function(newValue, oldValue) {
                     vm.encodedQuery = encodeURIComponent(newValue);
                 });
 
+                vm.newSearch = function() {
+                    vm.clearSearch();
+                    vm.search();
+                };
+                vm.clearSearch = function() {
+                    vm.recipes = [];
+                };
                 vm.search = function() {
                     vm.loading = true;
-                    Restangular.all('recipes').getList({'filter': vm.query})
-                        .then(function(recipes) {
-                            vm.recipes = recipes;
+                    var params = {'filter': vm.query, 'size': vm.chunkSize};
+                    if (vm.recipes.length > 0) {
+                        params['chunkStart'] = vm.recipes[vm.recipes.length - 1].name;
+                    }
+
+                    Restangular.all('recipes').getList(params)
+                        .then(function(found) {
+                            found.forEach(function(elem) { vm.recipes.push(elem); });
                             vm.loading = false;
                             if (vm.recipes.length === 0) {
+                                vm.hasMoreRecipes = false;
                                 vm.message = 'Pas de recette trouvée';
                             } else {
+                                vm.hasMoreRecipes = found.length == vm.chunkSize;
                                 vm.message = '';
                             }
                         })
