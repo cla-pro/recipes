@@ -1,11 +1,6 @@
 package ch.lavanchy.recipes.factories.converters;
 
 import ch.lavanchy.recipes.factories.ToPDFConverter;
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.MetadataException;
-import com.drew.metadata.exif.ExifIFD0Directory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -14,6 +9,8 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -27,8 +24,8 @@ class ImageToPDFConverter implements ToPDFConverter {
     private static final Logger LOGGER = LogManager.getLogger(ImageToPDFConverter.class);
 
     @Override
-    public File convertToPDFInFile(File sourceFile, File targetFile) {
-        PDDocument doc = new PDDocument();
+    public File convertToPDFInFile(final File sourceFile, final File targetFile) {
+        final PDDocument doc = new PDDocument();
         try {
             final PDPage page = new PDPage(PDRectangle.A4);
             final ImageOrientation imageOrientation = getImageOrientation(sourceFile);
@@ -52,7 +49,7 @@ class ImageToPDFConverter implements ToPDFConverter {
             try {
                 doc.close();
                 LOGGER.debug("Document closed name={}", targetFile.getName());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException(
                         String.format("Error while closing the PDF document (%s)", sourceFile.getAbsolutePath()),
                         e);
@@ -61,20 +58,9 @@ class ImageToPDFConverter implements ToPDFConverter {
     }
 
     private ImageOrientation getImageOrientation(final File file) throws IOException {
-        try {
-            final Metadata metadata = ImageMetadataReader.readMetadata(file);
-            final ExifIFD0Directory exifIFD0Directory = metadata.getFirstDirectoryOfType(ExifIFD0Directory.class);
-
-            if (exifIFD0Directory == null) {
-                return ImageOrientation.PORTRAIT;
-            } else if (exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION) == 0 ||
-                    exifIFD0Directory.getInt(ExifIFD0Directory.TAG_ORIENTATION) == 180) {
-                return ImageOrientation.PORTRAIT;
-            } else {
-                return ImageOrientation.LANDSCAPE;
-            }
-        } catch (final ImageProcessingException | MetadataException e) {
-            return ImageOrientation.PORTRAIT;
-        }
+        final BufferedImage bimg = ImageIO.read(file);
+        final int width = bimg.getWidth();
+        final int height = bimg.getHeight();
+        return (height >= width) ? ImageOrientation.PORTRAIT : ImageOrientation.LANDSCAPE;
     }
 }
