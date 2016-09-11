@@ -11,43 +11,41 @@ import java.io.IOException;
  * @since 2.0.0
  */
 public enum ImageOrientation {
-    LANDSCAPE {
+    LANDSCAPE(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()) {
         @Override
         public int getRotation() {
             return 90;
         }
 
         @Override
-        public Matrix getTransformMatrix(PDRectangle pageSize) {
+        public Matrix getTransformMatrix(final PDRectangle pageSize) {
             return new Matrix(0, 1, -1, 0, pageSize.getWidth(), 0);
         }
-
-        @Override
-        public void drawImage(PDPageContentStream contents, PDImageXObject pdImage) throws IOException {
-            // pdImage.getWidth(), pdImage.getHeight()
-            contents.drawImage(pdImage, 0, 0, PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth());
-        }
     },
-    PORTRAIT {
+    PORTRAIT(PDRectangle.A4.getWidth(), PDRectangle.A4.getHeight()) {
         @Override
         public int getRotation() {
             return 0;
         }
 
         @Override
-        public Matrix getTransformMatrix(PDRectangle pageSize) {
+        public Matrix getTransformMatrix(final PDRectangle pageSize) {
             return new Matrix();
         }
-
-        @Override
-        public void drawImage(PDPageContentStream contents, PDImageXObject pdImage) throws IOException {
-            contents.drawImage(pdImage, 0, 0, PDRectangle.A4.getWidth(), PDRectangle.A4.getHeight());
-        }
     };
+
+    private final float drawWidth;
+    private final float drawHeight;
+
+    ImageOrientation(final float drawWidth, final float drawHeight) {
+        this.drawWidth = drawWidth;
+        this.drawHeight = drawHeight;
+    }
 
     public abstract int getRotation();
 
     public abstract Matrix getTransformMatrix(final PDRectangle pageSize);
 
-    public abstract void drawImage(final PDPageContentStream contents, final PDImageXObject pdImage) throws IOException;
-}
+    public void drawImage(final PDPageContentStream contents, final PDImageXObject pdImage) throws IOException {
+        contents.drawImage(pdImage, 0.0f, 0.0f, drawWidth, drawHeight);
+    }}
