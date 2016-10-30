@@ -24,13 +24,11 @@ public class CommentsServiceTest {
     private CommentsBusinessLocal commentsBusiness;
 
     @InjectMocks
-    private CommentsService testee = new CommentsService();
+    private final CommentsService testee = new CommentsService();
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testGetCommentsNoId() {
-        final Response response = testee.getComments(null);
-
-        assertThat(response.getStatus()).isEqualTo(Response.Status.BAD_REQUEST.getStatusCode());
+        testee.getComments(null);
     }
 
     @Test

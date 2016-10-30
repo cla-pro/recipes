@@ -73,9 +73,11 @@
                         return $timeout(function() {
                             vm.setMessage('', false);
                         }, 5000);
-                    }).catch(function() {
+                    }).catch(function(err) {
+                        var data = err.data;
                         vm.loading = false;
-                        vm.setMessage('Une erreur est survenue pendant l\'enregistrement de la recette', true);
+                        vm.setMessage('Une erreur est survenue pendant l\'enregistrement de la recette: ' + data.message, true);
+                        console.log("Error during insert: " + data.code + "\n" + data.stacktrace);
                     });
                 };
 
