@@ -31,6 +31,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
     protected void configureServlets() {
         bind(LoggingFilter.class).in(Singleton.class);
         bind(TransactionFilter.class).in(Singleton.class);
+        bind(ThrowableMapper.class).in(Singleton.class);
 
         bind(CommentFactory.class).in(Singleton.class);
         bind(RecipeFactory.class).in(Singleton.class);

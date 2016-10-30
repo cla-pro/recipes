@@ -49,9 +49,11 @@
                                 vm.message = '';
                             }
                         })
-                        .catch(function() {
+                        .catch(function(err) {
+                            var data = err.data;
                             vm.loading = false;
-                            vm.message = 'Erreur lors de la requete';
+                            vm.message = data.message;
+                            console.log("Error during search: " + data.code + "\n" + data.stacktrace);
                         });
                 };
 

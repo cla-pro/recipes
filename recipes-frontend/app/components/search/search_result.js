@@ -29,10 +29,16 @@
                     return Restangular.all('comments').getList({'recipe_id': vm.recipeId});
                 }).then(function(comments) {
                     vm.comments = comments;
+                }).catch(function(err) {
+                    console.log("Error during search: " + err.data.code + "\n" + err.data.stacktrace);
                 });
 
                 vm.commentUpdated = function(comment) {
-                    Restangular.all('comments').getList({'recipe_id': vm.recipeId}).then(function(comments) { vm.comments = comments; });
+                    Restangular
+                        .all('comments')
+                        .getList({'recipe_id': vm.recipeId})
+                        .then(function(comments) { vm.comments = comments; })
+                        .catch(function(err) { console.log("Error during search: " + err.data.code + "\n" + err.data.stacktrace); });
                 };
 
                 $scope.onLoad = function() {

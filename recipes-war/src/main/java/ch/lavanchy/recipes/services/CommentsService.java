@@ -24,7 +24,7 @@ public class CommentsService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getComments(@QueryParam("recipe_id") final Long recipeId) {
         if (recipeId == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            throw new IllegalArgumentException("Recipe's id is missing");
         } else {
             final List<Comment> result = commentsBusiness.findCommentsForRecipe(recipeId);
 
