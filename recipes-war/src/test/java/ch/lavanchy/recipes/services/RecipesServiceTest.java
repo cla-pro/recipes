@@ -79,10 +79,10 @@ public class RecipesServiceTest {
 
     @Test
     public void testGetRecipeListWithChunkStartAndSize() {
-        final String recipesAsJson = recipesService.getRecipeList(null, "start", 50);
+        final String recipesAsJson = recipesService.getRecipeList(null, 25L, 50);
 
         verify(queryOperationFactory).createQueryOperation(eq(""));
-        verify(recipesBusiness).findRecipesWithFilter(eq(new EmptyOp()), eq(Optional.of("start")), eq(Optional.of(50)));
+        verify(recipesBusiness).findRecipesWithFilter(eq(new EmptyOp()), eq(Optional.of(25L)), eq(Optional.of(50)));
         assertThat(new Gson().fromJson(recipesAsJson, List.class)).hasSameSizeAs(recipes);
     }
 }

@@ -20,7 +20,7 @@ public interface RecipesBusinessLocal {
      * @param size The size of the result list to return, return all if empty.
      * @return The matching recipes
      */
-    List<Recipe> findRecipesWithFilter(final QueryOperation filter, final Optional<String> chunkStart, final Optional<Integer> size);
+    List<Recipe> findRecipesWithFilter(final QueryOperation filter, final Optional<Long> chunkStart, final Optional<Integer> size);
 
     /**
      * Find a single {@link Recipe} by id

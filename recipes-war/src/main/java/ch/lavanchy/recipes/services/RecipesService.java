@@ -47,7 +47,7 @@ public class RecipesService {
     @Produces(MediaType.APPLICATION_JSON)
     public String getRecipeList(
             @QueryParam("filter") final String filter,
-            @QueryParam("chunkStart") final String chunkStart,
+            @QueryParam("chunkStart") final Long chunkStart,
             @QueryParam("size") final Integer size) {
         final String validatedFilter = validateFilter(filter);
         final QueryOperation queryOperation = queryOperationFactory.createQueryOperation(validatedFilter);

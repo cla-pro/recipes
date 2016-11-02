@@ -38,6 +38,7 @@ import static org.mockito.Mockito.*;
 public class RecipesBusinessBeanTest {
     private static final long KNOWN_RECIPE_ID = 123L;
     private static final String KNOWN_TAG_NAME = "dessert";
+    private static final long ID_CHUNK_START = 25L;
 
     @Mock
     private RecipesDaoLocal recipesDao;
@@ -108,12 +109,16 @@ public class RecipesBusinessBeanTest {
     @Test
     public void testFindRecipesWithFilter() {
         final TextFilterOp queryOperation = new TextFilterOp("myFilter");
-        final Optional<String> chunkStart = Optional.of("chunkStart");
+        final Optional<Long> chunkStart = Optional.of(ID_CHUNK_START);
         final Optional<Integer> size = Optional.of(50);
+        final String chunkStartName = "chunkStartName";
+        final RecipeEntity recipeEntity = mock(RecipeEntity.class);
+        doReturn(chunkStartName).when(recipeEntity).getName();
+        doReturn(recipeEntity).when(recipesDao).findRecipeById(eq(ID_CHUNK_START));
 
         final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation, chunkStart, size);
 
-        verify(recipesDao).findRecipeWithFilter(eq(queryOperation), eq(chunkStart), eq(size));
+        verify(recipesDao).findRecipeWithFilter(eq(queryOperation), eq(Optional.of(chunkStartName)), eq(size));
         assertThat(recipes).hasSameSizeAs(recipeEntities);
     }
 

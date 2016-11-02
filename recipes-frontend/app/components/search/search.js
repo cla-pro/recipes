@@ -34,7 +34,7 @@
                     vm.loading = true;
                     var params = {'filter': vm.query, 'size': vm.chunkSize};
                     if (vm.recipes.length > 0) {
-                        params['chunkStart'] = vm.recipes[vm.recipes.length - 1].name;
+                        params['chunkStart'] = vm.recipes[vm.recipes.length - 1].id;
                     }
 
                     Restangular.all('recipes').getList(params)
