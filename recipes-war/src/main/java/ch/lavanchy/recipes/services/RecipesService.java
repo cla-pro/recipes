@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST Webservice to manage the recipes
@@ -44,10 +45,16 @@ public class RecipesService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getRecipeList(@QueryParam("filter") final String filter) {
+    public String getRecipeList(
+            @QueryParam("filter") final String filter,
+            @QueryParam("chunkStart") final Long chunkStart,
+            @QueryParam("size") final Integer size) {
         final String validatedFilter = validateFilter(filter);
         final QueryOperation queryOperation = queryOperationFactory.createQueryOperation(validatedFilter);
-        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(queryOperation);
+        final List<Recipe> recipes = recipesBusiness.findRecipesWithFilter(
+                queryOperation,
+                Optional.ofNullable(chunkStart),
+                Optional.ofNullable(size));
         return new Gson().toJson(recipes);
     }
 

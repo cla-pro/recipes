@@ -14,12 +14,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Testclass for {@link RecipesService}
@@ -31,7 +32,7 @@ public class RecipesServiceTest {
     private RecipesBusinessLocal recipesBusiness;
 
     @Spy
-    private QueryOperationFactory queryOperationFactory = new QueryOperationFactory();
+    private final QueryOperationFactory queryOperationFactory = new QueryOperationFactory();
 
     @InjectMocks
     private RecipesService recipesService;
@@ -41,7 +42,9 @@ public class RecipesServiceTest {
     @Before
     public void setUp() {
         recipes = Arrays.asList(createRecipe(1L, "Croissant au jambon"), createRecipe(2L, "Jambon au madere"));
-        when(recipesBusiness.findRecipesWithFilter(any(QueryOperation.class))).thenReturn(recipes);
+        doReturn(recipes)
+                .when(recipesBusiness)
+                .findRecipesWithFilter(any(QueryOperation.class), any(Optional.class), any(Optional.class));
     }
 
     private Recipe createRecipe(final Long id, final String name) {
@@ -54,20 +57,32 @@ public class RecipesServiceTest {
 
     @Test
     public void testGetRecipeListNoFilter() throws Exception {
-        final String recipesAsJson = recipesService.getRecipeList(null);
+        final String recipesAsJson = recipesService.getRecipeList(null, null, null);
 
         verify(queryOperationFactory).createQueryOperation(eq(""));
-        verify(recipesBusiness).findRecipesWithFilter(eq(new EmptyOp()));
+        verify(recipesBusiness).findRecipesWithFilter(eq(new EmptyOp()), eq(Optional.empty()), eq(Optional.empty()));
         assertThat(new Gson().fromJson(recipesAsJson, List.class)).hasSameSizeAs(recipes);
     }
 
     @Test
     public void testGetRecipeListWithFilter() throws Exception {
         final String filter = "ham cheese";
-        final String recipesAsJson = recipesService.getRecipeList(filter);
+        final String recipesAsJson = recipesService.getRecipeList(filter, null, null);
 
         verify(queryOperationFactory).createQueryOperation(eq(filter));
-        verify(recipesBusiness).findRecipesWithFilter(eq(new AndOp(new TextFilterOp("ham"), new TextFilterOp("cheese"))));
+        verify(recipesBusiness).findRecipesWithFilter(
+                eq(new AndOp(new TextFilterOp("ham"), new TextFilterOp("cheese"))),
+                eq(Optional.empty()),
+                eq(Optional.empty()));
+        assertThat(new Gson().fromJson(recipesAsJson, List.class)).hasSameSizeAs(recipes);
+    }
+
+    @Test
+    public void testGetRecipeListWithChunkStartAndSize() {
+        final String recipesAsJson = recipesService.getRecipeList(null, 25L, 50);
+
+        verify(queryOperationFactory).createQueryOperation(eq(""));
+        verify(recipesBusiness).findRecipesWithFilter(eq(new EmptyOp()), eq(Optional.of(25L)), eq(Optional.of(50)));
         assertThat(new Gson().fromJson(recipesAsJson, List.class)).hasSameSizeAs(recipes);
     }
 }

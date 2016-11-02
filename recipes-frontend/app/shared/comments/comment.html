@@ -10,7 +10,7 @@
         <div marked="comment.content" class="comment-content"></div>
     </div>
     <div ng-show="vm.isEditingState()" class="comment-content">
-        <textarea ng-model='vm.editingContent' class="comment-content-editor"></textarea>
+        <textarea ng-model="vm.editingContent" class="comment-content-editor"></textarea>
         <br /><br />
         <button ng-click="vm.saveComment()">Sauvegarder</button>
         <button ng-click="vm.cancelEditing()">Annuler</button>

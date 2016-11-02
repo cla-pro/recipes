@@ -44,9 +44,19 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     private FilenameFixer filenameFixer;
 
     @Override
-    public List<Recipe> findRecipesWithFilter(final QueryOperation filter) {
-        final List<RecipeEntity> filteredRecipes = recipesDao.findRecipeWithFilter(filter);
+    public List<Recipe> findRecipesWithFilter(final QueryOperation filter, final Optional<Long> chunkStart, final Optional<Integer> size) {
+        final Optional<String> chunkStartName = searchCheckStartName(chunkStart);
+        final List<RecipeEntity> filteredRecipes = recipesDao.findRecipeWithFilter(filter, chunkStartName, size);
         return recipeFactory.convertRecipeEntityListToRecipe(filteredRecipes);
+    }
+
+    private Optional<String> searchCheckStartName(final Optional<Long> chunkStart) {
+        if (chunkStart.isPresent()) {
+            final RecipeEntity recipe = recipesDao.findRecipeById(chunkStart.get());
+            return Optional.of(recipe.getName());
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
