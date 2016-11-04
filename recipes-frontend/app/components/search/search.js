@@ -16,6 +16,7 @@
                 vm.recipes = [];
                 vm.message = '';
                 vm.loading = false;
+                vm.reload = false;
                 vm.chunkSize = 50;
                 vm.hasMoreRecipes = false;
 
@@ -24,6 +25,7 @@
                 });
 
                 vm.newSearch = function() {
+                    vm.reload = true;
                     vm.clearSearch();
                     vm.search();
                 };
@@ -41,6 +43,7 @@
                         .then(function(found) {
                             found.forEach(function(elem) { vm.recipes.push(elem); });
                             vm.loading = false;
+                            vm.reload = false;
                             if (vm.recipes.length === 0) {
                                 vm.hasMoreRecipes = false;
                                 vm.message = 'Pas de recette trouvée';
@@ -52,6 +55,7 @@
                         .catch(function(err) {
                             var data = err.data;
                             vm.loading = false;
+                            vm.reload = false;
                             vm.message = data.message;
                             console.log("Error during search: " + data.code + "\n" + data.stacktrace);
                         });

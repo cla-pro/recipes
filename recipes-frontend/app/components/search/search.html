@@ -9,8 +9,8 @@
         <button ng-click="vm.newSearch()">Rechercher</button>
     </div>
     <br />
-    <img ng-show="vm.loading" src="images/loading.gif" alt="chargement..." class="loading" />
     <!-- Results -->
-    <app-result-list ng-hide="vm.loading" results="vm.recipes" message="vm.message" query="vm.encodedQuery"></app-result-list>
-    <div ng-show="vm.hasMoreRecipes" ng-click="vm.search()" class="more">Plus de recettes</div>
+    <app-result-list ng-hide="vm.reload" results="vm.recipes" message="vm.message" query="vm.encodedQuery"></app-result-list>
+    <img ng-show="vm.loading" src="images/loading.gif" alt="chargement..." class="loading" />
+    <div ng-show="vm.hasMoreRecipes && !vm.loading" ng-click="vm.search()" class="more">Plus de recettes</div>
 </div>
