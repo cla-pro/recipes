@@ -9,27 +9,26 @@
             transclude: true,
             controllerAs: 'vm',
             controller: ['$scope', '$stateParams', function($scope, $stateParams) {
-                $scope.hasAdditionalActions = $scope.displayEdit || $scope.displayDownload;
-                $scope.displayAdditionalActions = false;
 
                 var that = $scope;
-                var updateHasAdditionalActions = function() {
-                    that.hasAdditionalActions = that.displayEdit || that.displayDownload;
+                that.config.hideAdditionalActions = function() {
+                    $scope.displayAdditionalActions = false;
                 };
-                $scope.$watch(function() { return that.displayEdit; }, updateHasAdditionalActions);
-                $scope.$watch(function() { return that.displayDownload; }, updateHasAdditionalActions);
+
+                function updateHasAdditionalActions() {
+                    that.hasAdditionalActions = that.config.displayEdit || that.config.displayDownload;
+                };
+                $scope.$watch(function() { return that.config.displayEdit; }, updateHasAdditionalActions);
+                $scope.$watch(function() { return that.config.displayDownload; }, updateHasAdditionalActions);
                 $scope.clickAdditional = function() {
                     $scope.displayAdditionalActions = !$scope.displayAdditionalActions;
                 };
+
+                updateHasAdditionalActions();
+                that.displayAdditionalActions = false;
             }],
             scope: {
-                displayBack: '=',
-                displayEdit: '=',
-                displayDownload: '=',
-                downloadUrl: '=',
-                downloadUrlPdf: '=',
-                clickBack: '&onClickBack',
-                clickEdit: '&onClickEdit'
+                config: '='
             }
         };
     });

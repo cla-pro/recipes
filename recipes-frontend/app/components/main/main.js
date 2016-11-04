@@ -2,36 +2,41 @@
     'use strict';
 
     var recipesControllers = angular.module('recipesControllers');
-    recipesControllers.controller('MainCtrl', ['$scope', '$rootScope', '$state', '$aside', 'Restangular',
-        function($scope, $rootScope, $state, $aside, Restangular) {
+    recipesControllers.controller('MainCtrl', ['$scope', '$transitions', '$state', '$aside', 'Restangular',
+        function($scope, $transitions, $state, $aside, Restangular) {
             Restangular.setBaseUrl('../services');
 
-            $scope.displayBack = false;
-            $scope.displayEdit = false;
-            $scope.displayDownload = false;
+            $scope.actionConfig = {
+                displayBack: false,
+                displayEdit: false,
+                displayDownload: false
+            };
 
             $scope.enableBack = function(onClickBack) {
-                $scope.displayBack = true;
-                $scope.onClickBack = onClickBack;
+                $scope.actionConfig.displayBack = true;
+                $scope.actionConfig.onClickBack = onClickBack;
             };
             $scope.enableEdit = function(onClickEdit) {
-                $scope.displayEdit = true;
-                $scope.onClickEdit = onClickEdit;
+                $scope.actionConfig.displayEdit = true;
+                $scope.actionConfig.onClickEdit = onClickEdit;
             };
             $scope.enableDownload = function(url, urlPdf) {
-                $scope.displayDownload = true;
-                $scope.downloadUrl = url;
-                $scope.downloadUrlPdf = urlPdf;
+                $scope.actionConfig.displayDownload = true;
+                $scope.actionConfig.downloadUrl = url;
+                $scope.actionConfig.downloadUrlPdf = urlPdf;
             };
             var scope = $scope;
-            $rootScope.$on('$stateChangeStart',
+            $transitions.onStart({},
                 function(){
-                    scope.displayBack = false;
-                    scope.onClickBack = undefined;
-                    scope.displayEdit = false;
-                    scope.onClickEdit = undefined;
-                    scope.displayDownload = false;
-                    scope.downloadUrl = undefined;
+                    scope.actionConfig.displayBack = false;
+                    scope.actionConfig.onClickBack = undefined;
+                    scope.actionConfig.displayEdit = false;
+                    scope.actionConfig.onClickEdit = undefined;
+                    scope.actionConfig.displayDownload = false;
+                    scope.actionConfig.downloadUrl = undefined;
+                    if (scope.actionConfig.hideAdditionalActions) {
+                        scope.actionConfig.hideAdditionalActions();
+                    }
                 });
 
             $scope.asideState = {

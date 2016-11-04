@@ -34,13 +34,7 @@
         <div class="header-title">MyRecettes</div>
 
         <app-action
-                display-back="displayBack"
-                on-click-back="onClickBack()"
-                display-edit="displayEdit"
-                on-click-edit="onClickEdit()"
-                display-download="displayDownload"
-                download-url="downloadUrl"
-                download-url-pdf="downloadUrlPdf">
+                config="actionConfig">
         </app-action>
     </div>
 
@@ -64,7 +58,7 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/angular-aside/dist/js/angular-aside.min.js"></script>
     <script src="bower_components/marked/marked.min.js"></script>
-    <script src="bower_components/angular-marked/angular-marked.min.js"></script>
+    <script src="bower_components/angular-marked/dist/angular-marked.min.js"></script>
     <script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script>
     <script src="bower_components/restangular/dist/restangular.min.js"></script>
     <script src="bower_components/angular-pdf/dist/angular-pdf.min.js"></script>
