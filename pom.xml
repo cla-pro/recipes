@@ -102,6 +102,7 @@
                     <lineLength>120</lineLength>
                     <indentSize>4</indentSize>
                     <pushChanges>false</pushChanges>
+                    <tagNameFormat>${project.version}</tagNameFormat>
                 </configuration>
             </plugin>
         </plugins>
