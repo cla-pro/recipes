@@ -57,14 +57,14 @@
                     placement: 'left',
                     size: 'sm',
                     animation: true,
-                    controller: ['$scope', '$modalInstance', '$filter', function($scope, $modalInstance, $filter) {
+                    controller: ['$scope', '$uibModalInstance', '$filter', function($scope, $uibModalInstance, $filter) {
                         $scope.menuElementList = [
                             {'route': 'search', 'html': 'Rechercher'},
                             {'route': 'insert', 'html': 'Insérer'}
                         ];
 
                         $scope.go = function(e, element) {
-                            $modalInstance.dismiss();
+                            $uibModalInstance.dismiss();
                             e.stopPropagation();
                             $state.go(element.route);
                         };
