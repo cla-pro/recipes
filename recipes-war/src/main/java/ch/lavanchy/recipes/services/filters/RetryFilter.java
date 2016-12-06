@@ -22,9 +22,13 @@ public class RetryFilter implements Filter {
             throws IOException, ServletException {
         try {
             filterChain.doFilter(servletRequest, servletResponse);
+        } catch (final ServletException e) {
+            LOGGER.error("Exception during the execution of the request", e);
+            if (e.getMessage().equals("Broken pipe")) {
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
         } catch (final Exception e) {
             LOGGER.error("Exception during the execution of the request", e);
-            // retry
         }
     }
 

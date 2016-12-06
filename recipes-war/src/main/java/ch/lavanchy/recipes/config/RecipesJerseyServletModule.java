@@ -10,6 +10,7 @@ import ch.lavanchy.recipes.factories.converters.ToPDFConverterFactory;
 import ch.lavanchy.recipes.query.QueryOperationFactory;
 import ch.lavanchy.recipes.services.*;
 import ch.lavanchy.recipes.services.filters.LoggingFilter;
+import ch.lavanchy.recipes.services.filters.RetryFilter;
 import ch.lavanchy.recipes.services.filters.TransactionFilter;
 import ch.lavanchy.recipes.utils.PropertyProviderBean;
 import ch.lavanchy.recipes.utils.PropertyProviderLocal;
@@ -31,6 +32,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
     protected void configureServlets() {
         bind(LoggingFilter.class).in(Singleton.class);
         bind(TransactionFilter.class).in(Singleton.class);
+        bind(RetryFilter.class).in(Singleton.class);
         bind(ThrowableMapper.class).in(Singleton.class);
 
         bind(CommentFactory.class).in(Singleton.class);
@@ -61,6 +63,7 @@ class RecipesJerseyServletModule extends JerseyServletModule {
         final Map<String, String> params = new HashMap<>();
         params.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
         filter("/services/*").through(LoggingFilter.class);
+        filter("/services/*").through(RetryFilter.class);
         filter("/services/*").through(PersistFilter.class);
         filter("/services/*").through(TransactionFilter.class);
         serve("/services/*").with(GuiceContainer.class, params);
