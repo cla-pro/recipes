@@ -42,11 +42,31 @@
 
             if (vm.isEmpty(vm.name) || vm.isEmpty(file)) {
                 vm.setMessage('Le nom de la recette et le fichier sont obligatoires', true);
+                vm.loading = false;
                 return;
             } else {
                 vm.setMessage(undefined, false);
             }
 
+            Restangular
+                .all('recipes')
+                .getList({'filter': vm.name})
+                .then(function(found) {
+                    if (found.filter(function(elem) { return elem.name === vm.name }).length > 0) {
+                        vm.setMessage('Le nom est déjà utilisé par une autre recette', true);
+                        vm.loading = false;
+                    } else {
+                        vm.sendInsertRequest(file);
+                    }
+                })
+                .catch(function(err) {
+                    var data = err.data;
+                    vm.loading = false;
+                    vm.setMessage('Erreur lors de l\'enregistrement: ' + data.message);
+                });
+        };
+
+        vm.sendInsertRequest = function(file) {
             var content = { name: vm.name, filename: file.name, rating: vm.rating };
             if (vm.tags !== undefined && vm.tags !== null) {
                 content.tags = vm.tags.map(function(e) { return e.text; });
@@ -79,7 +99,7 @@
                 vm.setMessage('Une erreur est survenue pendant l\'enregistrement de la recette: ' + data.message, true);
                 console.log("Error during insert: " + data.code + "\n" + data.stacktrace);
             });
-        };
+        }
 
         vm.setMessage = function(msg, isError) {
             vm.message = msg;
