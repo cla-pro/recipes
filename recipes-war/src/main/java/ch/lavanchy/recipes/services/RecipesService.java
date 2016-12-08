@@ -127,7 +127,7 @@ public class RecipesService {
         final Recipe recipe = new Gson().fromJson(multiPart.getField("recipe").getValue(), Recipe.class);
         validateRecipe(recipe);
         final Recipe persisted = recipesBusiness.createRecipe(recipe);
-        fileBusiness.saveFile(fileInputStream, persisted.getFilename(), false);
+        fileBusiness.saveFile(fileInputStream, persisted.getFilename(), true);
         return new Gson().toJson(persisted);
     }
 
