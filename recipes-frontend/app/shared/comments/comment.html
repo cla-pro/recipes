@@ -5,7 +5,7 @@
     <div ng-show="vm.isViewingState()">
         <input type="image" ng-click="vm.deleteComment()" src="images/delete-icon.png" alt="Delete" class="comment-btn" />
         <input type="image" ng-click="vm.editComment()" src="images/edit-icon.png" alt="Edit" class="comment-btn" />
-        {{comment.lastModification}}
+        {{vm.formatDateTime(comment.lastModification)}}
 
         <div marked="comment.content" class="comment-content"></div>
     </div>

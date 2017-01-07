@@ -30,6 +30,14 @@
                     vm.state = (vm._comment === undefined) ? 'EMPTY' : 'VIEWING';
                     vm.editingContent = '';
                 };
+                vm.formatDateTime = function(dateTime) {
+                    if (dateTime === undefined) {
+                        return "";
+                    } else {
+                        return dateTime.date.year + "/" + dateTime.date.month + "/" + dateTime.date.day
+                            + " " + dateTime.time.hour + ":" + dateTime.time.minute + ":" + dateTime.time.second;
+                    }
+                };
 
                 var that = $scope;
                 vm.saveComment = function() {
