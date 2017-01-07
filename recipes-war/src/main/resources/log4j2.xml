@@ -6,7 +6,7 @@
         <Appender type="Console" name="STDOUT">
             <Layout type="PatternLayout" pattern="%X %d %p [%t] %C %m%n"/>
         </Appender>
-        <Appender type="File" name="File" fileName="../logs/ch.lavanchy.recipes.log">
+        <Appender type="File" name="File" fileName="ch.lavanchy.recipes.log">
             <Layout type="PatternLayout">
                 <Pattern>%X %d %p [%t] %C %m%n</Pattern>
             </Layout>
@@ -15,7 +15,6 @@
 
     <Loggers>
         <Logger name="ch.lavanchy" level="debug" additivity="false">
-            <!--<AppenderRef ref="STDOUT" />-->
             <AppenderRef ref="File" />
         </Logger>
 
