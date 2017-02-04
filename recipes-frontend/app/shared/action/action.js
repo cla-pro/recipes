@@ -16,7 +16,7 @@
                 };
 
                 function updateHasAdditionalActions() {
-                    that.hasAdditionalActions = that.config.displayEdit || that.config.displayDownload;
+                    that.hasAdditionalActions = that.config.displayEdit || that.config.displayDownload || that.config.displayCopyUrl;
                 };
                 $scope.$watch(function() { return that.config.displayEdit; }, updateHasAdditionalActions);
                 $scope.$watch(function() { return that.config.displayDownload; }, updateHasAdditionalActions);

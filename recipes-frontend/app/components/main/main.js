@@ -10,7 +10,8 @@
         $scope.actionConfig = {
             displayBack: false,
             displayEdit: false,
-            displayDownload: false
+            displayDownload: false,
+            displayCopyUrl: false
         };
 
         $scope.enableBack = function(onClickBack) {
@@ -25,6 +26,10 @@
             $scope.actionConfig.displayDownload = true;
             $scope.actionConfig.downloadUrl = url;
             $scope.actionConfig.downloadUrlPdf = urlPdf;
+        };
+        $scope.enableCopyUrl = function(url) {
+            $scope.actionConfig.displayCopyUrl = true;
+            $scope.actionConfig.copyUrl = url;
         };
         var scope = $scope;
         $transitions.onStart({},

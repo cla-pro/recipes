@@ -5,10 +5,10 @@
     recipesControllers.component('appSearchResult', {
         templateUrl: 'components/search/search.result.html',
         controllerAs: 'vm',
-        controller: ['$scope', '$state', '$stateParams', 'Restangular', SearchResultController]
+        controller: ['$scope', '$state', '$stateParams', '$location', 'Restangular', SearchResultController]
     });
 
-    function SearchResultController($scope, $state, $stateParams, Restangular) {
+    function SearchResultController($scope, $state, $stateParams, $location, Restangular) {
         var vm = this;
         vm.recipe = {};
         vm.tags = '';
@@ -52,5 +52,6 @@
         $scope.$parent.enableEdit(function() {
             $state.go('edit', { 'id': vm.recipe.id, 'query': vm.query });
         });
+        $scope.$parent.enableCopyUrl($location.absUrl());
     }
 })();

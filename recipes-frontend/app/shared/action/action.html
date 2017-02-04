@@ -11,5 +11,10 @@
         <a ng-show="config.displayDownload" ng-href="{{config.downloadUrlPdf}}">
             <img src="images/download-pdf-icon.png" alt="Download PDF" class="action-btn" />
         </a>
+        <br />
+        <br />
+        <button ngclipboard data-clipboard-text="{{config.copyUrl}}" class="action-btn action-btn-box">
+            <img src="images/copy-url-icon.png" alt="Copier adresse" class="action-btn-content action-btn-box" />
+        </button>
     </div>
 </div>
