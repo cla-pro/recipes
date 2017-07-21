@@ -5,6 +5,7 @@ import ch.lavanchy.recipes.entities.RecipeEntity;
 import ch.lavanchy.recipes.query.QueryOperation;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.impl.JPADeleteClause;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -74,5 +75,12 @@ public class RecipesDaoBean implements RecipesDaoLocal {
     public RecipeEntity persistRecipe(final RecipeEntity recipeEntity) {
         entityManager.persist(recipeEntity);
         return recipeEntity;
+    }
+
+    @Override
+    public void deleteRecipe(long id) {
+        new JPADeleteClause(entityManager, qRecipeEntity)
+                .where(qRecipeEntity.id.eq(id))
+                .execute();
     }
 }

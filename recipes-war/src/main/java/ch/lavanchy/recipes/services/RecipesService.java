@@ -61,8 +61,12 @@ public class RecipesService {
     @GET
     @Path("/{id}")
     public String getRecipe(@PathParam("id") final long id) {
-        final Recipe recipe = recipesBusiness.findRecipeById(id);
-        return new Gson().toJson(recipe);
+        final Optional<Recipe> recipe = recipesBusiness.findRecipeById(id);
+        if (recipe.isPresent()) {
+            return new Gson().toJson(recipe.get());
+        } else {
+            return null;
+        }
     }
 
     @POST
@@ -90,20 +94,38 @@ public class RecipesService {
         return new Gson().toJson(persisted);
     }
 
+    @DELETE
+    @Path("/{id}")
+    public void deleteRecipe(@PathParam("id") final long id) throws IOException {
+        final Optional<Recipe> recipe = recipesBusiness.findRecipeById(id);
+        if (recipe.isPresent()) {
+            fileBusiness.deleteFile(recipe.get().getFilename());
+            recipesBusiness.deleteRecipe(id);
+        }
+    }
+
     @GET
     @Path("/pdf/{id}")
     public Response getPDFFile(@PathParam("id") final long id) throws IOException {
-        final Recipe recipe = recipesBusiness.findRecipeById(id);
-        final File toUpload = fileBusiness.readPDFFile(recipe.getFilename());
-        return createResponseFromFile(toUpload);
+        final Optional<Recipe> recipe = recipesBusiness.findRecipeById(id);
+        if (recipe.isPresent()) {
+            final File toUpload = fileBusiness.readPDFFile(recipe.get().getFilename());
+            return createResponseFromFile(toUpload);
+        } else {
+            return null;
+        }
     }
 
     @GET
     @Path("/file/{id}")
     public Response getOriginalFile(@PathParam("id") final long id) throws IOException {
-        final Recipe recipe = recipesBusiness.findRecipeById(id);
-        final File toUpload = fileBusiness.readOriginalFile(recipe.getFilename());
-        return createResponseFromFile(toUpload);
+        final Optional<Recipe> recipe = recipesBusiness.findRecipeById(id);
+        if (recipe.isPresent()) {
+            final File toUpload = fileBusiness.readOriginalFile(recipe.get().getFilename());
+            return createResponseFromFile(toUpload);
+        } else {
+            return null;
+        }
     }
 
     private Response createResponseFromFile(final File toUpload) {

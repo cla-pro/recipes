@@ -60,9 +60,13 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
     }
 
     @Override
-    public Recipe findRecipeById(final long id) {
+    public Optional<Recipe> findRecipeById(final long id) {
         final RecipeEntity recipeEntity = recipesDao.findRecipeById(id);
-        return recipeFactory.convertRecipeEntityToRecipe(recipeEntity);
+        if (recipeEntity == null) {
+            return Optional.empty();
+        } else {
+            return Optional.of(recipeFactory.convertRecipeEntityToRecipe(recipeEntity));
+        }
     }
 
     @Override
@@ -114,6 +118,11 @@ public class RecipesBusinessBean implements RecipesBusinessLocal {
             recipeEntity.setFilename(filename);
             return recipeFactory.convertRecipeEntityToRecipe(recipeEntity);
         }
+    }
+
+    @Override
+    public void deleteRecipe(long id) {
+        recipesDao.deleteRecipe(id);
     }
 
     private void extractAndPersistTags(final List<String> tags, final RecipeEntity persistedEntity) {

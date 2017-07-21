@@ -71,26 +71,20 @@ public class RecipesBusinessBeanTest {
         doReturn(recipeEntities)
                 .when(recipesDao)
                 .findRecipeWithFilter(any(QueryOperation.class), any(Optional.class), any(Optional.class));
-        doAnswer(new Answer<RecipeEntity>() {
-            @Override
-            public RecipeEntity answer(final InvocationOnMock invocation) throws Throwable {
-                final RecipeEntity param = (RecipeEntity) invocation.getArguments()[0];
-                param.setId(0L);
-                return param;
-            }
+        doAnswer(invocation -> {
+            final RecipeEntity param = (RecipeEntity) invocation.getArguments()[0];
+            param.setId(0L);
+            return param;
         })
                 .when(recipesDao)
                 .persistRecipe(any(RecipeEntity.class));
 
         doReturn(createRecipeEntity("My Recipe")).when(recipesDao).findRecipeById(eq(KNOWN_RECIPE_ID));
         doReturn(Collections.singletonList(createTagEntity(KNOWN_TAG_NAME))).when(tagsDao).findAllTags();
-        doAnswer(new Answer<TagEntity>() {
-            @Override
-            public TagEntity answer(final InvocationOnMock invocation) throws Throwable {
-                final TagEntity param = (TagEntity) invocation.getArguments()[0];
-                param.setId(0L);
-                return param;
-            }
+        doAnswer(invocation -> {
+            final TagEntity param = (TagEntity) invocation.getArguments()[0];
+            param.setId(0L);
+            return param;
         }).when(tagsDao).persistTag(any(TagEntity.class));
     }
 

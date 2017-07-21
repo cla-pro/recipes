@@ -19,6 +19,9 @@
 
         var parentScope = $scope.$parent;
         Restangular.one('recipes', vm.recipeId).get().then(function(recipe) {
+            if (recipe === undefined) {
+                $state.go('search', { 'query': vm.query });
+            }
             vm.recipe = recipe;
             vm.tags = recipe.tags.join(', ');
             $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;

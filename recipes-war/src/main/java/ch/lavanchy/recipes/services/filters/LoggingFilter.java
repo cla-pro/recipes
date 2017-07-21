@@ -35,7 +35,10 @@ public class LoggingFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Service call url={} duration={}", extractUrl(servletRequest), stopWatch.getTime());
+            LOGGER.info("Service call url={} {} duration={}",
+                    ((HttpServletRequest) servletRequest).getMethod(),
+                    extractUrl(servletRequest),
+                    stopWatch.getTime());
 
             ThreadContext.clearAll();
         }
@@ -43,8 +46,8 @@ public class LoggingFilter implements Filter {
 
     private String extractUrl(final ServletRequest servletRequest) {
         if (servletRequest instanceof HttpServletRequest) {
-            return ((HttpServletRequest) servletRequest).getRequestURL() + "?"
-                    + ((HttpServletRequest) servletRequest).getQueryString();
+            final String query = ((HttpServletRequest) servletRequest).getQueryString();
+            return ((HttpServletRequest) servletRequest).getRequestURL() + (query == null ? "" : "?" + query);
         } else {
             return "cannot extract URL from " + servletRequest.getClass().getName();
         }

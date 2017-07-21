@@ -76,6 +76,17 @@ public class FileBusinessBean implements FileBusinessLocal {
         return file;
     }
 
+    @Override
+    public void deleteFile(final String filename) {
+        final String location = propertyProvider.getStringPropertyByName("recipes.files.location");
+        final File file = new File(new File(location), filename);
+        file.delete();
+        final File pdfFile = fileConverter.getPdfFile(location, filename);
+        if (pdfFile.exists()) {
+            pdfFile.delete();
+        }
+    }
+
     private File getFileToRead(String filename, String location) throws FileNotFoundException {
         final File folder = new File(location);
         if (!folder.exists()) {

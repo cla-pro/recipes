@@ -45,24 +45,25 @@ public class FileConverter {
     public File getFileAsPDF(final File sourceFile) throws FileNotFoundException {
         final String filename = sourceFile.getName();
         final String extension = FilenameUtils.getExtension(filename);
+        final File targetFile = getPdfFile(sourceFile.getParent(), filename);
 
-        if (extension.toLowerCase().equals(PDF_EXTENSION)) {
-            return sourceFile;
-        }
-
-        final String folder = sourceFile.getParent();
-        final String filenamePDF = FilenameUtils.removeExtension(filename) + PDF_FILENAME_EXTENSION;
-        final File targetFile = new File(folder, filenamePDF);
         LOGGER.debug("Reading PDF file at {} and exists={}", targetFile.getAbsolutePath(), targetFile.exists());
         if (targetFile.exists() && sourceOlderThanPDF(sourceFile, targetFile)) {
             return targetFile;
         }
 
         LOGGER.debug("Converting file at {} to PDF", sourceFile.getAbsolutePath());
-        return toPDFConverterFactory.createConverter(extension).convertToPDFInFile(sourceFile, targetFile);
+        return toPDFConverterFactory
+                .createConverter(FilenameUtils.getExtension(filename))
+                .convertToPDFInFile(sourceFile, targetFile);
+    }
+
+    public File getPdfFile(final String folder, final String filename) {
+        final String filenamePDF = FilenameUtils.removeExtension(filename) + PDF_FILENAME_EXTENSION;
+        return new File(folder, filenamePDF);
     }
 
     private boolean sourceOlderThanPDF(File sourceFile, File targetFile) {
-        return sourceFile.lastModified() < targetFile.lastModified();
+        return sourceFile.lastModified() <= targetFile.lastModified();
     }
 }

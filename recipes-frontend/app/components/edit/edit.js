@@ -5,10 +5,10 @@
     recipesControllers.component('appEdit', {
         templateUrl: 'components/edit/edit.html',
         controllerAs: 'vm',
-        controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout', '$tags', EditController]
+        controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout', '$tags', '$mdDialog', EditController]
     });
 
-    function EditController($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags) {
+    function EditController($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags, $mdDialog) {
         var vm = this;
 
         vm.helpText = 'PDF, Word (docx), ODT, images';
@@ -71,6 +71,22 @@
                 vm.setMessage('Une erreur est survenue pendant l\'enregistrement de la recette: ' + data.message, true);
                 console.log("Error during edit: " + data.code + "\n" + data.stacktrace);
             });
+        };
+        vm.deleteRecipe = function(ev) {
+            var confirm = $mdDialog
+                .confirm()
+                .title('Supprimer?')
+                .textContent('Etes vous sûr de vouloir supprimer cette recette?')
+                .ariaLabel('Lucky day')
+                .targetEvent(ev)
+                .ok('Oui')
+                .cancel('Non');
+
+            $mdDialog.show(confirm).then(function(result) {
+                console.log('deleting the recipe with id = ' + vm.id);
+                $http.delete('../services/recipes/' + vm.id);
+                $state.go('search', { 'query': vm.query });
+            }, function() {});
         };
 
         vm.setMessage = function(msg, isError) {

@@ -40,6 +40,9 @@
                 scope.actionConfig.onClickEdit = undefined;
                 scope.actionConfig.displayDownload = false;
                 scope.actionConfig.downloadUrl = undefined;
+                scope.actionConfig.downloadUrlPdf = undefined;
+                scope.actionConfig.displayCopyUrl = false;
+                scope.actionConfig.copyUrl = undefined;
                 if (scope.actionConfig.hideAdditionalActions) {
                     scope.actionConfig.hideAdditionalActions();
                 }

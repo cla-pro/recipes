@@ -10,7 +10,13 @@
                 results: '=',
                 message: '=',
                 query: '='
-            }
+            },
+            controller: ['$scope', '$state', function($scope, $state) {
+                var vm = $scope;
+                $scope.goToRecipe = function(id) {
+                    $state.go('search_result', { 'id': id, 'query': vm.query });
+                };
+            }]
         };
     });
 })();
