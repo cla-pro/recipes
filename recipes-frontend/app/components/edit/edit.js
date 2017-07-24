@@ -74,18 +74,21 @@
         };
         vm.deleteRecipe = function(ev) {
             var confirm = $mdDialog
-                .confirm()
+                .prompt()
                 .title('Supprimer?')
-                .textContent('Etes vous sûr de vouloir supprimer cette recette?')
-                .ariaLabel('Lucky day')
+                .placeholder('Mot de passe')
                 .targetEvent(ev)
                 .ok('Oui')
                 .cancel('Non');
 
             $mdDialog.show(confirm).then(function(result) {
-                console.log('deleting the recipe with id = ' + vm.id);
-                $http.delete('../services/recipes/' + vm.id);
-                $state.go('search', { 'query': vm.query });
+                if (result === "secret") {
+                    console.log('deleting the recipe with id = ' + vm.id);
+                    $http.delete('../services/recipes/' + vm.id);
+                    $state.go('search', { 'query': vm.query });
+                } else {
+                    vm.setMessage('Mot de passe incorrect', true);
+                }
             }, function() {});
         };
 

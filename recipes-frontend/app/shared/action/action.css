@@ -7,6 +7,7 @@
 .action-block {
     position: absolute;
     right: 0px;
+    top: 45px;
 }
 
 .action-btn {
@@ -16,6 +17,12 @@
   margin-bottom: 3px;
   margin-left: 10px;
   margin-right: 10px;
+}
+.sub-action-block {
+  border: black 3px solid;
+  background-color: #ef6c00;
+  width: 230px;
+  height: 50px
 }
 
 img.action-btn {
@@ -28,6 +35,8 @@ img.action-btn {
   box-shadow: none;
   border-radius: 0px;
   padding: 0;
+  position: relative;
+  top: -7px;
 }
 
 .action-btn-content {

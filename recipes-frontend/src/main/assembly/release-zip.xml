@@ -7,7 +7,7 @@
     <fileSets>
         <fileSet>
             <directory>target/dist/</directory>
-            <outputDirectory>/app/</outputDirectory>
+            <outputDirectory>app/</outputDirectory>
             <includes>
                 <include>**/*.js</include>
                 <include>**/*.html</include>
