@@ -21,7 +21,7 @@
         <version.querydsl>4.1.4</version.querydsl>
         <version.log4j>2.8.2</version.log4j>
         <version.mysql>6.0.6</version.mysql>
-        <version.gson>2.8.0</version.gson>
+        <version.gson>2.8.1</version.gson>
         <version.pdfbox>2.0.5</version.pdfbox>
     </properties>
 

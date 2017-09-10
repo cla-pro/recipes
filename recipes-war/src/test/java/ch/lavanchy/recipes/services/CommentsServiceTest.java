@@ -42,7 +42,7 @@ public class CommentsServiceTest {
 
     @Test
     public void testGetCommentsSucess() {
-        final List<Comment> responseContent = Arrays.asList(mock(Comment.class), mock(Comment.class));
+        final List<Comment> responseContent = Arrays.asList(Comment.builder().build(), Comment.builder().build());
         doReturn(responseContent).when(commentsBusiness).findCommentsForRecipe(anyLong());
 
         final Response response = testee.getComments(1L);
