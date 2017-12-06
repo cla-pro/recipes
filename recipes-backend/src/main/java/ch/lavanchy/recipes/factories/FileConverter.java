@@ -44,7 +44,6 @@ public class FileConverter {
      */
     public File getFileAsPDF(final File sourceFile) throws FileNotFoundException {
         final String filename = sourceFile.getName();
-        final String extension = FilenameUtils.getExtension(filename);
         final File targetFile = getPdfFile(sourceFile.getParent(), filename);
 
         LOGGER.debug("Reading PDF file at {} and exists={}", targetFile.getAbsolutePath(), targetFile.exists());
