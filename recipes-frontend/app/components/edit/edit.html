@@ -14,10 +14,11 @@
 
     <button ng-hide="vm.loading" ng-click="vm.save()">Enregistrer</button>
     <img class="loading" src="images/loading.gif" ng-show="vm.loading" />
-
-    <br /><br />
-    <app-message message="vm.message" is-error="vm.isError" />
+    <hr/>
 
     <br />
     <button ng-hide="vm.loading" ng-click="vm.deleteRecipe()">Supprimer</button>
+
+    <br /><br />
+    <app-message message="vm.message" is-error="vm.isError" />
 </div>
