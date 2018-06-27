@@ -20,7 +20,6 @@
         $scope.file = undefined;
         vm.message = '';
         vm.isError = false;
-        //vm.allTags = [];
         vm.query = (isObjectEmpty($stateParams.query) ? '' : $stateParams.query);
 
         Restangular.one('recipes', $stateParams.id).get().then(function(recipe) {
