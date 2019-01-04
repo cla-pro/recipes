@@ -1,0 +1,9 @@
+{
+    "require": {
+        "slim/slim": "3.*"
+    },
+    "autoload": {},
+	"config":{
+		"preferred-install": "dist"
+	}
+}
