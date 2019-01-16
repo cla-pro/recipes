@@ -24,7 +24,7 @@
             }
             vm.recipe = recipe;
             vm.tags = recipe.tags.join(', ');
-            $scope.pdfUrl = '../services/recipes/pdf/' + recipe.id;
+            $scope.pdfUrl = '../backend/v1/public/recipes/pdf/' + recipe.id;
 
             parentScope.enableDownload(
                 '../services/recipes/file/' + vm.recipe.id,

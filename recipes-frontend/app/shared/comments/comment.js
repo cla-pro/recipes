@@ -46,7 +46,7 @@
                             content: vm.editingContent,
                             recipeId: vm.recipeId
                         };
-                        $http.post('../services/comments', commentToSave)
+                        $http.post('../backend/v1/public/comments', commentToSave)
                             .then(function(args) {
                                 vm.state = 'EMPTY';
                                 vm.editingContent = '';
@@ -54,7 +54,7 @@
                             });
                     } else {
                         vm._comment.content = vm.editingContent;
-                        $http.put('../services/comments/' + vm._comment.id, {id: vm._comment.id, content: vm._comment.content, recipeId: vm._comment.recipeId})
+                        $http.put('../backend/v1/public/comments/' + vm._comment.id, {id: vm._comment.id, content: vm._comment.content, recipeId: vm._comment.recipeId})
                             .then(function(args) {
                                 vm.state = 'VIEWING';
                                 vm.editingContent = '';
@@ -64,7 +64,7 @@
                     }
                 };
                 vm.deleteComment = function() {
-                    $http.delete('../services/comments/' + vm._comment.id)
+                    $http.delete('../backend/v1/public/comments/' + vm._comment.id)
                         .then(function() {
                             that.commentUpdated(vm._comment);
                         });

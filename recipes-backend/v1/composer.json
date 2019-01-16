@@ -1,8 +1,12 @@
 {
     "require": {
-        "slim/slim": "3.*"
+        "slim/slim": "3.*",
+        "illuminate/database": "*"
     },
-    "autoload": {},
+  "autoload": {
+    "files": [ "private/dbConfig.php" ],
+    "classmap": [ "private/models/", "private/services/" ]
+  },
 	"config":{
 		"preferred-install": "dist"
 	}
