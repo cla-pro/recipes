@@ -24,11 +24,11 @@
             }
             vm.recipe = recipe;
             vm.tags = recipe.tags.join(', ');
-            $scope.pdfUrl = '../backend/v1/public/recipes/pdf/' + recipe.id;
+            $scope.pdfUrl = './backend/v1/public/recipes/pdf/' + recipe.id;
 
             parentScope.enableDownload(
-                '../services/recipes/file/' + vm.recipe.id,
-                '../services/recipes/pdf/' + vm.recipe.id);
+                './backend/v1/public/recipes/file/' + vm.recipe.id,
+                './backend/v1/public/recipes/pdf/' + vm.recipe.id);
 
             return Restangular.all('comments').getList({'recipe_id': vm.recipeId});
         }).then(function(comments) {

@@ -9,10 +9,10 @@ $capsule = new Capsule;
 
 $capsule->addConnection(array(
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'recipes',
-    'username'  => 'recipes',
-    'password'  => 'recipes',
+    'host'      => 'clavpachebrecipe.mysql.db',
+    'database'  => 'clavpachebrecipe',
+    'username'  => 'clavpachebrecipe',
+    'password'  => 'RecipesSeeker1',
     'charset'   => 'utf8',
     'collation' => 'utf8_general_ci',
     'prefix'    => ''

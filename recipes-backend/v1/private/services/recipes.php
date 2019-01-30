@@ -7,6 +7,8 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 class RecipeController {
+    const RECIPES_FOLDER = "/homez.259/clavpacheb/recipes/";
+
     public function __construct() {}
 
     function getById(Request $request, Response $response, $args) {
@@ -44,7 +46,7 @@ class RecipeController {
     function getPDF(Request $request, Response $response, $args) {
         $id = $args['id'];
         $recipe = Recipe::find($id);
-        $file = 'c:\\Users\\cla\\Downloads\\recipes\\' . $recipe->filename;
+        $file = self::RECIPES_FOLDER . $this->toPdfFilename($recipe->filename);
 
         if (file_exists($file)) {
             $fh = fopen($file, 'rb');
@@ -66,7 +68,7 @@ class RecipeController {
     function getSourceFile(Request $request, Response $response, $args) {
         $id = $args['id'];
         $recipe = Recipe::find($id);
-        $file = 'c:\\Users\\cla\\Downloads\\recipes\\' . $recipe->filename;
+        $file = self::RECIPES_FOLDER . $recipe->filename;
 
         if (file_exists($file)) {
             $fh = fopen($file, 'rb');
@@ -82,6 +84,16 @@ class RecipeController {
         } else {
             $response->getBody()->write('File ' . $file . ' not found');
             return $response;
+        }
+    }
+
+    function toPdfFilename($filename) {
+        $info = pathinfo($filename);
+        $pdfExt = 'pdf';
+        if ($info['extension'] == $pdfExt) {
+            return $filename;
+        } else {
+            return $info['filename'] . '.' . $pdfExt;
         }
     }
 
