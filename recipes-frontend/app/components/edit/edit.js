@@ -53,7 +53,7 @@
             }
             fd.append('recipe', angular.toJson(content));
 
-            $http.put('../services/recipes', fd, {
+            $http.put('./backend/v1/public/recipes', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             }).then(function(args) {
@@ -83,7 +83,7 @@
             $mdDialog.show(confirm).then(function(result) {
                 if (result === "secret") {
                     console.log('deleting the recipe with id = ' + vm.id);
-                    $http.delete('../services/recipes/' + vm.id);
+                    $http.delete('./backend/v1/public/recipes' + vm.id);
                     $state.go('search', { 'query': vm.query });
                 } else {
                     vm.setMessage('Mot de passe incorrect', true);

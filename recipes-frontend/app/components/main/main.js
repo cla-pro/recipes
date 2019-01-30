@@ -5,7 +5,7 @@
     recipesControllers.controller('MainCtrl', ['$scope', '$transitions', '$state', '$aside', 'Restangular', MainController]);
 
     function MainController($scope, $transitions, $state, $aside, Restangular) {
-        Restangular.setBaseUrl('../services');
+        Restangular.setBaseUrl('./backend/v1/public/');
 
         $scope.actionConfig = {
             displayBack: false,

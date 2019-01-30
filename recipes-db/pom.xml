@@ -32,10 +32,10 @@
         <profile>
             <id>release</id>
             <properties>
-                <db.driver_class>org.mariadb.jdbc.Driver</db.driver_class>
-                <db.url>jdbc:mariadb://cheznous:3306/recipes</db.url>
-                <db.username>recipes_dba</db.username>
-                <db.password>recipesdba</db.password>
+                <db.driver_class>com.mysql.jdbc.Driver</db.driver_class>
+                <db.url>offline:mysql</db.url>
+                <db.username>clavpachebrecipe</db.username>
+                <db.password>RecipesSeeker1</db.password>
             </properties>
         </profile>
     </profiles>

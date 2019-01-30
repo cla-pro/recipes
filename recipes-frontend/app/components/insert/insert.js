@@ -76,7 +76,7 @@
             fd.append('recipe', angular.toJson(content));
             fd.append('file', file);
 
-            $http.post('../services/recipes/file', fd, {
+            $http.post('./backend/v1/public/recipes/file', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             }).then(function(args) {
