@@ -2,6 +2,7 @@
 
 use Psr\Container\ContainerInterface;
 use RecipesSeeker\Model\Recipe;
+use RecipesSeeker\Model\Tag;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -85,6 +86,47 @@ class RecipeController {
             $response->getBody()->write('File ' . $file . ' not found');
             return $response;
         }
+    }
+
+    function post(Request $request, Response $response, $args) {
+        $body = $request->getBody();
+        $input = json_decode($body);
+        $tagIds = $this->persistNewTagsAndGetIds($input->tags);
+
+        $recipe = new Recipe();
+        $recipe->name = $input->name;
+        $recipe->filename = $this->fixFilename($input->filename);
+        $recipe->rating = 0;
+        $recipe->save();
+
+        $recipe->tags()->attach($tagIds);
+        $recipe->save();
+
+        $response->getBody()->write(json_encode($this->extractRecipeInfo($recipe)));
+        return $response;
+    }
+
+    function fixFilename($filename) {
+        return str_replace(' ', '_', str_replace(',', '', $filename));
+    }
+
+    function persistNewTagsAndGetIds($tags) {
+        $persistedIds = [];
+        foreach ($tags as $t) {
+            // TODO check standard keyword
+
+            $dbTag = Tag::where('tag', '=', $t)->first();
+            if ($dbTag == null) {
+                $newTag = new Tag();
+                $newTag->tag = $t;
+                $newTag->save();
+                array_push($persistedIds, $newTag->id);
+            } else {
+                array_push($persistedIds, $dbTag->id);
+            }
+        }
+
+        return $persistedIds;
     }
 
     function toPdfFilename($filename) {
