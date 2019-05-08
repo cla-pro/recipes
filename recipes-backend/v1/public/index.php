@@ -34,7 +34,7 @@ $app->get('/recipes', \RecipeController::class . ':getWithFilter');
 $app->get('/recipes/{id}', \RecipeController::class . ':getById');
 $app->get('/recipes/pdf/{id}', \RecipeController::class . ':getPDF');
 $app->get('/recipes/file/{id}', \RecipeController::class . ':getSourceFile');
-$app->post('/recipes', \RecipeController::class . ':post');
+$app->post('/recipes', \RecipeController::class . ':createRecipe');
 
 // TODO use groups
 $app->get('/comments', \CommentController::class . ':get');

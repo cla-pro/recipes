@@ -5,10 +5,10 @@
     recipesControllers.component('appEdit', {
         templateUrl: 'components/edit/edit.html',
         controllerAs: 'vm',
-        controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout', '$tags', '$mdDialog', EditController]
+        controller: ['$scope', '$state', '$stateParams', '$http', 'Restangular', '$accents', '$timeout', '$tags', '$mdDialog', '$q', EditController]
     });
 
-    function EditController($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags, $mdDialog) {
+    function EditController($scope, $state, $stateParams, $http, Restangular, $accents, $timeout, $tags, $mdDialog, $q) {
         var vm = this;
 
         vm.helpText = 'PDF, Word (docx), ODT, images';
@@ -36,7 +36,6 @@
             var file = $scope.file;
             vm.setMessage(undefined, false);
 
-            var fd = new FormData();
             var content = { id: vm.id, name: vm.name, rating: vm.rating };
             if (isObjectEmpty(vm.name)) {
                 vm.setMessage('Le nom de la recette est obligatoires', true);
@@ -45,17 +44,15 @@
 
             if (file !== undefined) {
                 content.filename = file.name;
-                fd.append('file', file);
             }
 
             if (isObjectNotEmpty(vm.tags)) {
                 content.tags = vm.tags.map(function(e) { return e.text; });
             }
-            fd.append('recipe', angular.toJson(content));
 
-            $http.put('./backend/v1/public/recipes', fd, {
+            $http.put('../backend/v1/public/recipes/' + vm.id, angular.toJson(content), {
                 transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
+                headers: {'Content-Type': 'application/json'}
             }).then(function(args) {
                 $scope.file = undefined;
                 document.getElementById('iptRecipeFile').value = '';
@@ -63,6 +60,17 @@
                 $tags.reloadTags();
                 vm.loading = false;
 
+                if (file !== undefined) {
+                    var fd = new FormData();
+                    fd.append('file', file);
+                    return $http.post('../backend/v1/public/recipes/' + vm.id + '/file', fd, {
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
+                    });
+                } else {
+                    return $q.when(new Object());
+                }
+            }).then(function(args) {
                 vm.back();
             }).catch(function(err) {
                 var data = err.data;

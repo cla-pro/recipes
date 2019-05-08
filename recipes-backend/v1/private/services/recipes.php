@@ -88,22 +88,91 @@ class RecipeController {
         }
     }
 
-    function post(Request $request, Response $response, $args) {
-        $body = $request->getBody();
-        $input = json_decode($body);
+    function createRecipe(Request $request, Response $response, $args) {
+        $recipe = json_decode($request->getParam('recipe'));
+        $files = $request->getUploadedFiles();
+        $file = $files['file'];
+        $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+        $filename = $this->fixFilename($recipe->name) . '.' . $extension;
+
+        $fileDestination = self::RECIPES_FOLDER . $filename;
+        $file->moveTo($fileDestination);
+
+        if ($extension !== 'pdf') {
+            $pdfPath = $this->toPdfFilename($filename);
+            $this->imageToPdf($fileDestination, $pdfPath);
+        }
+
+        $persisted = $this->persistRecipe($recipe, $filename);
+
+        $response->getBody()->write(json_encode($this->extractRecipeInfo($persisted)));
+        return $response;
+    }
+
+    function updateRecipe(Request $request, Response $response, $args) {
+        $raw = $request->getBody();
+        $input = json_decode($raw);
+        $tagIds = $this->persistNewTagsAndGetIds($input->tags);
+
+        $id = $args['id'];
+        $dbRecipe = Recipe::find($id);
+        $dbRecipe->name = $input->name;
+        $dbRecipe->tags()->sync($tagIds);
+        $dbRecipe->save();
+
+        $object = $this->extractRecipeInfo($dbRecipe);
+        $response->getBody()->write(json_encode($object));
+        return $response;
+    }
+
+    function updateRecipeFile(Request $request, Response $response, $args) {
+        echo 'file...';
+        $files = $request->getUploadedFiles();
+        $file = $files['file'];
+        echo 'found...';
+        $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+        echo 'extension = ' . $extension;
+
+        $id = $args['id'];
+        $recipe = Recipe::find($id);
+        $filename = $this->fixFilename($recipe->name) . '.' . $extension;
+
+        $fileDestination = self::RECIPES_FOLDER . $filename;
+        echo 'filename: ' . $fileDestination;
+        unlink($fileDestination);
+        $file->moveTo($fileDestination);
+
+        if ($extension !== 'pdf') {
+            $pdfPath = $this->toPdfFilename($filename);
+            $this->imageToPdf($fileDestination, $pdfPath);
+        }
+
+        $recipe->filename = $filename;
+        $recipe->save();
+
+        return $response;
+    }
+
+    function persistRecipe($input, $filename) {
         $tagIds = $this->persistNewTagsAndGetIds($input->tags);
 
         $recipe = new Recipe();
         $recipe->name = $input->name;
-        $recipe->filename = $this->fixFilename($input->filename);
+        $recipe->filename = $filename;
         $recipe->rating = 0;
         $recipe->save();
 
         $recipe->tags()->attach($tagIds);
         $recipe->save();
 
-        $response->getBody()->write(json_encode($this->extractRecipeInfo($recipe)));
-        return $response;
+        return $recipe;
+    }
+
+    function imageToPDF($imagePath, $pdfPath) {
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $pdf->Image($imagePath, 0, 0, 210, 297);
+        $pdf->Output(self::RECIPES_FOLDER . $pdfPath, 'F');
     }
 
     function fixFilename($filename) {
