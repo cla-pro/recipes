@@ -1,7 +1,7 @@
 {
   "name": "recipes-seeker-webapp",
   "description": "Recipes Seeker",
-  "version": "2.1.1",
+  "version": "2.2.13",
   "private": true,
   "dependencies": {
     "angular": "1.6.4",

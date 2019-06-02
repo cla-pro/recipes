@@ -35,6 +35,8 @@ $app->get('/recipes/{id}', \RecipeController::class . ':getById');
 $app->get('/recipes/pdf/{id}', \RecipeController::class . ':getPDF');
 $app->get('/recipes/file/{id}', \RecipeController::class . ':getSourceFile');
 $app->post('/recipes', \RecipeController::class . ':createRecipe');
+$app->put('/recipes/{id}', \RecipeController::class . ':updateRecipe');
+$app->post('/recipes/{id}/file', \RecipeController::class . ':updateRecipeFile');
 
 // TODO use groups
 $app->get('/comments', \CommentController::class . ':get');
