@@ -120,7 +120,6 @@
         <module>recipes-db</module>
         <module>recipes-backend</module>
         <module>recipes-frontend</module>
-        <module>recipes-war</module>
     </modules>
 
     <dependencyManagement>
