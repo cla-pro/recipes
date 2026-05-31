@@ -3,6 +3,7 @@
 use RecipesSeeker\Model\Recipe;
 use RecipesSeeker\Model\Tag;
 use RecipesSeeker\Model\Comment;
+use Slim\Factory\AppFactory;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -10,41 +11,40 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../private/private.php';
 
-$app = new \Slim\App(['settings' => ['determineRouteBeforeAppMiddleware' => true, 'addContentLengthHeader' => false]]);
-$container = $app->getContainer();
-$container['CommentController'] = function($c) {
-    return new CommentController();
-};
-$container['TagController'] = function($c) {
-    return new TagController();
-};
-$container['RecipeController'] = function($c) {
-    return new RecipeController();
-};
+$app = AppFactory::create();
+$app->setBasePath('/backend/v2/public');
+$app->addBodyParsingMiddleware();
+$app->addRoutingMiddleware();
+$app->addErrorMiddleware(true, true, true);
+
+$commentController = new CommentController();
+$tagController = new TagController();
+$recipeController = new RecipeController();
 
 $app->get(
     '/',
-    function () {
-        echo "Welcome to API -> PHP Version " . phpversion();
+    function (Request $request, Response $response) {
+        $response->getBody()->write("Welcome to API -> PHP Version " . phpversion());
+        return $response;
     }
 );
 
 // TODO use groups
-$app->get('/recipes', \RecipeController::class . ':getWithFilter');
-$app->get('/recipes/{id}', \RecipeController::class . ':getById');
-$app->get('/recipes/pdf/{id}', \RecipeController::class . ':getPDF');
-$app->get('/recipes/file/{id}', \RecipeController::class . ':getSourceFile');
-$app->post('/recipes', \RecipeController::class . ':createRecipe');
-$app->put('/recipes/{id}', \RecipeController::class . ':updateRecipe');
-$app->post('/recipes/{id}/file', \RecipeController::class . ':updateRecipeFile');
+$app->get('/recipes', [$recipeController, 'getWithFilter']);
+$app->get('/recipes/{id}', [$recipeController, 'getById']);
+$app->get('/recipes/pdf/{id}', [$recipeController, 'getPDF']);
+$app->get('/recipes/file/{id}', [$recipeController, 'getSourceFile']);
+$app->post('/recipes', [$recipeController, 'createRecipe']);
+$app->put('/recipes/{id}', [$recipeController, 'updateRecipe']);
+$app->post('/recipes/{id}/file', [$recipeController, 'updateRecipeFile']);
 
 // TODO use groups
-$app->get('/comments', \CommentController::class . ':get');
-$app->post('/comments', \CommentController::class . ':post');
-$app->put('/comments/{id}', \CommentController::class . ':put');
-$app->delete('/comments/{id}', \CommentController::class . ':delete');
+$app->get('/comments', [$commentController, 'get']);
+$app->post('/comments', [$commentController, 'post']);
+$app->put('/comments/{id}', [$commentController, 'put']);
+$app->delete('/comments/{id}', [$commentController, 'delete']);
 
 // TODO use groups
-$app->get('/tags', \TagController::class . ':get');
+$app->get('/tags', [$tagController, 'get']);
 
 $app->run();

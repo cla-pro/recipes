@@ -1,8 +1,8 @@
 <?php
 
-use Psr\Container\ContainerInterface;
 use RecipesSeeker\Model\Recipe;
 use RecipesSeeker\Model\Tag;
+use Slim\Psr7\Stream;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -12,7 +12,7 @@ class RecipeController {
 
     public function __construct() {}
 
-    function getById(Request $request, Response $response, $args) {
+    public function getById(Request $request, Response $response, array $args = []) {
         $id = $args['id'];
         $recipe = Recipe::find($id);
         $object = $this->extractRecipeInfo($recipe);
@@ -20,10 +20,11 @@ class RecipeController {
         return $response;
     }
 
-    function getWithFilter(Request $request, Response $response, $args) {
-        $filter = $request->getQueryParam('filter');
-        $chunkStart = $request->getQueryParam('chunkStart'); // id of the last received recipe
-        $size = $request->getQueryParam('size');
+    public function getWithFilter(Request $request, Response $response, array $args = []) {
+        $queryParams = $request->getQueryParams();
+        $filter = $queryParams['filter'] ?? '';
+        $chunkStart = $queryParams['chunkStart'] ?? null; // id of the last received recipe
+        $size = (int)($queryParams['size'] ?? 20);
 
         $startName = null;
         if (!is_null($chunkStart)) {
@@ -44,14 +45,14 @@ class RecipeController {
         return $response;
     }
 
-    function getPDF(Request $request, Response $response, $args) {
+    public function getPDF(Request $request, Response $response, array $args = []) {
         $id = $args['id'];
         $recipe = Recipe::find($id);
         $file = self::RECIPES_FOLDER . $this->toPdfFilename($recipe->filename);
 
         if (file_exists($file)) {
             $fh = fopen($file, 'rb');
-            $stream = new \Slim\Http\Stream($fh);
+            $stream = new Stream($fh);
             return $response->withHeader('Content-Description', 'File Transfer')
                             ->withHeader('Content-Type', 'application/octet-stream')
                             ->withHeader('Content-Disposition', 'attachment;filename="' . basename($file) . '"')
@@ -66,14 +67,14 @@ class RecipeController {
         }
     }
 
-    function getSourceFile(Request $request, Response $response, $args) {
+    public function getSourceFile(Request $request, Response $response, array $args = []) {
         $id = $args['id'];
         $recipe = Recipe::find($id);
         $file = self::RECIPES_FOLDER . $recipe->filename;
 
         if (file_exists($file)) {
             $fh = fopen($file, 'rb');
-            $stream = new \Slim\Http\Stream($fh);
+            $stream = new Stream($fh);
             return $response->withHeader('Content-Description', 'File Transfer')
                             ->withHeader('Content-Type', 'application/octet-stream')
                             ->withHeader('Content-Disposition', 'attachment;filename="' . basename($file) . '"')
@@ -88,8 +89,10 @@ class RecipeController {
         }
     }
 
-    function createRecipe(Request $request, Response $response, $args) {
-        $recipe = json_decode($request->getParam('recipe'));
+    public function createRecipe(Request $request, Response $response, array $args = []) {
+        $parsedBody = $request->getParsedBody();
+        $recipePayload = is_array($parsedBody) ? ($parsedBody['recipe'] ?? '{}') : '{}';
+        $recipe = json_decode((string)$recipePayload);
         $files = $request->getUploadedFiles();
         $file = $files['file'];
         $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
@@ -109,9 +112,8 @@ class RecipeController {
         return $response;
     }
 
-    function updateRecipe(Request $request, Response $response, $args) {
-        $raw = $request->getBody();
-        $input = json_decode($raw);
+    public function updateRecipe(Request $request, Response $response, array $args = []) {
+        $input = json_decode((string)$request->getBody());
         $tagIds = $this->persistNewTagsAndGetIds($input->tags);
 
         $id = $args['id'];
@@ -125,21 +127,19 @@ class RecipeController {
         return $response;
     }
 
-    function updateRecipeFile(Request $request, Response $response, $args) {
-        echo 'file...';
+    public function updateRecipeFile(Request $request, Response $response, array $args = []) {
         $files = $request->getUploadedFiles();
         $file = $files['file'];
-        echo 'found...';
         $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
-        echo 'extension = ' . $extension;
 
         $id = $args['id'];
         $recipe = Recipe::find($id);
         $filename = $this->fixFilename($recipe->name) . '.' . $extension;
 
         $fileDestination = self::RECIPES_FOLDER . $filename;
-        echo 'filename: ' . $fileDestination;
-        unlink($fileDestination);
+        if (file_exists($fileDestination)) {
+            unlink($fileDestination);
+        }
         $file->moveTo($fileDestination);
 
         if ($extension !== 'pdf') {
@@ -214,7 +214,7 @@ class RecipeController {
             "id" => $dbRecipe->id,
             "name" => $dbRecipe->name,
             "filename" => $dbRecipe->filename,
-            "rating" => $dbRecipe->reting,
+            "rating" => $dbRecipe->rating,
             "tags" => $tags
         );
     }
