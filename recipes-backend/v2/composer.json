@@ -1,0 +1,14 @@
+{
+    "require": {
+    "slim/slim": "^4.15",
+    "slim/psr7": "^1.7",
+    "illuminate/database": "^13.0"
+    },
+  "autoload": {
+    "files": [ "private/dbConfig.php" ],
+    "classmap": [ "private/models/", "private/services/" ]
+  },
+	"config":{
+		"preferred-install": "dist"
+	}
+}

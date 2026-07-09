@@ -1,0 +1,27 @@
+.comment {
+    width: 100%;
+}
+
+.comment-btn {
+  width: 22px;
+  height: 22px;
+  /*margin-top: 6px;
+  margin-bottom: 3px;
+  margin-left: 10px;
+  margin-right: 10px;*/
+}
+
+.comment-content {
+    width: 100%;
+}
+
+.comment-content-editor {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    width:100%;
+}
+
+hr {
+  border-color: black;
+}

@@ -1,0 +1,22 @@
+<div>
+    <input id="iptRecipeFile" type="file" file-model="file" accept=".pdf,.odt,.docx,image/*"/>
+    <br />
+    <app-help help-text="vm.helpText"></app-help>
+    <br />
+    <input style="width: 99%" type="text" ng-model="vm.name" ng-change="vm.textChanged()" placeholder="Nom" autofocus />
+    <br /><br />
+    <tags-input style="width: 99%" ng-model="vm.tags" placeholder="Tags (séparé par des espaces)" add-on-space="true">
+        <auto-complete source="vm.findTags($query)" load-on-down-arrow="true"
+                       highlight-matched-text="false" select-first-match="true">
+        </auto-complete>
+    </tags-input>
+    <br />
+    <app-star-rating my-rating="vm.rating" read-only="false"></app-star-rating>
+    <br /><br />
+
+    <button ng-hide="vm.loading" ng-click="vm.save()">Enregistrer</button>
+    <img class="loading" src="images/loading.gif" ng-show="vm.loading" />
+
+    <br /><br />
+    <app-message message="vm.message" is-error="vm.isError" />
+</div>

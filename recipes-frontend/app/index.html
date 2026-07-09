@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html ng-app="recipesApp" manifest="recipes.appcache">
+<!-- The profile is required for the icon to be displayed with the title -->
+<head profile="http://www.w3.org/2005/10/profile">
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <title>Recipe Seeker</title>
+    <script>document.write('<base href="' + document.location + '" />');</script>
+
+    <!-- build:css vendor.css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-aside/dist/css/angular-aside.min.css">
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <!-- endbuild -->
+
+    <!-- build:css app.css -->
+    <link rel="stylesheet" href="components/main/style.css">
+    <link rel="stylesheet" href="components/search/search.css">
+    <link rel="stylesheet" href="shared/action/action.css">
+    <link rel="stylesheet" href="shared/comments/comment.css">
+    <link rel="stylesheet" href="shared/help/help.css">
+    <link rel="stylesheet" href="shared/message/message.css">
+    <link rel="stylesheet" href="shared/rating/rating.css">
+    <!-- endbuild -->
+
+    <link rel="icon" type="image/png" href="images/favicon-94x94.png" />
+    <link rel="apple-touch-icon" href="images/favicon-94x94.png" />
+</head>
+<body ng-controller="MainCtrl">
+    <div class="header">
+        <input type="image" src="images/menu-icon.png" ng-click="openAside()" alt="Menu" class="btn-menu"></button>
+        <div class="header-title">MyRecettes</div>
+
+        <app-action
+                config="actionConfig">
+        </app-action>
+    </div>
+
+    <div ui-view ng-cloak class="content">
+        <p>Opening...</p>
+    </div>
+
+    <div class="footer">
+        Version: ${recipes.version}
+    </div>
+
+    <!-- build:js vendor.js -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/lodash/lodash.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-aside/dist/js/angular-aside.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="bower_components/marked/marked.min.js"></script>
+    <script src="bower_components/angular-marked/dist/angular-marked.min.js"></script>
+    <script src="bower_components/pdfjs-dist/build/pdf.combined.js"></script>
+    <script src="bower_components/restangular/dist/restangular.min.js"></script>
+    <script src="bower_components/angular-pdf/dist/angular-pdf.min.js"></script>
+    <script src="bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <script src="bower_components/clipboard/dist/clipboard.min.js"></script>
+    <script src="bower_components/ngclipboard/dist/ngclipboard.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js app.js -->
+    <script src="shared/utils/utils.js"></script>
+    <script src="shared/utils/accents.js"></script>
+    <script src="shared/tags/tags.js"></script>
+    <script src="components/main/controllers.js"></script>
+    <script src="components/main/main.js"></script>
+    <script src="shared/file/file_model.js"></script>
+    <script src="shared/action/action.js"></script>
+    <script src="shared/comments/comment.js"></script>
+    <script src="shared/help/help.js"></script>
+    <script src="components/insert/insert.js"></script>
+    <script src="components/edit/edit.js"></script>
+    <script src="shared/message/message.js"></script>
+    <script src="components/search/result_list.js"></script>
+    <script src="components/search/search.js"></script>
+    <script src="components/search/search_result.js"></script>
+    <script src="shared/rating/rating.js"></script>
+    <script src="components/main/app.js"></script>
+    <!-- endbuild -->
+
+    <!-- inject:template-js -->
+    <!-- endinject -->
+</body>
+</html>

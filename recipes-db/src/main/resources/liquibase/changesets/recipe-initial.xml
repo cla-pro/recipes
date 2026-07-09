@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"
+                   logicalFilePath="/recipe-initial.xml">
+
+    <changeSet id="1.0.0-1-tables" author="cla">
+        <createTable tableName="recipe">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="filename" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="tag">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="tag" type="java.sql.Types.VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="recipe_tag">
+            <column name="recipe_id" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="tag_id" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="recipe_tag" columnNames="recipe_id,tag_id" constraintName="pk_recipe_tag" />
+    </changeSet>
+
+    <changeSet id="1.0.0-2-foreign_key_constraints" author="cla">
+        <addForeignKeyConstraint constraintName="fk_recipe_tag_tag"
+                                 referencedTableName="tag" referencedColumnNames="id"
+                                 baseColumnNames="tag_id" baseTableName="recipe_tag" />
+
+        <addForeignKeyConstraint constraintName="fk_recipe_tag_recipe"
+                                 referencedTableName="recipe" referencedColumnNames="id"
+                                 baseColumnNames="recipe_id" baseTableName="recipe_tag" />
+    </changeSet>
+
+    <changeSet id="1.0.0-3-sequences" author="cla">
+        <createSequence incrementBy="1" cycle="true" sequenceName="seq_recipe_id"/>
+        <createSequence incrementBy="1" cycle="true" sequenceName="seq_tag_id"/>
+    </changeSet>
+
+    <changeSet id="1.0.0-5-add-tag-modification" author="cla">
+        <addColumn tableName="tag">
+            <column name="modification_date" type="bigint" defaultValue="0" />
+        </addColumn>
+        <addNotNullConstraint tableName="tag" columnName="modification_date" defaultNullValue="0" columnDataType="bigint" />
+    </changeSet>
+
+    <changeSet id="1.0.0-6-increase-recipe-name-length" author="cla">
+        <modifyDataType tableName="recipe" columnName="name" newDataType="java.sql.Types.VARCHAR(200)" />
+        <modifyDataType tableName="recipe" columnName="filename" newDataType="java.sql.Types.VARCHAR(200)" />
+    </changeSet>
+</databaseChangeLog>
