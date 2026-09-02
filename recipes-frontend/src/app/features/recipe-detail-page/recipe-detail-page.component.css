@@ -1,0 +1,48 @@
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.headline {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.headline h2 {
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.back-link {
+  margin: 1rem 0;
+}
+
+.recipe-content {
+  margin: 1rem 0 1.25rem;
+}
+
+.recipe-pdf-viewer {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.comment-list {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.message {
+  color: var(--danger);
+}

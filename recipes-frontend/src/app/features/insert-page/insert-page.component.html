@@ -1,0 +1,30 @@
+<section class="panel">
+  <h2>Insert recipe</h2>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="form-grid">
+    <label>
+      Name
+      <input type="text" formControlName="name" placeholder="Recipe name">
+    </label>
+
+    <label>
+      Tags (comma separated)
+      <input type="text" formControlName="tags" placeholder="dessert, rapide, vegan">
+    </label>
+
+    <label>
+      Rating (0 to 3)
+      <input type="number" min="0" max="3" formControlName="rating">
+    </label>
+
+    <label>
+      File (PDF, docx, odt, image)
+      <input type="file" (change)="onFileSelected($event)">
+    </label>
+
+    <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save recipe' }}</button>
+  </form>
+
+  <p *ngIf="allTags.length > 0" class="hint">Known tags: {{ allTags.join(', ') }}</p>
+  <p *ngIf="message.length > 0" [class.error]="isError">{{ message }}</p>
+</section>

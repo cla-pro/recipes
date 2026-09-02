@@ -1,0 +1,61 @@
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.search-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+}
+
+input,
+button {
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  padding: 0.55rem 0.7rem;
+}
+
+button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-strong);
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.message {
+  color: var(--danger);
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.result-list li {
+  border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.meta {
+  font-size: 0.88rem;
+  color: var(--muted);
+}

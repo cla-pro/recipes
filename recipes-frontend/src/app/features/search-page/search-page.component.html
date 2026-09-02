@@ -1,0 +1,26 @@
+<section class="panel">
+  <h2>Search recipes</h2>
+
+  <!--<form class="search-bar" (ngSubmit)="submitSearch()">-->
+  <div class="search-bar">
+    <input type="search" [formControl]="queryControl" placeholder="Ingredients, title, tags...">
+    <button type="submit" (click)="submitSearch()">Search</button>
+  </div>
+
+  <p class="hint">
+    Operators supported by backend parser: AND, OR, NOT, and parentheses.
+  </p>
+
+  <p *ngIf="loading">Searching...</p>
+  <p *ngIf="message.length > 0" class="message">{{ message }}</p>
+
+  <ul *ngIf="recipes.length > 0" class="result-list">
+    <li *ngFor="let recipe of recipes">
+      <a [routerLink]="['/search', recipe.id]" [queryParams]="{ query: queryControl.value || null }">
+        {{ recipe.name }}
+      </a>
+    </li>
+  </ul>
+
+  <button *ngIf="hasMoreRecipes && !loading" type="button" (click)="loadMore()">Load more</button>
+</section>

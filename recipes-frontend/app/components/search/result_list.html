@@ -1,9 +1,0 @@
-<div>
-    <app-message message="message" is-error="false"></app-message>
-    <ul>
-        <li ng-repeat="result in results">
-            <a ng-click="goToRecipe(result.id)" style="cursor:pointer">{{result.name}}</a>
-            <app-star-rating my-rating="result.rating" read-only="true"></app-star-rating>
-        </li>
-    </ul>
-</div>

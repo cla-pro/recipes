@@ -1,0 +1,19 @@
+<div class="layout-shell">
+  <header class="topbar">
+    <div>
+      <h1>Recipe Seeker</h1>
+    </div>
+    <nav>
+      <a routerLink="/search" routerLinkActive="active">Search</a>
+      <a routerLink="/insert" routerLinkActive="active">Insert</a>
+    </nav>
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer>
+    <span>{{ appVersionLabel }}</span>
+  </footer>
+</div>

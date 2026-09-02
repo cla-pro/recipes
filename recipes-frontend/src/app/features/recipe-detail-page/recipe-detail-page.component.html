@@ -1,0 +1,34 @@
+<div class="panel">
+  <div *ngIf="recipe" class="recipe-detail">
+    <header class="headline">
+      <div>
+        <h2>{{ recipe.name }}</h2>
+        <p *ngIf="recipe.tags.length > 0">Tags: {{ recipe.tags.join(', ') }}</p>
+      </div>
+      <div class="actions">
+        <a [href]="recipeFileUrl()">Download file</a>
+        <a [href]="recipePdfUrl()">Download PDF</a>
+      </div>
+    </header>
+
+    <div class="back-link">
+      <a [routerLink]="['/search']" [queryParams]="{ query: query || null }">Back to search</a>
+    </div>
+
+    <section class="recipe-content">
+      <ngx-extended-pdf-viewer
+        class="recipe-pdf-viewer"
+        [src]="recipePdfUrl()"
+        height="70vh">
+      </ngx-extended-pdf-viewer>
+    </section>
+
+    <h3>Comments</h3>
+    <p *ngIf="comments.length === 0">No comments yet.</p>
+    <ul *ngIf="comments.length > 0" class="comment-list">
+      <li *ngFor="let comment of comments">{{ comment.content }}</li>
+    </ul>
+  </div>
+
+  <p class="message" *ngIf="message.length > 0">{{ message }}</p>
+</div>
