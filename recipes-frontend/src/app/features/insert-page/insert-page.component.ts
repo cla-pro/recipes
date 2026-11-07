@@ -8,7 +8,6 @@ import { RecipesApiService } from '../../core/services/recipes-api.service';
 interface InsertForm {
   name: FormControl<string>;
   tags: FormControl<string>;
-  rating: FormControl<number>;
 }
 
 @Component({
@@ -21,12 +20,10 @@ interface InsertForm {
 export class InsertPageComponent {
   readonly form = new FormGroup<InsertForm>({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    tags: new FormControl('', { nonNullable: true }),
-    rating: new FormControl(0, { nonNullable: true })
+    tags: new FormControl('', { nonNullable: true })
   });
 
   selectedFile: File | null = null;
-  allTags: string[] = [];
   loading = false;
   message = '';
   isError = false;
@@ -34,13 +31,7 @@ export class InsertPageComponent {
   constructor(
     private readonly recipesApi: RecipesApiService,
     private readonly tagsApi: TagsApiService
-  ) {
-    this.tagsApi.listTagNames().subscribe({
-      next: (tags) => {
-        this.allTags = tags;
-      }
-    });
-  }
+  ) {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -61,7 +52,6 @@ export class InsertPageComponent {
 
     const request = {
       name: this.form.controls.name.value.trim(),
-      rating: this.form.controls.rating.value,
       filename: this.selectedFile.name,
       tags: this.parseTags(this.form.controls.tags.value)
     };
@@ -69,7 +59,7 @@ export class InsertPageComponent {
     this.loading = true;
     this.recipesApi.createRecipe(request, this.selectedFile).subscribe({
       next: () => {
-        this.form.reset({ name: '', tags: '', rating: 0 });
+        this.form.reset({ name: '', tags: '' });
         this.selectedFile = null;
         this.markMessage('Recette enregistree', false);
       },

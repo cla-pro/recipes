@@ -11,7 +11,6 @@ import { RecipesApiService } from '../../core/services/recipes-api.service';
 interface EditForm {
   name: FormControl<string>;
   tags: FormControl<string>;
-  rating: FormControl<number>;
 }
 
 @Component({
@@ -24,8 +23,7 @@ interface EditForm {
 export class EditPageComponent implements OnInit {
   readonly form = new FormGroup<EditForm>({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    tags: new FormControl('', { nonNullable: true }),
-    rating: new FormControl(0, { nonNullable: true })
+    tags: new FormControl('', { nonNullable: true })
   });
 
   recipeId = 0;
@@ -79,7 +77,6 @@ export class EditPageComponent implements OnInit {
       .updateRecipe({
         id: this.recipeId,
         name: this.form.controls.name.value.trim(),
-        rating: this.form.controls.rating.value,
         tags: this.parseTags(this.form.controls.tags.value),
         filename: this.selectedFile?.name
       })
@@ -136,7 +133,6 @@ export class EditPageComponent implements OnInit {
   private patchForm(recipe: Recipe): void {
     this.form.patchValue({
       name: recipe.name,
-      rating: recipe.rating,
       tags: recipe.tags.join(', ')
     });
   }

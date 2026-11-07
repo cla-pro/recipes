@@ -13,11 +13,6 @@
     </label>
 
     <label>
-      Rating (0 to 3)
-      <input type="number" min="0" max="3" formControlName="rating">
-    </label>
-
-    <label>
       File (PDF, docx, odt, image)
       <input type="file" (change)="onFileSelected($event)">
     </label>
@@ -25,6 +20,5 @@
     <button type="submit" [disabled]="loading">{{ loading ? 'Saving...' : 'Save recipe' }}</button>
   </form>
 
-  <p *ngIf="allTags.length > 0" class="hint">Known tags: {{ allTags.join(', ') }}</p>
   <p *ngIf="message.length > 0" [class.error]="isError">{{ message }}</p>
 </section>

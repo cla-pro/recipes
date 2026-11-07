@@ -1,7 +1,6 @@
 export interface Recipe {
   id: number;
   name: string;
-  rating: number;
   tags: string[];
   filename?: string;
 }
@@ -15,7 +14,6 @@ export interface RecipeSearchRequest {
 export interface UpsertRecipeRequest {
   id?: number;
   name: string;
-  rating: number;
   filename?: string;
   tags: string[];
 }
