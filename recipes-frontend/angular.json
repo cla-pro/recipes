@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "recipes-frontend-angular22": {
+    "recipes-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -36,6 +36,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -62,10 +68,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "recipes-frontend-angular22:build:production"
+              "buildTarget": "recipes-frontend:build:production"
             },
             "development": {
-              "buildTarget": "recipes-frontend-angular22:build:development"
+              "buildTarget": "recipes-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"

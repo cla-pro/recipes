@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import packageJson from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,5 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  readonly appVersionLabel = 'Angular 22 Migration';
+  readonly appVersionLabel = `v${packageJson.version}`;
 }
