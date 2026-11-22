@@ -2,3 +2,8 @@ vendor
 composer.lock
 .angular
 node_modules
+
+# Local database credentials
+.env
+.env.local
+.env.*.local

@@ -29,15 +29,6 @@
                 <db.password>recipes</db.password>
             </properties>
         </profile>
-        <profile>
-            <id>release</id>
-            <properties>
-                <db.driver_class>com.mysql.jdbc.Driver</db.driver_class>
-                <db.url>offline:mysql</db.url>
-                <db.username>clavpachebrecipe</db.username>
-                <db.password>RecipesSeeker1</db.password>
-            </properties>
-        </profile>
     </profiles>
 
     <build>
