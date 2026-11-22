@@ -15,7 +15,7 @@ CREATE DATABASE recipes
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
 USE recipes;
-SOURCE /path/to/database/schema.sql;
+SOURCE /path/to/recipes-backend/database/schema.sql;
 ```
 
 ## Configure credentials
@@ -23,7 +23,8 @@ SOURCE /path/to/database/schema.sql;
 The PHP application reads database settings from server environment variables.
 Copy `.env.example` as a reference, but store real values in the hosting
 platform's secret manager or an environment-specific file outside version
-control. Do not commit `.env` or put credentials in `schema.sql`.
+control. For the v2 application, use `v2/.env.example` as the template. Do not
+commit `.env` or put credentials in `schema.sql`.
 
 Required variables:
 
