@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { TagsApiService } from '../../core/services/tags-api.service';
 import { RecipesApiService } from '../../core/services/recipes-api.service';
 
 interface InsertForm {
@@ -29,8 +28,7 @@ export class InsertPageComponent {
   isError = false;
 
   constructor(
-    private readonly recipesApi: RecipesApiService,
-    private readonly tagsApi: TagsApiService
+    private readonly recipesApi: RecipesApiService
   ) {}
 
   onFileSelected(event: Event): void {

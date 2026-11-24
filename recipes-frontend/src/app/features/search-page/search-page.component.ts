@@ -91,7 +91,6 @@ export class SearchPageComponent implements OnInit {
         complete: () => {
           this.ngZone.run(() => {
             this.loading = false;
-            console.log('Search completed ', this.loading, ' ', this.recipes.map((r) => r.name).join(', '));
             this.cdr.detectChanges();
           });
         }
